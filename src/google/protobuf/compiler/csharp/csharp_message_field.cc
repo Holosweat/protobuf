@@ -100,9 +100,9 @@ void MessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
     variables_,
     "if (other.$has_property_check$) {\n"
     "  if ($has_not_property_check$) {\n"
-    "    $name$ = new $type_name$();\n"
+    "    $property_name$ = new $type_name$();\n"
     "  }\n"
-    "  $name$.MergeFrom(other.$name$);\n"
+    "  $property_name$?.MergeFrom(other?.$name$_);\n"
     "}\n");
 }
 
@@ -157,7 +157,7 @@ void MessageFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 void MessageFieldGenerator::WriteHash(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if ($has_property_check$) hash ^= $property_name$.GetHashCode();\n");
+    "if ($has_property_check$) hash ^= $property_name$?.GetHashCode() ?? 0;\n");
 }
 void MessageFieldGenerator::WriteEquals(io::Printer* printer) {
   printer->Print(
@@ -217,7 +217,7 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ $type_name$ $property_name$ {\n"
+    "$access_level$ $type_name$? $property_name$ {\n"
     "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"
@@ -250,10 +250,10 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
 
 void MessageOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
-    "if ($name$ == null) {\n"
-    "  $name$ = new $type_name$();\n"
+    "if ($property_name$ == null) {\n"
+    "  $property_name$ = new $type_name$();\n"
     "}\n"
-    "$name$.MergeFrom(other.$property_name$);\n");
+    "$property_name$?.MergeFrom(other?.$property_name$);\n");
 }
 
 void MessageOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -280,7 +280,7 @@ void MessageOneofFieldGenerator::WriteToString(io::Printer* printer) {
 
 void MessageOneofFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$property_name$ = other.$property_name$.DeepClone();\n");
+    "$property_name$ = other.$property_name$?.DeepClone();\n");
 }
 
 }  // namespace csharp

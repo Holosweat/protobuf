@@ -156,7 +156,7 @@ void WrapperFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 }
 
 void WrapperFieldGenerator::WriteHash(io::Printer* printer) {
-  const char *text = "if ($has_property_check$) hash ^= $property_name$.GetHashCode();\n";
+  const char *text = "if ($has_property_check$) hash ^= $name$.GetHashCode();\n";
   if (descriptor_->message_type()->field(0)->type() == FieldDescriptor::TYPE_FLOAT) {
     text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseNullableSingleEqualityComparer.GetHashCode($property_name$);\n";
   }
@@ -229,7 +229,7 @@ void WrapperOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ $type_name$ $property_name$ {\n"
+    "$access_level$ $type_name$? $property_name$ {\n"
     "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : ($type_name$) null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"

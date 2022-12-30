@@ -155,7 +155,9 @@ void ReflectionClassGenerator::WriteIntroduction(io::Printer* printer) {
 }
 
 void ReflectionClassGenerator::WriteDescriptor(io::Printer* printer) {
-  printer->Print(
+    printer->Print(
+        "#nullable disable\n");
+    printer->Print(
     "#region Descriptor\n"
     "/// <summary>File descriptor for $file_name$</summary>\n"
     "public static pbr::FileDescriptor Descriptor {\n"
@@ -239,6 +241,9 @@ void ReflectionClassGenerator::WriteDescriptor(io::Printer* printer) {
   printer->Outdent();
   printer->Print("}\n");
   printer->Print("#endregion\n\n");
+  printer->Print(
+      "#nullable enable\n");
+
 }
 
 // Write out the generated code for a particular message. This consists of the CLR type, property names
