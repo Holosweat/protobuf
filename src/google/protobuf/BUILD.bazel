@@ -587,6 +587,7 @@ PROTOBUF_HEADERS = [
     "text_format.h",
     "unknown_field_set.h",
     "wire_format.h",
+    "descriptor_utils.h"
 ]
 
 cc_library(
@@ -612,6 +613,7 @@ cc_library(
         "text_format.cc",
         "unknown_field_set.cc",
         "wire_format.cc",
+        "descriptor_utils.cc"
     ],
     hdrs = PROTOBUF_HEADERS,
     copts = COPTS,

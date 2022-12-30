@@ -1,3 +1,18 @@
+# TIPS
+
+Protoc build
+cp blaze-bin\protoc.exe C:\p\holosweat\Assets\holosweat\api\grpc.tools.2.50.0\tools\windows_x64\
+* `bazelisk build -c opt :protoc` (in VS command prompt)
+* `C:\Users\K\bin\bazelisk build -c opt :protoc && copy /y "bazel-bin\protoc.exe" "C:\p\holosweat\Assets\holosweat\api\grpc.tools.2.50.0\tools\windows_x64"`
+
+Proto library
+* pushd csharp/src; dotnet pack -c Release; dotnet pack -c Debug; popd; rm "/c/p/holosweat/Assets/holosweat/api/Assets/Plugins/Nuget/"* || true; cp "C:\p\protobuf\csharp\src\Google.Protobuf\bin\Release\Google.Protobuf.3.28.2.nupkg" "C:\p\holosweat\Assets\holosweat\api\Assets\Plugins\Nuget"
+* Then C:\p\holosweat
+
+
+* `cd csharp/src`
+* `dotnet build -c Release` or `pushd csharp/src; dotnet pack -c Release;  popd;`
+
 Protocol Buffers - Google's data interchange format
 ===================================================
 

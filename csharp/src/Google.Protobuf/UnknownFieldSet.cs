@@ -50,6 +50,7 @@ namespace Google.Protobuf
         /// </summary>
         public void WriteTo(CodedOutputStream output)
         {
+            #if WRITE_UNKNOWNS
             WriteContext.Initialize(output, out WriteContext ctx);
             try
             {
@@ -59,6 +60,7 @@ namespace Google.Protobuf
             {
                 ctx.CopyStateTo(output);
             }
+            #endif
         }
 
         /// <summary>
@@ -67,10 +69,12 @@ namespace Google.Protobuf
         [SecuritySafeCritical]
         public void WriteTo(ref WriteContext ctx)
         {
+#if WRITE_UNKNOWNS
             foreach (KeyValuePair<int, UnknownField> entry in fields)
             {
                 entry.Value.WriteTo(entry.Key, ref ctx);
             }
+#endif
         }
 
         /// <summary>
@@ -78,12 +82,16 @@ namespace Google.Protobuf
         /// </summary>
         public int CalculateSize()
         {
+#if WRITE_UNKNOWNS
             int result = 0;
             foreach (KeyValuePair<int, UnknownField> entry in fields)
             {
                 result += entry.Value.GetSerializedSize(entry.Key);
             }
             return result;
+#else
+            return 0;
+#endif
         }
 
         /// <summary>
@@ -352,7 +360,7 @@ namespace Google.Protobuf
         }
 
         /// <summary>
-        /// Clone an unknown field set from <paramref name="other"/>.
+        /// DeepClone an unknown field set from <paramref name="other"/>.
         /// </summary>
         public static UnknownFieldSet Clone(UnknownFieldSet other)
         {

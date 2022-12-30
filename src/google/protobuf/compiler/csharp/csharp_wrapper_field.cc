@@ -17,6 +17,7 @@
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -133,7 +134,7 @@ void WrapperFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 }
 
 void WrapperFieldGenerator::WriteHash(io::Printer* printer) {
-  const char *text = "if ($has_property_check$) hash ^= $property_name$.GetHashCode();\n";
+  const char *text = "if ($has_property_check$) hash ^= $name$.GetHashCode();\n";
   if (descriptor_->message_type()->field(0)->type() == FieldDescriptor::TYPE_FLOAT) {
     text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseNullableSingleEqualityComparer.GetHashCode($property_name$);\n";
   }
@@ -186,6 +187,9 @@ void WrapperFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
   printer->Print(");\n");
 }
 
+void WrapperFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {}
+
+
 WrapperOneofFieldGenerator::WrapperOneofFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : WrapperFieldGenerator(descriptor, presenceIndex, options) {
@@ -206,8 +210,8 @@ void WrapperOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ $type_name$ $property_name$ {\n"
-    "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : ($type_name$) null; }\n"
+    "$access_level$ $type_name$? $property_name$ {\n"
+    "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : ($type_name$) null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"
     "    $oneof_name$Case_ = value == null ? $oneof_property_name$OneofCase.None : $oneof_property_name$OneofCase.$oneof_case_name$;\n"
@@ -277,6 +281,10 @@ void WrapperOneofFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer
     "if ($has_property_check$) {\n"
     "  size += _oneof_$name$_codec.CalculateSizeWithTag($property_name$);\n"
     "}\n");
+}
+
+void WrapperOneofFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+
 }
 
 }  // namespace csharp

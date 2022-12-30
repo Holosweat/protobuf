@@ -18,6 +18,7 @@
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -27,6 +28,9 @@ namespace csharp {
 RepeatedMessageFieldGenerator::RepeatedMessageFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
+  variables_["setter"] = FieldInsideReferenceContainer(*descriptor_) ? "init" : "set";
+  variables_["repeated_type"] = RepeatedFieldType(*descriptor_);
+  variables_["repeated_type_classname"] = RepeatedFieldTypeClassName(*descriptor_);
 }
 
 RepeatedMessageFieldGenerator::~RepeatedMessageFieldGenerator() {
@@ -51,22 +55,35 @@ void RepeatedMessageFieldGenerator::GenerateMembers(io::Printer* printer) {
     single_generator->GenerateCodecCode(printer);
   }
   printer->Print(";\n");
-  printer->Print(
-    variables_,
-    "private readonly pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
+
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(
+      variables_,
+      "private $repeated_type$<$type_name$> $name$_ = $repeated_type$<$type_name$>.Empty;\n");
+  } else {
+    printer->Print(
+      variables_,
+      "private $repeated_type$<$type_name$>? $name$_;\n");
+    printer->Print(
+        variables_,
+        "public static $repeated_type$<$type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+  }
   WritePropertyDocComment(printer, options(), descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ pbc::RepeatedField<$type_name$> $property_name$ {\n"
+    "$access_level$ $repeated_type$<$type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
-    "}\n");
+    "  $setter$ { $name$_ = value; }\n"
+    "}\n"
+    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return pbc::RepeatedField<$type_name$>.From($name$_); } }\n"
+    );
 }
 
 void RepeatedMessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "$name$_.Add(other.$name$_);\n");
+    "if (!other.$property_name$.IsEmpty) { $name$_ = $property_name$.AddRange(other.$property_name$); }\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -75,10 +92,10 @@ void RepeatedMessageFieldGenerator::GenerateParsingCode(io::Printer* printer) {
 
 void RepeatedMessageFieldGenerator::GenerateParsingCode(io::Printer* printer, bool use_parse_context) {
   printer->Print(
-    variables_,
-    use_parse_context
-    ? "$name$_.AddEntriesFrom(ref input, _repeated_$name$_codec);\n"
-    : "$name$_.AddEntriesFrom(input, _repeated_$name$_codec);\n");
+      variables_,
+      use_parse_context
+          ? "var $name$_mutation = new pbc::RepeatedField<$type_name$>(); $name$_mutation.AddEntriesFrom(ref input, _repeated_$name$_codec); $name$_ = $name$_mutation.To$repeated_type_classname$();\n"
+          : "var $name$_mutation = new pbc::RepeatedField<$type_name$>(); $name$_mutation.AddEntriesFrom(input, _repeated_$name$_codec); $name$_ = $name$_mutation.To$repeated_type_classname$();\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -89,38 +106,38 @@ void RepeatedMessageFieldGenerator::GenerateSerializationCode(io::Printer* print
   printer->Print(
     variables_,
     use_write_context
-    ? "$name$_.WriteTo(ref output, _repeated_$name$_codec);\n"
-    : "$name$_.WriteTo(output, _repeated_$name$_codec);\n");
+    ? "$name$_ForSerialization.WriteTo(ref output, _repeated_$name$_codec);\n"
+    : "$name$_ForSerialization.WriteTo(output, _repeated_$name$_codec);\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "size += $name$_.CalculateSize(_repeated_$name$_codec);\n");
+    "size += pbc::RepeatedField<$type_name$>.RepeatedFieldCalculateSize(_repeated_$name$_codec, $property_name$);\n");
 }
 
 void RepeatedMessageFieldGenerator::WriteHash(io::Printer* printer) {
   printer->Print(
     variables_,
-    "hash ^= $name$_.GetHashCode();\n");
+    "hash ^= pbc::RepeatedField<$type_name$>.GetRepeatedFieldHashCode($property_name$);\n");
 }
 
 void RepeatedMessageFieldGenerator::WriteEquals(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if(!$name$_.Equals(other.$name$_)) return false;\n");
+    "if(!pbc::RepeatedField<$type_name$>.RepeatedFieldEquals($property_name$, other.$property_name$)) return false;\n");
 }
 
 void RepeatedMessageFieldGenerator::WriteToString(io::Printer* printer) {
   variables_["field_name"] = GetFieldName(descriptor_);
   printer->Print(
     variables_,
-    "PrintField(\"$field_name$\", $name$_, writer);\n");
+    "PrintField(\"$field_name$\", $name$_ForSerialization, writer);\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.Clone();\n");
+    "if (deep) { $name$_ = pbc::RepeatedFieldDeepCloner.CloneTyped(other.$name$_ForSerialization).To$repeated_type_classname$(); } else { $name$_ = other.$name$_; }\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
@@ -143,6 +160,12 @@ void RepeatedMessageFieldGenerator::GenerateExtensionCode(io::Printer* printer) 
     single_generator->GenerateCodecCode(printer);
   }
   printer->Print(");\n");
+}
+
+void RepeatedMessageFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+  printer->Print(
+      variables_,
+      "$name$_ = $repeated_type$<T>.Empty;\n");
 }
 
 }  // namespace csharp

@@ -1,0 +1,1 @@
+pushd csharp/src; dotnet pack -c Release; dotnet pack -c Debug; popd; rm "/c/p/holosweat/Assets/holosweat/api/Assets/Plugins/Nuget/"* || true; cp "C:\p\protobuf\csharp\src\Google.Protobuf\bin\Release\Google.Protobuf.3.28.2.nupkg" "C:\p\holosweat\Assets\holosweat\api\Assets\Plugins\Nuget"

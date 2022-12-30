@@ -71,15 +71,18 @@ namespace Google.Protobuf.Reflection
                 MethodInfo hasMethod = messageType.GetRuntimeProperty("Has" + property.Name).GetMethod;
                 if (hasMethod == null)
                 {
-                    throw new ArgumentException("Not all required properties/methods are available");
+                    throw new ArgumentException($"Not all required properties/methods are available {property.Name}");
                 }
                 hasDelegate = ReflectionUtil.CreateFuncIMessageBool(hasMethod);
                 MethodInfo clearMethod = messageType.GetRuntimeMethod("Clear" + property.Name, ReflectionUtil.EmptyTypes);
-                if (clearMethod == null)
+                if (clearMethod != null)
                 {
-                    throw new ArgumentException("Not all required properties/methods are available");
+                    clearDelegate = ReflectionUtil.CreateActionIMessage(clearMethod);
                 }
-                clearDelegate = ReflectionUtil.CreateActionIMessage(clearMethod);
+                else
+                {
+                    clearDelegate = message => SetValue(message, null);
+                }
             }
             // Otherwise, we don't support presence.
             else

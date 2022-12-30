@@ -28,14 +28,37 @@ namespace Google.Protobuf.Collections
     /// <typeparam name="T">The element type of the repeated field.</typeparam>
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy(typeof(RepeatedField<>.RepeatedFieldDebugView))]
-    public sealed class RepeatedField<T> : IList<T>, IList, IDeepCloneable<RepeatedField<T>>, IEquatable<RepeatedField<T>>, IReadOnlyList<T>
+    public sealed class RepeatedField<T>
+        : IList<T>,
+            IList,
+            IDeepCloneable<RepeatedField<T>>,
+            IEquatable<RepeatedField<T>>,
+            IReadOnlyList<T>
     {
-        private static readonly EqualityComparer<T> EqualityComparer = ProtobufEqualityComparers.GetEqualityComparer<T>();
-        private static readonly T[] EmptyArray = new T[0];
+        private static readonly EqualityComparer<T> EqualityComparer =
+            ProtobufEqualityComparers.GetEqualityComparer<T>();
+        internal static readonly T[] EmptyArray = new T[0];
         private const int MinArraySize = 8;
 
-        private T[] array = EmptyArray;
-        private int count = 0;
+        internal T[] array = EmptyArray;
+        internal int count = 0;
+
+        /// Creates with elements of other.
+        public RepeatedField(IEnumerable<T> other)
+        {
+            AddRange(other);
+        }
+
+        public static RepeatedField<T> From<TCollection>(TCollection other)
+            where TCollection : IReadOnlyList<T>
+        {
+            RepeatedField<T> field = new RepeatedField<T>();
+            field.AddRangeList(other);
+            return field;
+        }
+
+        /// Creates empty collection.
+        public RepeatedField() { }
 
         /// <summary>
         /// Creates a deep clone of this repeated field.
@@ -56,6 +79,9 @@ namespace Google.Protobuf.Collections
                 clone.array = (T[])array.Clone();
                 if (clone.array is IDeepCloneable<T>[] cloneableArray)
                 {
+                    if (typeof(T).IsValueType) {
+                        throw new InvalidOperationException("Clone only works for messages, use CloneTyped.");
+                    }
                     for (int i = 0; i < count; i++)
                     {
                         clone.array[i] = cloneableArray[i].Clone();
@@ -109,7 +135,11 @@ namespace Google.Protobuf.Collections
                     //
                     // Check that the supplied length doesn't exceed the underlying buffer.
                     // That prevents a malicious length from initializing a very large collection.
-                    if (codec.FixedSize > 0 && length % codec.FixedSize == 0 && ParsingPrimitives.IsDataAvailable(ref ctx.state, length))
+                    if (
+                        codec.FixedSize > 0
+                        && length % codec.FixedSize == 0
+                        && ParsingPrimitives.IsDataAvailable(ref ctx.state, length)
+                    )
                     {
                         EnsureSize(count + (length / codec.FixedSize));
 
@@ -151,6 +181,29 @@ namespace Google.Protobuf.Collections
         /// using the same codec.</returns>
         public int CalculateSize(FieldCodec<T> codec)
         {
+            return RepeatedFieldCalculateSize(codec, Count, array);
+        }
+
+        public static int RepeatedFieldCalculateSize<TCollection>(
+            FieldCodec<T> codec,
+            TCollection array
+        )
+            where TCollection : IReadOnlyList<T>
+        {
+            if (array is RepeatedField<T> value)
+            {
+                return value.CalculateSize(codec);
+            }
+            return RepeatedFieldCalculateSize(codec, array.Count(), array);
+        }
+
+        public static int RepeatedFieldCalculateSize<TCollection>(
+            FieldCodec<T> codec,
+            int count,
+            TCollection array
+        )
+            where TCollection : IReadOnlyList<T>
+        {
             if (count == 0)
             {
                 return 0;
@@ -158,10 +211,10 @@ namespace Google.Protobuf.Collections
             uint tag = codec.Tag;
             if (codec.PackedRepeatedField)
             {
-                int dataSize = CalculatePackedDataSize(codec);
-                return CodedOutputStream.ComputeRawVarint32Size(tag) +
-                    CodedOutputStream.ComputeLengthSize(dataSize) +
-                    dataSize;
+                int dataSize = CalculatePackedDataSize(codec, count, array);
+                return CodedOutputStream.ComputeRawVarint32Size(tag)
+                    + CodedOutputStream.ComputeLengthSize(dataSize)
+                    + dataSize;
             }
             else
             {
@@ -171,30 +224,39 @@ namespace Google.Protobuf.Collections
                 {
                     size += count * CodedOutputStream.ComputeRawVarint32Size(codec.EndTag);
                 }
-                for (int i = 0; i < count; i++)
+
+                for (int i = 0; i < count; ++i)
                 {
                     size += sizeCalculator(array[i]);
                 }
+
                 return size;
             }
         }
 
-        private int CalculatePackedDataSize(FieldCodec<T> codec)
+        private static int CalculatePackedDataSize<TReadOnlyList>(
+            FieldCodec<T> codec,
+            int count,
+            TReadOnlyList array
+        )
+            where TReadOnlyList : IReadOnlyList<T>
         {
             int fixedSize = codec.FixedSize;
             if (fixedSize == 0)
             {
                 var calculator = codec.ValueSizeCalculator;
                 int tmp = 0;
-                for (int i = 0; i < count; i++)
+
+                for (int i = 0; i < count; ++i)
                 {
                     tmp += calculator(array[i]);
                 }
+
                 return tmp;
             }
             else
             {
-                return fixedSize * Count;
+                return fixedSize * count;
             }
         }
 
@@ -235,7 +297,7 @@ namespace Google.Protobuf.Collections
             if (codec.PackedRepeatedField)
             {
                 // Packed primitive type
-                int size = CalculatePackedDataSize(codec);
+                int size = CalculatePackedDataSize(codec, count, array);
                 ctx.WriteTag(tag);
                 ctx.WriteLength(size);
                 for (int i = 0; i < count; i++)
@@ -271,8 +333,11 @@ namespace Google.Protobuf.Collections
             {
                 if (value < count)
                 {
-                    throw new ArgumentOutOfRangeException("Capacity", value,
-                        $"Cannot set Capacity to a value smaller than the current item count, {count}");
+                    throw new ArgumentOutOfRangeException(
+                        "Capacity",
+                        value,
+                        $"Cannot set Capacity to a value smaller than the current item count, {count}"
+                    );
                 }
 
                 if (value >= 0 && value != array.Length)
@@ -355,7 +420,7 @@ namespace Google.Protobuf.Collections
             if (index == -1)
             {
                 return false;
-            }            
+            }
             Array.Copy(array, index + 1, array, index, count - index - 1);
             count--;
             array[count] = default;
@@ -371,6 +436,42 @@ namespace Google.Protobuf.Collections
         /// Gets a value indicating whether the collection is read-only.
         /// </summary>
         public bool IsReadOnly => false;
+
+        private void AddRangeList<TCollection>(TCollection collection)
+            where TCollection : IReadOnlyList<T>
+        {
+            var extraCount = collection.Count;
+            // For reference types and nullable value types, we need to check that there are no nulls
+            // present. (This isn't a thread-safe approach, but we don't advertise this is thread-safe.)
+            // We expect the JITter to optimize this test to true/false, so it's effectively conditional
+            // specialization.
+
+            EnsureSize(count + extraCount);
+            if (default(T) == null)
+            {
+                for (int i = 0; i < collection.Count; ++i)
+                {
+                    if (collection[i] == null)
+                    {
+                        throw new ArgumentException(
+                            "Sequence contained null element",
+                            nameof(collection)
+                        );
+                    }
+                    array[i] = collection[i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < collection.Count; i++)
+                {
+                    array[i] = collection[i];
+                }
+            }
+
+            count += extraCount;
+            return;
+        }
 
         /// <summary>
         /// Adds all of the specified values into this collection.
@@ -401,15 +502,34 @@ namespace Google.Protobuf.Collections
                 // specialization.
                 if (default(T) == null)
                 {
-                    // TODO: Measure whether iterating once to check and then letting the collection copy
-                    // itself is faster or slower than iterating and adding as we go. For large
-                    // collections this will not be great in terms of cache usage... but the optimized
-                    // copy may be significantly faster than doing it one at a time.
-                    foreach (var item in collection)
+                    if (collection is IReadOnlyList<T> list)
                     {
-                        if (item == null)
+                        // TODO: Measure whether iterating once to check and then letting the collection copy
+                        // itself is faster or slower than iterating and adding as we go. For large
+                        // collections this will not be great in terms of cache usage... but the optimized
+                        // copy may be significantly faster than doing it one at a time.
+                        for (int i = 0; i < list.Count; ++i)
                         {
-                            throw new ArgumentException("Sequence contained null element", nameof(values));
+                            if (list[i] == null)
+                            {
+                                throw new ArgumentException(
+                                    "Sequence contained null element",
+                                    nameof(values)
+                                );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in collection)
+                        {
+                            if (item == null)
+                            {
+                                throw new ArgumentException(
+                                    "Sequence contained null element",
+                                    nameof(values)
+                                );
+                            }
                         }
                     }
                 }
@@ -463,7 +583,7 @@ namespace Google.Protobuf.Collections
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj) => Equals(obj as RepeatedField<T>);
-        
+
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
@@ -476,14 +596,20 @@ namespace Google.Protobuf.Collections
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {
+            return GetRepeatedFieldHashCode(array);
+        }
+
+        public static int GetRepeatedFieldHashCode<TCollection>(TCollection values)
+            where TCollection : IReadOnlyList<T>
+        {
             int hash = 0;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < values.Count; ++i)
             {
-                hash = hash * 31 + array[i].GetHashCode();
+                hash = hash * 31 + values[i].GetHashCode();
             }
             return hash;
         }
@@ -495,22 +621,17 @@ namespace Google.Protobuf.Collections
         /// <returns><c>true</c> if <paramref name="other"/> refers to an equal repeated field; <c>false</c> otherwise.</returns>
         public bool Equals(RepeatedField<T> other)
         {
-            if (other is null)
-            {
+            return RepeatedFieldEquals(this, other);
+        }
+
+        public static bool RepeatedFieldEquals<TCollection>(TCollection This, TCollection other)
+            where TCollection : IReadOnlyList<T>
+        {
+            if (This.Count != other.Count)
                 return false;
-            }
-            if (ReferenceEquals(other, this))
+            for (int i = 0; i < This.Count; ++i)
             {
-                return true;
-            }
-            if (other.Count != this.Count)
-            {
-                return false;
-            }
-            EqualityComparer<T> comparer = EqualityComparer;
-            for (int i = 0; i < count; i++)
-            {
-                if (!comparer.Equals(array[i], other.array[i]))
+                if (!EqualityComparer.Equals(This[i], other[i]))
                 {
                     return false;
                 }
@@ -614,7 +735,8 @@ namespace Google.Protobuf.Collections
         #region Explicit interface implementation for IList and ICollection.
         bool IList.IsFixedSize => false;
 
-        void ICollection.CopyTo(Array array, int index) => Array.Copy(this.array, 0, array, index, count);
+        void ICollection.CopyTo(Array array, int index) =>
+            Array.Copy(this.array, 0, array, index, count);
 
         bool ICollection.IsSynchronized => false;
 
@@ -628,7 +750,7 @@ namespace Google.Protobuf.Collections
 
         int IList.Add(object value)
         {
-            Add((T) value);
+            Add((T)value);
             return count - 1;
         }
 
@@ -636,7 +758,7 @@ namespace Google.Protobuf.Collections
 
         int IList.IndexOf(object value) => (value is T t) ? IndexOf(t) : -1;
 
-        void IList.Insert(int index, object value) => Insert(index, (T) value);
+        void IList.Insert(int index, object value) => Insert(index, (T)value);
 
         void IList.Remove(object value)
         {
@@ -645,7 +767,7 @@ namespace Google.Protobuf.Collections
                 Remove(t);
             }
         }
-        #endregion        
+        #endregion
 
         private sealed class RepeatedFieldDebugView
         {
@@ -658,6 +780,39 @@ namespace Google.Protobuf.Collections
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public T[] Items => list.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// RepeatedFieldDeepCloner
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public static class RepeatedFieldDeepCloner {
+        /// <summary>
+        /// Clones struct and value type messages correctly.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static RepeatedField<T> CloneTyped<T>(RepeatedField<T> values) where T: IDeepCloneable<T>
+        {
+            RepeatedField<T> clone = new RepeatedField<T>();
+            if (values.array != RepeatedField<T>.EmptyArray)
+            {
+                clone.array = (T[])values.array.Clone();
+                if (clone.array == null)
+                {
+                    throw new InvalidOperationException("Array is null");
+                }
+                for (int i = 0; i < values.count; i++)
+                {
+                    var element = values.array[i];
+                    var clonedElement = element.Clone();
+                    clone.array[i] = clonedElement;
+                }
+            }
+            clone.count = values.count;
+            return clone;
         }
     }
 }

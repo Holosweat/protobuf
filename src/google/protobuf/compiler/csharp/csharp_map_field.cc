@@ -15,6 +15,7 @@
 #include "google/protobuf/compiler/csharp/csharp_helpers.h"
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -25,18 +26,23 @@ MapFieldGenerator::MapFieldGenerator(const FieldDescriptor* descriptor,
                                      int presenceIndex,
                                      const Options* options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
-}
-
-MapFieldGenerator::~MapFieldGenerator() {
-}
-
-void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   const FieldDescriptor* key_descriptor =
       descriptor_->message_type()->map_key();
   const FieldDescriptor* value_descriptor =
       descriptor_->message_type()->map_value();
   variables_["key_type_name"] = type_name(key_descriptor);
   variables_["value_type_name"] = type_name(value_descriptor);
+  variables_["setter"] = FieldInsideReferenceContainer(*descriptor_) ? "init" : "set";
+}
+
+MapFieldGenerator::~MapFieldGenerator() {
+}
+
+void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
+    const FieldDescriptor* key_descriptor =
+      descriptor_->message_type()->map_key();
+  const FieldDescriptor* value_descriptor =
+      descriptor_->message_type()->map_value();
   std::unique_ptr<FieldGeneratorBase> key_generator(
       CreateFieldGenerator(key_descriptor, 1, this->options()));
   std::unique_ptr<FieldGeneratorBase> value_generator(
@@ -49,22 +55,37 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   key_generator->GenerateCodecCode(printer);
   printer->Print(", ");
   value_generator->GenerateCodecCode(printer);
-  printer->Print(
-    variables_,
-    ", $tag$);\n"
-    "private readonly pbc::MapField<$key_type_name$, $value_type_name$> $name$_ = new pbc::MapField<$key_type_name$, $value_type_name$>();\n");
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(
+      variables_,
+      ", $tag$);\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$>? $name$_pb = null;\n"
+      "private scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$>? $name$_imm = null;\n");
+  } else {
+    printer->Print(
+      variables_,
+      ", $tag$);\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$>? $name$_pb;\n"
+      "private scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$>? $name$_imm;\n");
+    printer->Print(
+      variables_,
+      "public static scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+  }
   WritePropertyDocComment(printer, options(), descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
-    variables_,
-    "$access_level$ pbc::MapField<$key_type_name$, $value_type_name$> $property_name$ {\n"
-    "  get { return $name$_; }\n"
-    "}\n");
+      variables_,
+      "$access_level$ scg::IReadOnlyDictionary<$key_type_name$, $value_type_name$> $property_name$ {\n"
+      "  get { return ($name$_imm ?? $name$_pb) ?? sci.ImmutableDictionary<$key_type_name$, $value_type_name$>.Empty; }\n"
+      "  $setter$ { if (value is sci.ImmutableDictionary<$key_type_name$, $value_type_name$>) { $name$_imm = value; } else { $name$_imm = sci.ImmutableDictionary.CreateRange(value); } $name$_pb = null; }\n"
+      "}\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ForSerialization { get { return $name$_imm != null || $name$_pb == null ? new pbc::MapField<$key_type_name$, $value_type_name$>($name$_imm ?? sci.ImmutableDictionary<$key_type_name$, $value_type_name$>.Empty) : $name$_pb; } }\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>($name$_imm); $name$_imm = null; } if ($name$_pb == null) { $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>(); } return $name$_pb; } }\n");
 }
 
 void MapFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
-                 "$name$_.MergeFrom(other.$name$_);\n");
+                 "if (other.$property_name$.Count > 0) { var $name$_new = new pbc::MapField<$key_type_name$, $value_type_name$>($property_name$); $name$_new.MergeFrom(other.$property_name$); $name$_imm = null; $name$_pb = $name$_new; }\n");
 }
 
 void MapFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -75,8 +96,8 @@ void MapFieldGenerator::GenerateParsingCode(io::Printer* printer, bool use_parse
   printer->Print(
     variables_,
     use_parse_context
-    ? "$name$_.AddEntriesFrom(ref input, _map_$name$_codec);\n"
-    : "$name$_.AddEntriesFrom(input, _map_$name$_codec);\n");
+    ? "$name$_ForMutation.AddEntriesFrom(ref input, _map_$name$_codec);\n"
+    : "$name$_ForMutation.AddEntriesFrom(input, _map_$name$_codec);\n");
 }
 
 void MapFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -87,25 +108,25 @@ void MapFieldGenerator::GenerateSerializationCode(io::Printer* printer, bool use
   printer->Print(
     variables_,
     use_write_context
-    ? "$name$_.WriteTo(ref output, _map_$name$_codec);\n"
-    : "$name$_.WriteTo(output, _map_$name$_codec);\n");
+    ? "$name$_ForSerialization.WriteTo(ref output, _map_$name$_codec);\n"
+    : "$name$_ForSerialization.WriteTo(output, _map_$name$_codec);\n");
 }
 
 void MapFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "size += $name$_.CalculateSize(_map_$name$_codec);\n");
+    "size += pbc::MapField<$key_type_name$, $value_type_name$>.MapFieldCalculateSize(_map_$name$_codec, $property_name$);\n");
 }
 
 void MapFieldGenerator::WriteHash(io::Printer* printer) {
   printer->Print(
     variables_,
-    "hash ^= $property_name$.GetHashCode();\n");
+    "hash ^= pbc::MapField<$key_type_name$, $value_type_name$>.GetMapFieldHashCode($property_name$);\n");
 }
 void MapFieldGenerator::WriteEquals(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if (!$property_name$.Equals(other.$property_name$)) return false;\n");
+    "if (!pbc::MapField<$key_type_name$, $value_type_name$>.MapFieldEquals(this.$property_name$, other.$property_name$)) return false;\n");
 }
 
 void MapFieldGenerator::WriteToString(io::Printer* printer) {
@@ -114,10 +135,14 @@ void MapFieldGenerator::WriteToString(io::Printer* printer) {
 
 void MapFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.Clone();\n");
+    "if (deep) { $name$_imm = null; $name$_pb = other.$name$_ForSerialization.Clone(); } else { $name$_imm = other.$name$_imm; $name$_pb = other.$name$_pb; }\n");
 }
 
 void MapFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
+}
+
+void MapFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+  printer->Print(variables_, "$name$_pb = default; $name$_imm = default;\n");
 }
 
 }  // namespace csharp

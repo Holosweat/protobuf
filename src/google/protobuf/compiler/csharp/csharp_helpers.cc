@@ -37,6 +37,7 @@
 #include "google/protobuf/compiler/retention.h"
 #include "google/protobuf/descriptor.h"
 #include "google/protobuf/descriptor.pb.h"
+#include "google/protobuf/descriptor_utils.h"
 
 // Must be last.
 #include "google/protobuf/port_def.inc"
@@ -425,6 +426,7 @@ bool IsNullable(const FieldDescriptor* descriptor) {
       return false;
 
     case FieldDescriptor::TYPE_MESSAGE:
+      return MessageIsReference(*descriptor->message_type()) || SupportsPresenceApi(descriptor);
     case FieldDescriptor::TYPE_GROUP:
     case FieldDescriptor::TYPE_STRING:
     case FieldDescriptor::TYPE_BYTES:
@@ -435,6 +437,42 @@ bool IsNullable(const FieldDescriptor* descriptor) {
       return true;
   }
 }
+bool EmbedBarePublicField(const FieldDescriptor &field) {
+    // if (!FieldInsideReferenceContainer(field)) {
+    //     ABSL_LOG(ERROR) << "Field inside: " << field.name() << " papi:" << SupportsPresenceApi(field);
+    // }
+    return !FieldInsideReferenceContainer(field) && !SupportsPresenceApi(&field);
+}
+
+bool EmbedReadOnlyRefField(const FieldDescriptor &field) {
+  if (!FieldRequestedRefStructOptimization(field)) {
+      return false;
+  }
+  if (!(field.type() == FieldDescriptor::TYPE_MESSAGE)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field is not a message";
+  }
+  if (!(field.message_type() != nullptr && !MessageIsReference(*field.message_type()))) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field value is not a message";
+  }
+  if (!FieldInsideReferenceContainer(field)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field value is not inside a reference message container";
+  }
+  if (SupportsPresenceApi(&field)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field supports presence API.";
+  }
+  if (IsNullable(&field)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field value is nullable.";
+  }
+  return true;
+}
+
+bool MessageFieldIsValueType(const FieldDescriptor &field) {
+  if (field.type() != FieldDescriptor::TYPE_MESSAGE || field.message_type() == nullptr) {
+      ABSL_LOG(FATAL) << "Not a message field";
+  }
+  return !MessageIsReference(*field.message_type());
+}
+
 
 }  // namespace csharp
 }  // namespace compiler
