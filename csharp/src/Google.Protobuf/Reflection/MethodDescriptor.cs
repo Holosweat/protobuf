@@ -78,7 +78,7 @@ namespace Google.Protobuf.Reflection
         /// Custom options can be retrieved as extensions of the returned message.
         /// NOTE: A defensive copy is created each time this property is retrieved.
         /// </summary>
-        public MethodOptions GetOptions() => Proto.Options?.Clone();
+        public MethodOptions GetOptions() => Proto.Options?.DeepClone();
 
         /// <summary>
         /// Gets a single value method option for this descriptor
@@ -87,7 +87,7 @@ namespace Google.Protobuf.Reflection
         public T GetOption<T>(Extension<MethodOptions, T> extension)
         {
             var value = Proto.Options.GetExtension(extension);
-            return value is IDeepCloneable<T> c ? c.Clone() : value;
+            return value is IDeepCloneable<T> c ? c.DeepClone() : value;
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Google.Protobuf.Reflection
         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public RepeatedField<T> GetOption<T>(RepeatedExtension<MethodOptions, T> extension)
         {
-            return Proto.Options.GetExtension(extension).Clone();
+            return Proto.Options.GetExtension(extension).DeepClone();
         }
 
         internal MethodDescriptor(MethodDescriptorProto proto, FileDescriptor file,
@@ -116,7 +116,7 @@ namespace Google.Protobuf.Reflection
         /// (and not modifying it) may want to cache the returned value.
         /// </summary>
         /// <returns>A protobuf representation of this method descriptor.</returns>
-        public MethodDescriptorProto ToProto() => Proto.Clone();
+        public MethodDescriptorProto ToProto() => Proto.DeepClone();
 
         /// <summary>
         /// The brief name of the descriptor's target.

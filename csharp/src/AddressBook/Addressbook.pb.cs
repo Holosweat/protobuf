@@ -87,14 +87,14 @@ namespace Google.Protobuf.Examples.AddressBook {
       name_ = other.name_;
       id_ = other.id_;
       email_ = other.email_;
-      phones_ = other.phones_.Clone();
-      lastUpdated_ = other.lastUpdated_ != null ? other.lastUpdated_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      phones_ = other.phones_.DeepClone();
+      lastUpdated_ = other.lastUpdated_ != null ? other.lastUpdated_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Person Clone() {
+    public Person DeepClone() {
       return new Person(this);
     }
 
@@ -433,12 +433,12 @@ namespace Google.Protobuf.Examples.AddressBook {
         public PhoneNumber(PhoneNumber other) : this() {
           number_ = other.number_;
           type_ = other.type_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public PhoneNumber Clone() {
+        public PhoneNumber DeepClone() {
           return new PhoneNumber(this);
         }
 
@@ -665,13 +665,13 @@ namespace Google.Protobuf.Examples.AddressBook {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AddressBook(AddressBook other) : this() {
-      people_ = other.people_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      people_ = other.people_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AddressBook Clone() {
+    public AddressBook DeepClone() {
       return new AddressBook(this);
     }
 

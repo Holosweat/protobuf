@@ -67,7 +67,7 @@ namespace Google.Protobuf.Collections
         /// equivalent to a deep clone.
         /// </remarks>
         /// <returns>A deep clone of this repeated field.</returns>
-        public RepeatedField<T> Clone()
+        public RepeatedField<T> DeepClone()
         {
             RepeatedField<T> clone = new RepeatedField<T>();
             if (array != EmptyArray)
@@ -77,7 +77,7 @@ namespace Google.Protobuf.Collections
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        clone.array[i] = cloneableArray[i].Clone();
+                        clone.array[i] = cloneableArray[i].DeepClone();
                     }
                 }
             }

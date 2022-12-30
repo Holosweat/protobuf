@@ -81,7 +81,7 @@ namespace Google.Protobuf.Collections
         /// <returns>
         /// A deep clone of this object.
         /// </returns>
-        public MapField<TKey, TValue> Clone()
+        public MapField<TKey, TValue> DeepClone()
         {
             var clone = new MapField<TKey, TValue>();
             // Keys are never cloneable. Values might be.
@@ -89,7 +89,7 @@ namespace Google.Protobuf.Collections
             {
                 foreach (var pair in list)
                 {
-                    clone.Add(pair.Key, ((IDeepCloneable<TValue>)pair.Value).Clone());
+                    clone.Add(pair.Key, ((IDeepCloneable<TValue>)pair.Value).DeepClone());
                 }
             }
             else

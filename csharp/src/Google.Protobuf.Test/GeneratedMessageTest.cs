@@ -502,7 +502,7 @@ namespace Google.Protobuf
                 SingleUint32 = uint.MaxValue,
                 SingleUint64 = ulong.MaxValue
             };
-            var clone = original.Clone();
+            var clone = original.DeepClone();
             Assert.AreNotSame(original, clone);
             Assert.AreEqual(original, clone);
             // Just as a single example
@@ -533,7 +533,7 @@ namespace Google.Protobuf
                 RepeatedUint64 = { ulong.MaxValue, uint.MinValue }
             };
 
-            var clone = original.Clone();
+            var clone = original.DeepClone();
             Assert.AreNotSame(original, clone);
             Assert.AreEqual(original, clone);
             // Just as a single example
@@ -549,7 +549,7 @@ namespace Google.Protobuf
                 SingleNestedMessage = new TestAllTypes.Types.NestedMessage { Bb = 20 }
             };
 
-            var clone = original.Clone();
+            var clone = original.DeepClone();
             Assert.AreNotSame(original, clone);
             Assert.AreNotSame(original.SingleNestedMessage, clone.SingleNestedMessage);
             Assert.AreEqual(original, clone);
@@ -566,7 +566,7 @@ namespace Google.Protobuf
                 RepeatedNestedMessage = { new TestAllTypes.Types.NestedMessage { Bb = 20 } }
             };
 
-            var clone = original.Clone();
+            var clone = original.DeepClone();
             Assert.AreNotSame(original, clone);
             Assert.AreNotSame(original.RepeatedNestedMessage, clone.RepeatedNestedMessage);
             Assert.AreNotSame(original.RepeatedNestedMessage[0], clone.RepeatedNestedMessage[0]);
@@ -584,7 +584,7 @@ namespace Google.Protobuf
                 OneofNestedMessage = new TestAllTypes.Types.NestedMessage { Bb = 20 }
             };
 
-            var clone = original.Clone();
+            var clone = original.DeepClone();
             Assert.AreNotSame(original, clone);
             Assert.AreEqual(original, clone);
 
