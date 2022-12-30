@@ -87,9 +87,16 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
   }
 
   // Declare the field itself.
-  printer->Print(
-    variables_,
-    "private $type_name$ $name_def_message$;\n");
+  if (IsNullable(descriptor_) && SupportsPresenceApi(descriptor_)) {
+      printer->Print(
+          variables_,
+          "private $type_name$? $name_def_message$;\n");
+  }
+  else {
+      printer->Print(
+          variables_,
+          "private $type_name$ $name_def_message$;\n");
+  }
 
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
@@ -222,7 +229,7 @@ void PrimitiveFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 }
 
 void PrimitiveFieldGenerator::WriteHash(io::Printer* printer) {
-  const char *text = "if ($has_property_check$) hash ^= $property_name$.GetHashCode();\n";
+  const char *text = "if ($has_property_check$) hash ^= $name$_.GetHashCode();\n";
   if (descriptor_->type() == FieldDescriptor::TYPE_FLOAT) {
     text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode($property_name$);\n";
   } else if (descriptor_->type() == FieldDescriptor::TYPE_DOUBLE) {
@@ -282,7 +289,7 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     "$access_level$ $type_name$ $property_name$ {\n"
-    "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : $default_value$; }\n"
+    "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : $default_value$; }\n"
     "  set {\n");
   if (is_value_type) {
     printer->Print(
