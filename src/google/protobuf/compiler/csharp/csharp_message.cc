@@ -607,7 +607,7 @@ void MessageGenerator::GenerateMergingMethods(io::Printer* printer) {
   WriteGeneratedCodeAttributes(printer);
   printer->Print(
     vars,
-    "public void MergeFrom($class_name$ other) {\n");
+    "public void MergeFrom($class_name$? other) {\n");
   printer->Indent();
   printer->Print(
     "if (other == null) {\n"

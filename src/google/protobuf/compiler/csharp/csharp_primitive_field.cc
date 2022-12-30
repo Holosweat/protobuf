@@ -229,7 +229,10 @@ void PrimitiveFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 }
 
 void PrimitiveFieldGenerator::WriteHash(io::Printer* printer) {
-  const char *text = "if ($has_property_check$) hash ^= $name$_.GetHashCode();\n";
+  const char *text = 
+      SupportsPresenceApi(descriptor_)
+          && IsNullable(descriptor_) ?
+      "if ($has_property_check$) hash ^= $name$_?.GetHashCode() ?? 0;\n" : "if ($has_property_check$) hash ^= $name$_.GetHashCode();\n";
   if (descriptor_->type() == FieldDescriptor::TYPE_FLOAT) {
     text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode($property_name$);\n";
   } else if (descriptor_->type() == FieldDescriptor::TYPE_DOUBLE) {
