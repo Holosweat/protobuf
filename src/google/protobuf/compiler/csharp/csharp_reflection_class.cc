@@ -130,6 +130,7 @@ void ReflectionClassGenerator::WriteIntroduction(io::Printer* printer) {
     "//     source: $file_name$\n"
     "// </auto-generated>\n"
     "#region Designer generated code\n"
+    "#nullable enable\n"
     "\n"
     "using pb = global::Google.Protobuf;\n"
     "using pbc = global::Google.Protobuf.Collections;\n"

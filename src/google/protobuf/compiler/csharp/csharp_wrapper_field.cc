@@ -230,7 +230,7 @@ void WrapperOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     "$access_level$ $type_name$ $property_name$ {\n"
-    "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : ($type_name$) null; }\n"
+    "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : ($type_name$) null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"
     "    $oneof_name$Case_ = value == null ? $oneof_property_name$OneofCase.None : $oneof_property_name$OneofCase.$oneof_case_name$;\n"

@@ -62,12 +62,12 @@ MessageFieldGenerator::~MessageFieldGenerator() {
 void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
-    "private $type_name$ $name$_;\n");
+    "private $type_name$? $name$_;\n");
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ $type_name$ $property_name$ {\n"
+    "$access_level$ $type_name$? $property_name$ {\n"
     "  get { return $name$_; }\n"
     "  set {\n"
     "    $name$_ = value;\n"
@@ -100,9 +100,9 @@ void MessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
     variables_,
     "if (other.$has_property_check$) {\n"
     "  if ($has_not_property_check$) {\n"
-    "    $property_name$ = new $type_name$();\n"
+    "    $name$ = new $type_name$();\n"
     "  }\n"
-    "  $property_name$.MergeFrom(other.$property_name$);\n"
+    "  $name$.MergeFrom(other.$name$);\n"
     "}\n");
 }
 
@@ -218,7 +218,7 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     "$access_level$ $type_name$ $property_name$ {\n"
-    "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : null; }\n"
+    "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"
     "    $oneof_name$Case_ = value == null ? $oneof_property_name$OneofCase.None : $oneof_property_name$OneofCase.$oneof_case_name$;\n"
@@ -250,10 +250,10 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
 
 void MessageOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
-    "if ($property_name$ == null) {\n"
-    "  $property_name$ = new $type_name$();\n"
+    "if ($name$ == null) {\n"
+    "  $name$ = new $type_name$();\n"
     "}\n"
-    "$property_name$.MergeFrom(other.$property_name$);\n");
+    "$name$.MergeFrom(other.$property_name$);\n");
 }
 
 void MessageOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {

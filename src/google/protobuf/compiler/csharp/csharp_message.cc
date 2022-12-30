@@ -145,7 +145,7 @@ void MessageGenerator::Generate(io::Printer* printer) {
       "private static readonly pb::MessageParser<$class_name$> _parser = new pb::MessageParser<$class_name$>(() => new $class_name$());\n");
 
   printer->Print(
-      "private pb::UnknownFieldSet _unknownFields;\n");
+      "private pb::UnknownFieldSet? _unknownFields;\n");
 
   if (has_extension_ranges_) {
     if (IsDescriptorProto(descriptor_->file())) {
@@ -234,7 +234,7 @@ void MessageGenerator::Generate(io::Printer* printer) {
     vars["original_name"] = oneof->name();
     printer->Print(
       vars,
-      "private object $name$_;\n"
+      "private object? $name$_;\n"
       "/// <summary>Enum of possible cases for the \"$original_name$\" oneof.</summary>\n"
       "public enum $property_name$OneofCase {\n");
     printer->Indent();
