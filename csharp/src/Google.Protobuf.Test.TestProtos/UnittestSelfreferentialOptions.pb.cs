@@ -103,13 +103,13 @@ namespace UnitTest.Issues.TestProtos.SelfreferentialOptions {
       _hasBits0 = other._hasBits0;
       intOpt_ = other.intOpt_;
       foo_ = other.foo_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FooOptions Clone() {
+    public FooOptions DeepClone() {
       return new FooOptions(this);
     }
 

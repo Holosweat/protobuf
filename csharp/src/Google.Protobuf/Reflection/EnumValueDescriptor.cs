@@ -58,7 +58,7 @@ namespace Google.Protobuf.Reflection
         /// (and not modifying it) may want to cache the returned value.
         /// </summary>
         /// <returns>A protobuf representation of this enum value descriptor.</returns>
-        public EnumValueDescriptorProto ToProto() => Proto.Clone();
+        public EnumValueDescriptorProto ToProto() => Proto.DeepClone();
 
         /// <summary>
         /// Returns the name of the enum value described by this object.
@@ -87,7 +87,7 @@ namespace Google.Protobuf.Reflection
         /// Custom options can be retrieved as extensions of the returned message.
         /// NOTE: A defensive copy is created each time this property is retrieved.
         /// </summary>
-        public EnumValueOptions GetOptions() => Proto.Options?.Clone();
+        public EnumValueOptions GetOptions() => Proto.Options?.DeepClone();
 
         /// <summary>
         /// Gets a single value enum value option for this descriptor
@@ -96,7 +96,7 @@ namespace Google.Protobuf.Reflection
         public T GetOption<T>(Extension<EnumValueOptions, T> extension)
         {
             var value = Proto.Options.GetExtension(extension);
-            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).Clone() : value;
+            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).DeepClone() : value;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Google.Protobuf.Reflection
         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public RepeatedField<T> GetOption<T>(RepeatedExtension<EnumValueOptions, T> extension)
         {
-            return Proto.Options.GetExtension(extension).Clone();
+            return Proto.Options.GetExtension(extension).DeepClone();
         }
     }
 }

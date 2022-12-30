@@ -167,12 +167,12 @@ namespace Google.Protobuf.WellKnownTypes {
     public Timestamp(Timestamp other) : this() {
       seconds_ = other.seconds_;
       nanos_ = other.nanos_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Timestamp Clone() {
+    public Timestamp DeepClone() {
       return new Timestamp(this);
     }
 

@@ -234,13 +234,13 @@ namespace Google.Protobuf.Reflection {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FileDescriptorSet(FileDescriptorSet other) : this() {
-      file_ = other.file_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      file_ = other.file_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FileDescriptorSet Clone() {
+    public FileDescriptorSet DeepClone() {
       return new FileDescriptorSet(this);
     }
 
@@ -417,23 +417,23 @@ namespace Google.Protobuf.Reflection {
     public FileDescriptorProto(FileDescriptorProto other) : this() {
       name_ = other.name_;
       package_ = other.package_;
-      dependency_ = other.dependency_.Clone();
-      publicDependency_ = other.publicDependency_.Clone();
-      weakDependency_ = other.weakDependency_.Clone();
-      messageType_ = other.messageType_.Clone();
-      enumType_ = other.enumType_.Clone();
-      service_ = other.service_.Clone();
-      extension_ = other.extension_.Clone();
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      sourceCodeInfo_ = other.sourceCodeInfo_ != null ? other.sourceCodeInfo_.Clone() : null;
+      dependency_ = other.dependency_.DeepClone();
+      publicDependency_ = other.publicDependency_.DeepClone();
+      weakDependency_ = other.weakDependency_.DeepClone();
+      messageType_ = other.messageType_.DeepClone();
+      enumType_ = other.enumType_.DeepClone();
+      service_ = other.service_.DeepClone();
+      extension_ = other.extension_.DeepClone();
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
+      sourceCodeInfo_ = other.sourceCodeInfo_ != null ? other.sourceCodeInfo_.DeepClone() : null;
       syntax_ = other.syntax_;
       edition_ = other.edition_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FileDescriptorProto Clone() {
+    public FileDescriptorProto DeepClone() {
       return new FileDescriptorProto(this);
     }
 
@@ -1087,21 +1087,21 @@ namespace Google.Protobuf.Reflection {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DescriptorProto(DescriptorProto other) : this() {
       name_ = other.name_;
-      field_ = other.field_.Clone();
-      extension_ = other.extension_.Clone();
-      nestedType_ = other.nestedType_.Clone();
-      enumType_ = other.enumType_.Clone();
-      extensionRange_ = other.extensionRange_.Clone();
-      oneofDecl_ = other.oneofDecl_.Clone();
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      reservedRange_ = other.reservedRange_.Clone();
-      reservedName_ = other.reservedName_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      field_ = other.field_.DeepClone();
+      extension_ = other.extension_.DeepClone();
+      nestedType_ = other.nestedType_.DeepClone();
+      enumType_ = other.enumType_.DeepClone();
+      extensionRange_ = other.extensionRange_.DeepClone();
+      oneofDecl_ = other.oneofDecl_.DeepClone();
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
+      reservedRange_ = other.reservedRange_.DeepClone();
+      reservedName_ = other.reservedName_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DescriptorProto Clone() {
+    public DescriptorProto DeepClone() {
       return new DescriptorProto(this);
     }
 
@@ -1554,13 +1554,13 @@ namespace Google.Protobuf.Reflection {
           _hasBits0 = other._hasBits0;
           start_ = other.start_;
           end_ = other.end_;
-          options_ = other.options_ != null ? other.options_.Clone() : null;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          options_ = other.options_ != null ? other.options_.DeepClone() : null;
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public ExtensionRange Clone() {
+        public ExtensionRange DeepClone() {
           return new ExtensionRange(this);
         }
 
@@ -1869,12 +1869,12 @@ namespace Google.Protobuf.Reflection {
           _hasBits0 = other._hasBits0;
           start_ = other.start_;
           end_ = other.end_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public ReservedRange Clone() {
+        public ReservedRange DeepClone() {
           return new ReservedRange(this);
         }
 
@@ -2136,14 +2136,14 @@ namespace Google.Protobuf.Reflection {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ExtensionRangeOptions(ExtensionRangeOptions other) : this() {
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ExtensionRangeOptions Clone() {
+    public ExtensionRangeOptions DeepClone() {
       return new ExtensionRangeOptions(this);
     }
 
@@ -2374,14 +2374,14 @@ namespace Google.Protobuf.Reflection {
       defaultValue_ = other.defaultValue_;
       oneofIndex_ = other.oneofIndex_;
       jsonName_ = other.jsonName_;
-      options_ = other.options_ != null ? other.options_.Clone() : null;
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
       proto3Optional_ = other.proto3Optional_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FieldDescriptorProto Clone() {
+    public FieldDescriptorProto DeepClone() {
       return new FieldDescriptorProto(this);
     }
 
@@ -3204,13 +3204,13 @@ namespace Google.Protobuf.Reflection {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OneofDescriptorProto(OneofDescriptorProto other) : this() {
       name_ = other.name_;
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneofDescriptorProto Clone() {
+    public OneofDescriptorProto DeepClone() {
       return new OneofDescriptorProto(this);
     }
 
@@ -3456,16 +3456,16 @@ namespace Google.Protobuf.Reflection {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public EnumDescriptorProto(EnumDescriptorProto other) : this() {
       name_ = other.name_;
-      value_ = other.value_.Clone();
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      reservedRange_ = other.reservedRange_.Clone();
-      reservedName_ = other.reservedName_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      value_ = other.value_.DeepClone();
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
+      reservedRange_ = other.reservedRange_.DeepClone();
+      reservedName_ = other.reservedName_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public EnumDescriptorProto Clone() {
+    public EnumDescriptorProto DeepClone() {
       return new EnumDescriptorProto(this);
     }
 
@@ -3806,12 +3806,12 @@ namespace Google.Protobuf.Reflection {
           _hasBits0 = other._hasBits0;
           start_ = other.start_;
           end_ = other.end_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public EnumReservedRange Clone() {
+        public EnumReservedRange DeepClone() {
           return new EnumReservedRange(this);
         }
 
@@ -4078,13 +4078,13 @@ namespace Google.Protobuf.Reflection {
       _hasBits0 = other._hasBits0;
       name_ = other.name_;
       number_ = other.number_;
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public EnumValueDescriptorProto Clone() {
+    public EnumValueDescriptorProto DeepClone() {
       return new EnumValueDescriptorProto(this);
     }
 
@@ -4381,14 +4381,14 @@ namespace Google.Protobuf.Reflection {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ServiceDescriptorProto(ServiceDescriptorProto other) : this() {
       name_ = other.name_;
-      method_ = other.method_.Clone();
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      method_ = other.method_.DeepClone();
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ServiceDescriptorProto Clone() {
+    public ServiceDescriptorProto DeepClone() {
       return new ServiceDescriptorProto(this);
     }
 
@@ -4663,15 +4663,15 @@ namespace Google.Protobuf.Reflection {
       name_ = other.name_;
       inputType_ = other.inputType_;
       outputType_ = other.outputType_;
-      options_ = other.options_ != null ? other.options_.Clone() : null;
+      options_ = other.options_ != null ? other.options_.DeepClone() : null;
       clientStreaming_ = other.clientStreaming_;
       serverStreaming_ = other.serverStreaming_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MethodDescriptorProto Clone() {
+    public MethodDescriptorProto DeepClone() {
       return new MethodDescriptorProto(this);
     }
 
@@ -5149,14 +5149,14 @@ namespace Google.Protobuf.Reflection {
       phpNamespace_ = other.phpNamespace_;
       phpMetadataNamespace_ = other.phpMetadataNamespace_;
       rubyPackage_ = other.rubyPackage_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FileOptions Clone() {
+    public FileOptions DeepClone() {
       return new FileOptions(this);
     }
 
@@ -6515,14 +6515,14 @@ namespace Google.Protobuf.Reflection {
       deprecated_ = other.deprecated_;
       mapEntry_ = other.mapEntry_;
       deprecatedLegacyJsonFieldConflicts_ = other.deprecatedLegacyJsonFieldConflicts_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MessageOptions Clone() {
+    public MessageOptions DeepClone() {
       return new MessageOptions(this);
     }
 
@@ -7074,14 +7074,14 @@ namespace Google.Protobuf.Reflection {
       unverifiedLazy_ = other.unverifiedLazy_;
       deprecated_ = other.deprecated_;
       weak_ = other.weak_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FieldOptions Clone() {
+    public FieldOptions DeepClone() {
       return new FieldOptions(this);
     }
 
@@ -7761,14 +7761,14 @@ namespace Google.Protobuf.Reflection {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OneofOptions(OneofOptions other) : this() {
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneofOptions Clone() {
+    public OneofOptions DeepClone() {
       return new OneofOptions(this);
     }
 
@@ -7992,14 +7992,14 @@ namespace Google.Protobuf.Reflection {
       allowAlias_ = other.allowAlias_;
       deprecated_ = other.deprecated_;
       deprecatedLegacyJsonFieldConflicts_ = other.deprecatedLegacyJsonFieldConflicts_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public EnumOptions Clone() {
+    public EnumOptions DeepClone() {
       return new EnumOptions(this);
     }
 
@@ -8395,14 +8395,14 @@ namespace Google.Protobuf.Reflection {
     public EnumValueOptions(EnumValueOptions other) : this() {
       _hasBits0 = other._hasBits0;
       deprecated_ = other.deprecated_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public EnumValueOptions Clone() {
+    public EnumValueOptions DeepClone() {
       return new EnumValueOptions(this);
     }
 
@@ -8681,14 +8681,14 @@ namespace Google.Protobuf.Reflection {
     public ServiceOptions(ServiceOptions other) : this() {
       _hasBits0 = other._hasBits0;
       deprecated_ = other.deprecated_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ServiceOptions Clone() {
+    public ServiceOptions DeepClone() {
       return new ServiceOptions(this);
     }
 
@@ -8968,14 +8968,14 @@ namespace Google.Protobuf.Reflection {
       _hasBits0 = other._hasBits0;
       deprecated_ = other.deprecated_;
       idempotencyLevel_ = other.idempotencyLevel_;
-      uninterpretedOption_ = other.uninterpretedOption_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      uninterpretedOption_ = other.uninterpretedOption_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
       _extensions = pb::ExtensionSet.Clone(other._extensions);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MethodOptions Clone() {
+    public MethodOptions DeepClone() {
       return new MethodOptions(this);
     }
 
@@ -9335,19 +9335,19 @@ namespace Google.Protobuf.Reflection {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public UninterpretedOption(UninterpretedOption other) : this() {
       _hasBits0 = other._hasBits0;
-      name_ = other.name_.Clone();
+      name_ = other.name_.DeepClone();
       identifierValue_ = other.identifierValue_;
       positiveIntValue_ = other.positiveIntValue_;
       negativeIntValue_ = other.negativeIntValue_;
       doubleValue_ = other.doubleValue_;
       stringValue_ = other.stringValue_;
       aggregateValue_ = other.aggregateValue_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public UninterpretedOption Clone() {
+    public UninterpretedOption DeepClone() {
       return new UninterpretedOption(this);
     }
 
@@ -9840,12 +9840,12 @@ namespace Google.Protobuf.Reflection {
           _hasBits0 = other._hasBits0;
           namePart_ = other.namePart_;
           isExtension_ = other.isExtension_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NamePart Clone() {
+        public NamePart DeepClone() {
           return new NamePart(this);
         }
 
@@ -10102,13 +10102,13 @@ namespace Google.Protobuf.Reflection {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SourceCodeInfo(SourceCodeInfo other) : this() {
-      location_ = other.location_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      location_ = other.location_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SourceCodeInfo Clone() {
+    public SourceCodeInfo DeepClone() {
       return new SourceCodeInfo(this);
     }
 
@@ -10328,17 +10328,17 @@ namespace Google.Protobuf.Reflection {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public Location(Location other) : this() {
-          path_ = other.path_.Clone();
-          span_ = other.span_.Clone();
+          path_ = other.path_.DeepClone();
+          span_ = other.span_.DeepClone();
           leadingComments_ = other.leadingComments_;
           trailingComments_ = other.trailingComments_;
-          leadingDetachedComments_ = other.leadingDetachedComments_.Clone();
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          leadingDetachedComments_ = other.leadingDetachedComments_.DeepClone();
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public Location Clone() {
+        public Location DeepClone() {
           return new Location(this);
         }
 
@@ -10755,13 +10755,13 @@ namespace Google.Protobuf.Reflection {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GeneratedCodeInfo(GeneratedCodeInfo other) : this() {
-      annotation_ = other.annotation_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      annotation_ = other.annotation_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GeneratedCodeInfo Clone() {
+    public GeneratedCodeInfo DeepClone() {
       return new GeneratedCodeInfo(this);
     }
 
@@ -10942,17 +10942,17 @@ namespace Google.Protobuf.Reflection {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public Annotation(Annotation other) : this() {
           _hasBits0 = other._hasBits0;
-          path_ = other.path_.Clone();
+          path_ = other.path_.DeepClone();
           sourceFile_ = other.sourceFile_;
           begin_ = other.begin_;
           end_ = other.end_;
           semantic_ = other.semantic_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public Annotation Clone() {
+        public Annotation DeepClone() {
           return new Annotation(this);
         }
 

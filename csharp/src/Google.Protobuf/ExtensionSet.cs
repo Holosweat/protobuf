@@ -291,7 +291,7 @@ namespace Google.Protobuf
                 }
                 else
                 {
-                    var cloned = pair.Value.Clone();
+                    var cloned = pair.Value.DeepClone();
                     first.ValuesByNumber[pair.Key] = cloned;
                 }
             }
@@ -310,7 +310,7 @@ namespace Google.Protobuf
             var newSet = new ExtensionSet<TTarget>();
             foreach (var pair in set.ValuesByNumber)
             {
-                var cloned = pair.Value.Clone();
+                var cloned = pair.Value.DeepClone();
                 newSet.ValuesByNumber[pair.Key] = cloned;
             }
             return newSet;

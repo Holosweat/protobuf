@@ -73,12 +73,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public PublicImportMessage(PublicImportMessage other) : this() {
       e_ = other.e_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PublicImportMessage Clone() {
+    public PublicImportMessage DeepClone() {
       return new PublicImportMessage(this);
     }
 

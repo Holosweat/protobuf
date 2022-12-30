@@ -97,12 +97,12 @@ namespace Google.Protobuf.Compiler {
       minor_ = other.minor_;
       patch_ = other.patch_;
       suffix_ = other.suffix_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Version Clone() {
+    public Version DeepClone() {
       return new Version(this);
     }
 
@@ -459,16 +459,16 @@ namespace Google.Protobuf.Compiler {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CodeGeneratorRequest(CodeGeneratorRequest other) : this() {
-      fileToGenerate_ = other.fileToGenerate_.Clone();
+      fileToGenerate_ = other.fileToGenerate_.DeepClone();
       parameter_ = other.parameter_;
-      protoFile_ = other.protoFile_.Clone();
-      compilerVersion_ = other.compilerVersion_ != null ? other.compilerVersion_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      protoFile_ = other.protoFile_.DeepClone();
+      compilerVersion_ = other.compilerVersion_ != null ? other.compilerVersion_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CodeGeneratorRequest Clone() {
+    public CodeGeneratorRequest DeepClone() {
       return new CodeGeneratorRequest(this);
     }
 
@@ -794,13 +794,13 @@ namespace Google.Protobuf.Compiler {
       _hasBits0 = other._hasBits0;
       error_ = other.error_;
       supportedFeatures_ = other.supportedFeatures_;
-      file_ = other.file_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      file_ = other.file_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CodeGeneratorResponse Clone() {
+    public CodeGeneratorResponse DeepClone() {
       return new CodeGeneratorResponse(this);
     }
 
@@ -1104,13 +1104,13 @@ namespace Google.Protobuf.Compiler {
           name_ = other.name_;
           insertionPoint_ = other.insertionPoint_;
           content_ = other.content_;
-          generatedCodeInfo_ = other.generatedCodeInfo_ != null ? other.generatedCodeInfo_.Clone() : null;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          generatedCodeInfo_ = other.generatedCodeInfo_ != null ? other.generatedCodeInfo_.DeepClone() : null;
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public File Clone() {
+        public File DeepClone() {
           return new File(this);
         }
 

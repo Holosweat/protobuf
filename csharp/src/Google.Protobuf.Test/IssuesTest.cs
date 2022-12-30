@@ -87,7 +87,7 @@ namespace Google.Protobuf
             var message2 = new OneofMerging { Nested = new Nested { Y = 20 } };
             var expected = new OneofMerging { Nested = new Nested { X = 10, Y = 20 } };
 
-            var merged = message1.Clone();
+            var merged = message1.DeepClone();
             merged.MergeFrom(message2);
             Assert.AreEqual(expected, merged);
         }

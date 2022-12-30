@@ -124,7 +124,7 @@ namespace Google.Protobuf.WellKnownTypes
 
             Assert.IsTrue(b.CompareTo(a) > 0); // null is always first (according to default behavior of Array.Sort)
             Assert.IsTrue(b.CompareTo(b) == 0);
-            Assert.IsTrue(b.CompareTo(b.Clone()) == 0);
+            Assert.IsTrue(b.CompareTo(b.DeepClone()) == 0);
             Assert.IsTrue(b.CompareTo(c) < 0);
             Assert.IsTrue(b.CompareTo(d) < 0);
             Assert.IsTrue(b.CompareTo(e) < 0);
@@ -132,7 +132,7 @@ namespace Google.Protobuf.WellKnownTypes
             Assert.IsTrue(c.CompareTo(a) > 0);
             Assert.IsTrue(c.CompareTo(b) > 0);
             Assert.IsTrue(c.CompareTo(c) == 0);
-            Assert.IsTrue(c.CompareTo(c.Clone()) == 0);
+            Assert.IsTrue(c.CompareTo(c.DeepClone()) == 0);
             Assert.IsTrue(c.CompareTo(d) < 0);
             Assert.IsTrue(c.CompareTo(e) < 0);
 
@@ -140,7 +140,7 @@ namespace Google.Protobuf.WellKnownTypes
             Assert.IsTrue(d.CompareTo(b) > 0);
             Assert.IsTrue(d.CompareTo(c) > 0);
             Assert.IsTrue(d.CompareTo(d) == 0);
-            Assert.IsTrue(d.CompareTo(d.Clone()) == 0);
+            Assert.IsTrue(d.CompareTo(d.DeepClone()) == 0);
             Assert.IsTrue(d.CompareTo(e) < 0);
 
             Assert.IsTrue(e.CompareTo(a) > 0);
@@ -148,7 +148,7 @@ namespace Google.Protobuf.WellKnownTypes
             Assert.IsTrue(e.CompareTo(c) > 0);
             Assert.IsTrue(e.CompareTo(d) > 0);
             Assert.IsTrue(e.CompareTo(e) == 0);
-            Assert.IsTrue(e.CompareTo(e.Clone()) == 0);
+            Assert.IsTrue(e.CompareTo(e.DeepClone()) == 0);
         }
 
 
@@ -165,7 +165,7 @@ namespace Google.Protobuf.WellKnownTypes
 #pragma warning disable CS1718 // Comparison made to same variable
             Assert.IsTrue(b > a);
             Assert.IsTrue(b == b);
-            Assert.IsTrue(b == b.Clone());
+            Assert.IsTrue(b == b.DeepClone());
             Assert.IsTrue(b < c);
             Assert.IsTrue(b < d);
             Assert.IsTrue(b < e);
@@ -173,7 +173,7 @@ namespace Google.Protobuf.WellKnownTypes
             Assert.IsTrue(c > a);
             Assert.IsTrue(c > b);
             Assert.IsTrue(c == c);
-            Assert.IsTrue(c == c.Clone());
+            Assert.IsTrue(c == c.DeepClone());
             Assert.IsTrue(c < d);
             Assert.IsTrue(c < e);
 
@@ -181,7 +181,7 @@ namespace Google.Protobuf.WellKnownTypes
             Assert.IsTrue(d > b);
             Assert.IsTrue(d > c);
             Assert.IsTrue(d == d);
-            Assert.IsTrue(d == d.Clone());
+            Assert.IsTrue(d == d.DeepClone());
             Assert.IsTrue(d < e);
 
             Assert.IsTrue(e > a);
@@ -189,7 +189,7 @@ namespace Google.Protobuf.WellKnownTypes
             Assert.IsTrue(e > c);
             Assert.IsTrue(e > d);
             Assert.IsTrue(e == e);
-            Assert.IsTrue(e == e.Clone());
+            Assert.IsTrue(e == e.DeepClone());
 
             Assert.IsTrue(b >= a);
             Assert.IsTrue(b <= c);

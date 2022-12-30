@@ -125,7 +125,7 @@ void MessageGenerator::Generate(io::Printer* printer) {
 
   printer->Print(
     vars,
-    "$access_level$ sealed partial class $class_name$ : ");
+    "$access_level$ sealed partial record $class_name$ : ");
 
   if (has_extension_ranges_) {
     printer->Print(vars, "pb::IExtendableMessage<$class_name$>\n");
@@ -382,7 +382,7 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
   vars["class_name"] = class_name();
     printer->Print(
     vars,
-    "public $class_name$($class_name$ other) : this() {\n");
+    "public $class_name$($class_name$ other) {\n");
   printer->Indent();
   for (int i = 0; i < has_bit_field_count_; i++) {
     printer->Print("_hasBits$i$ = other._hasBits$i$;\n", "i", absl::StrCat(i));
@@ -420,10 +420,10 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
   }
   // Clone unknown fields
   printer->Print(
-      "_unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);\n");
+      "_unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);\n");
   if (has_extension_ranges_) {
     printer->Print(
-        "_extensions = pb::ExtensionSet.Clone(other._extensions);\n");
+        "_extensions = pb::ExtensionSet.DeepClone(other._extensions);\n");
   }
 
   printer->Outdent();
@@ -432,7 +432,7 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
   WriteGeneratedCodeAttributes(printer);
   printer->Print(
     vars,
-    "public $class_name$ Clone() {\n"
+    "public $class_name$ DeepClone() {\n"
     "  return new $class_name$(this);\n"
     "}\n\n");
 }
@@ -445,11 +445,6 @@ void MessageGenerator::GenerateFrameworkMethods(io::Printer* printer) {
   vars["class_name"] = class_name();
 
   // Equality
-  WriteGeneratedCodeAttributes(printer);
-  printer->Print(vars,
-                 "public override bool Equals(object other) {\n"
-                 "  return Equals(other as $class_name$);\n"
-                 "}\n\n");
   WriteGeneratedCodeAttributes(printer);
   printer->Print(vars,
                  "public bool Equals($class_name$ other) {\n"

@@ -371,9 +371,9 @@ namespace Google.Protobuf
         }
 
         /// <summary>
-        /// Clone an unknown field set from <paramref name="other"/>.
+        /// DeepClone an unknown field set from <paramref name="other"/>.
         /// </summary>
-        public static UnknownFieldSet Clone(UnknownFieldSet other)
+        public static UnknownFieldSet DeepClone(UnknownFieldSet other)
         {
             if (other == null)
             {

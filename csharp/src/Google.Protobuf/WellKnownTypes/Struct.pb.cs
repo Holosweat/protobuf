@@ -111,13 +111,13 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Struct(Struct other) : this() {
-      fields_ = other.fields_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      fields_ = other.fields_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Struct Clone() {
+    public Struct DeepClone() {
       return new Struct(this);
     }
 
@@ -314,19 +314,19 @@ namespace Google.Protobuf.WellKnownTypes {
           BoolValue = other.BoolValue;
           break;
         case KindOneofCase.StructValue:
-          StructValue = other.StructValue.Clone();
+          StructValue = other.StructValue.DeepClone();
           break;
         case KindOneofCase.ListValue:
-          ListValue = other.ListValue.Clone();
+          ListValue = other.ListValue.DeepClone();
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Value Clone() {
+    public Value DeepClone() {
       return new Value(this);
     }
 
@@ -770,13 +770,13 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ListValue(ListValue other) : this() {
-      values_ = other.values_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      values_ = other.values_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ListValue Clone() {
+    public ListValue DeepClone() {
       return new ListValue(this);
     }
 

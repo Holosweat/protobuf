@@ -314,82 +314,82 @@ namespace ProtobufTestMessages.Proto3 {
       optionalBool_ = other.optionalBool_;
       optionalString_ = other.optionalString_;
       optionalBytes_ = other.optionalBytes_;
-      optionalNestedMessage_ = other.optionalNestedMessage_ != null ? other.optionalNestedMessage_.Clone() : null;
-      optionalForeignMessage_ = other.optionalForeignMessage_ != null ? other.optionalForeignMessage_.Clone() : null;
+      optionalNestedMessage_ = other.optionalNestedMessage_ != null ? other.optionalNestedMessage_.DeepClone() : null;
+      optionalForeignMessage_ = other.optionalForeignMessage_ != null ? other.optionalForeignMessage_.DeepClone() : null;
       optionalNestedEnum_ = other.optionalNestedEnum_;
       optionalForeignEnum_ = other.optionalForeignEnum_;
       optionalAliasedEnum_ = other.optionalAliasedEnum_;
       optionalStringPiece_ = other.optionalStringPiece_;
       optionalCord_ = other.optionalCord_;
-      recursiveMessage_ = other.recursiveMessage_ != null ? other.recursiveMessage_.Clone() : null;
-      repeatedInt32_ = other.repeatedInt32_.Clone();
-      repeatedInt64_ = other.repeatedInt64_.Clone();
-      repeatedUint32_ = other.repeatedUint32_.Clone();
-      repeatedUint64_ = other.repeatedUint64_.Clone();
-      repeatedSint32_ = other.repeatedSint32_.Clone();
-      repeatedSint64_ = other.repeatedSint64_.Clone();
-      repeatedFixed32_ = other.repeatedFixed32_.Clone();
-      repeatedFixed64_ = other.repeatedFixed64_.Clone();
-      repeatedSfixed32_ = other.repeatedSfixed32_.Clone();
-      repeatedSfixed64_ = other.repeatedSfixed64_.Clone();
-      repeatedFloat_ = other.repeatedFloat_.Clone();
-      repeatedDouble_ = other.repeatedDouble_.Clone();
-      repeatedBool_ = other.repeatedBool_.Clone();
-      repeatedString_ = other.repeatedString_.Clone();
-      repeatedBytes_ = other.repeatedBytes_.Clone();
-      repeatedNestedMessage_ = other.repeatedNestedMessage_.Clone();
-      repeatedForeignMessage_ = other.repeatedForeignMessage_.Clone();
-      repeatedNestedEnum_ = other.repeatedNestedEnum_.Clone();
-      repeatedForeignEnum_ = other.repeatedForeignEnum_.Clone();
-      repeatedStringPiece_ = other.repeatedStringPiece_.Clone();
-      repeatedCord_ = other.repeatedCord_.Clone();
-      packedInt32_ = other.packedInt32_.Clone();
-      packedInt64_ = other.packedInt64_.Clone();
-      packedUint32_ = other.packedUint32_.Clone();
-      packedUint64_ = other.packedUint64_.Clone();
-      packedSint32_ = other.packedSint32_.Clone();
-      packedSint64_ = other.packedSint64_.Clone();
-      packedFixed32_ = other.packedFixed32_.Clone();
-      packedFixed64_ = other.packedFixed64_.Clone();
-      packedSfixed32_ = other.packedSfixed32_.Clone();
-      packedSfixed64_ = other.packedSfixed64_.Clone();
-      packedFloat_ = other.packedFloat_.Clone();
-      packedDouble_ = other.packedDouble_.Clone();
-      packedBool_ = other.packedBool_.Clone();
-      packedNestedEnum_ = other.packedNestedEnum_.Clone();
-      unpackedInt32_ = other.unpackedInt32_.Clone();
-      unpackedInt64_ = other.unpackedInt64_.Clone();
-      unpackedUint32_ = other.unpackedUint32_.Clone();
-      unpackedUint64_ = other.unpackedUint64_.Clone();
-      unpackedSint32_ = other.unpackedSint32_.Clone();
-      unpackedSint64_ = other.unpackedSint64_.Clone();
-      unpackedFixed32_ = other.unpackedFixed32_.Clone();
-      unpackedFixed64_ = other.unpackedFixed64_.Clone();
-      unpackedSfixed32_ = other.unpackedSfixed32_.Clone();
-      unpackedSfixed64_ = other.unpackedSfixed64_.Clone();
-      unpackedFloat_ = other.unpackedFloat_.Clone();
-      unpackedDouble_ = other.unpackedDouble_.Clone();
-      unpackedBool_ = other.unpackedBool_.Clone();
-      unpackedNestedEnum_ = other.unpackedNestedEnum_.Clone();
-      mapInt32Int32_ = other.mapInt32Int32_.Clone();
-      mapInt64Int64_ = other.mapInt64Int64_.Clone();
-      mapUint32Uint32_ = other.mapUint32Uint32_.Clone();
-      mapUint64Uint64_ = other.mapUint64Uint64_.Clone();
-      mapSint32Sint32_ = other.mapSint32Sint32_.Clone();
-      mapSint64Sint64_ = other.mapSint64Sint64_.Clone();
-      mapFixed32Fixed32_ = other.mapFixed32Fixed32_.Clone();
-      mapFixed64Fixed64_ = other.mapFixed64Fixed64_.Clone();
-      mapSfixed32Sfixed32_ = other.mapSfixed32Sfixed32_.Clone();
-      mapSfixed64Sfixed64_ = other.mapSfixed64Sfixed64_.Clone();
-      mapInt32Float_ = other.mapInt32Float_.Clone();
-      mapInt32Double_ = other.mapInt32Double_.Clone();
-      mapBoolBool_ = other.mapBoolBool_.Clone();
-      mapStringString_ = other.mapStringString_.Clone();
-      mapStringBytes_ = other.mapStringBytes_.Clone();
-      mapStringNestedMessage_ = other.mapStringNestedMessage_.Clone();
-      mapStringForeignMessage_ = other.mapStringForeignMessage_.Clone();
-      mapStringNestedEnum_ = other.mapStringNestedEnum_.Clone();
-      mapStringForeignEnum_ = other.mapStringForeignEnum_.Clone();
+      recursiveMessage_ = other.recursiveMessage_ != null ? other.recursiveMessage_.DeepClone() : null;
+      repeatedInt32_ = other.repeatedInt32_.DeepClone();
+      repeatedInt64_ = other.repeatedInt64_.DeepClone();
+      repeatedUint32_ = other.repeatedUint32_.DeepClone();
+      repeatedUint64_ = other.repeatedUint64_.DeepClone();
+      repeatedSint32_ = other.repeatedSint32_.DeepClone();
+      repeatedSint64_ = other.repeatedSint64_.DeepClone();
+      repeatedFixed32_ = other.repeatedFixed32_.DeepClone();
+      repeatedFixed64_ = other.repeatedFixed64_.DeepClone();
+      repeatedSfixed32_ = other.repeatedSfixed32_.DeepClone();
+      repeatedSfixed64_ = other.repeatedSfixed64_.DeepClone();
+      repeatedFloat_ = other.repeatedFloat_.DeepClone();
+      repeatedDouble_ = other.repeatedDouble_.DeepClone();
+      repeatedBool_ = other.repeatedBool_.DeepClone();
+      repeatedString_ = other.repeatedString_.DeepClone();
+      repeatedBytes_ = other.repeatedBytes_.DeepClone();
+      repeatedNestedMessage_ = other.repeatedNestedMessage_.DeepClone();
+      repeatedForeignMessage_ = other.repeatedForeignMessage_.DeepClone();
+      repeatedNestedEnum_ = other.repeatedNestedEnum_.DeepClone();
+      repeatedForeignEnum_ = other.repeatedForeignEnum_.DeepClone();
+      repeatedStringPiece_ = other.repeatedStringPiece_.DeepClone();
+      repeatedCord_ = other.repeatedCord_.DeepClone();
+      packedInt32_ = other.packedInt32_.DeepClone();
+      packedInt64_ = other.packedInt64_.DeepClone();
+      packedUint32_ = other.packedUint32_.DeepClone();
+      packedUint64_ = other.packedUint64_.DeepClone();
+      packedSint32_ = other.packedSint32_.DeepClone();
+      packedSint64_ = other.packedSint64_.DeepClone();
+      packedFixed32_ = other.packedFixed32_.DeepClone();
+      packedFixed64_ = other.packedFixed64_.DeepClone();
+      packedSfixed32_ = other.packedSfixed32_.DeepClone();
+      packedSfixed64_ = other.packedSfixed64_.DeepClone();
+      packedFloat_ = other.packedFloat_.DeepClone();
+      packedDouble_ = other.packedDouble_.DeepClone();
+      packedBool_ = other.packedBool_.DeepClone();
+      packedNestedEnum_ = other.packedNestedEnum_.DeepClone();
+      unpackedInt32_ = other.unpackedInt32_.DeepClone();
+      unpackedInt64_ = other.unpackedInt64_.DeepClone();
+      unpackedUint32_ = other.unpackedUint32_.DeepClone();
+      unpackedUint64_ = other.unpackedUint64_.DeepClone();
+      unpackedSint32_ = other.unpackedSint32_.DeepClone();
+      unpackedSint64_ = other.unpackedSint64_.DeepClone();
+      unpackedFixed32_ = other.unpackedFixed32_.DeepClone();
+      unpackedFixed64_ = other.unpackedFixed64_.DeepClone();
+      unpackedSfixed32_ = other.unpackedSfixed32_.DeepClone();
+      unpackedSfixed64_ = other.unpackedSfixed64_.DeepClone();
+      unpackedFloat_ = other.unpackedFloat_.DeepClone();
+      unpackedDouble_ = other.unpackedDouble_.DeepClone();
+      unpackedBool_ = other.unpackedBool_.DeepClone();
+      unpackedNestedEnum_ = other.unpackedNestedEnum_.DeepClone();
+      mapInt32Int32_ = other.mapInt32Int32_.DeepClone();
+      mapInt64Int64_ = other.mapInt64Int64_.DeepClone();
+      mapUint32Uint32_ = other.mapUint32Uint32_.DeepClone();
+      mapUint64Uint64_ = other.mapUint64Uint64_.DeepClone();
+      mapSint32Sint32_ = other.mapSint32Sint32_.DeepClone();
+      mapSint64Sint64_ = other.mapSint64Sint64_.DeepClone();
+      mapFixed32Fixed32_ = other.mapFixed32Fixed32_.DeepClone();
+      mapFixed64Fixed64_ = other.mapFixed64Fixed64_.DeepClone();
+      mapSfixed32Sfixed32_ = other.mapSfixed32Sfixed32_.DeepClone();
+      mapSfixed64Sfixed64_ = other.mapSfixed64Sfixed64_.DeepClone();
+      mapInt32Float_ = other.mapInt32Float_.DeepClone();
+      mapInt32Double_ = other.mapInt32Double_.DeepClone();
+      mapBoolBool_ = other.mapBoolBool_.DeepClone();
+      mapStringString_ = other.mapStringString_.DeepClone();
+      mapStringBytes_ = other.mapStringBytes_.DeepClone();
+      mapStringNestedMessage_ = other.mapStringNestedMessage_.DeepClone();
+      mapStringForeignMessage_ = other.mapStringForeignMessage_.DeepClone();
+      mapStringNestedEnum_ = other.mapStringNestedEnum_.DeepClone();
+      mapStringForeignEnum_ = other.mapStringForeignEnum_.DeepClone();
       OptionalBoolWrapper = other.OptionalBoolWrapper;
       OptionalInt32Wrapper = other.OptionalInt32Wrapper;
       OptionalInt64Wrapper = other.OptionalInt64Wrapper;
@@ -399,29 +399,29 @@ namespace ProtobufTestMessages.Proto3 {
       OptionalDoubleWrapper = other.OptionalDoubleWrapper;
       OptionalStringWrapper = other.OptionalStringWrapper;
       OptionalBytesWrapper = other.OptionalBytesWrapper;
-      repeatedBoolWrapper_ = other.repeatedBoolWrapper_.Clone();
-      repeatedInt32Wrapper_ = other.repeatedInt32Wrapper_.Clone();
-      repeatedInt64Wrapper_ = other.repeatedInt64Wrapper_.Clone();
-      repeatedUint32Wrapper_ = other.repeatedUint32Wrapper_.Clone();
-      repeatedUint64Wrapper_ = other.repeatedUint64Wrapper_.Clone();
-      repeatedFloatWrapper_ = other.repeatedFloatWrapper_.Clone();
-      repeatedDoubleWrapper_ = other.repeatedDoubleWrapper_.Clone();
-      repeatedStringWrapper_ = other.repeatedStringWrapper_.Clone();
-      repeatedBytesWrapper_ = other.repeatedBytesWrapper_.Clone();
-      optionalDuration_ = other.optionalDuration_ != null ? other.optionalDuration_.Clone() : null;
-      optionalTimestamp_ = other.optionalTimestamp_ != null ? other.optionalTimestamp_.Clone() : null;
-      optionalFieldMask_ = other.optionalFieldMask_ != null ? other.optionalFieldMask_.Clone() : null;
-      optionalStruct_ = other.optionalStruct_ != null ? other.optionalStruct_.Clone() : null;
-      optionalAny_ = other.optionalAny_ != null ? other.optionalAny_.Clone() : null;
-      optionalValue_ = other.optionalValue_ != null ? other.optionalValue_.Clone() : null;
+      repeatedBoolWrapper_ = other.repeatedBoolWrapper_.DeepClone();
+      repeatedInt32Wrapper_ = other.repeatedInt32Wrapper_.DeepClone();
+      repeatedInt64Wrapper_ = other.repeatedInt64Wrapper_.DeepClone();
+      repeatedUint32Wrapper_ = other.repeatedUint32Wrapper_.DeepClone();
+      repeatedUint64Wrapper_ = other.repeatedUint64Wrapper_.DeepClone();
+      repeatedFloatWrapper_ = other.repeatedFloatWrapper_.DeepClone();
+      repeatedDoubleWrapper_ = other.repeatedDoubleWrapper_.DeepClone();
+      repeatedStringWrapper_ = other.repeatedStringWrapper_.DeepClone();
+      repeatedBytesWrapper_ = other.repeatedBytesWrapper_.DeepClone();
+      optionalDuration_ = other.optionalDuration_ != null ? other.optionalDuration_.DeepClone() : null;
+      optionalTimestamp_ = other.optionalTimestamp_ != null ? other.optionalTimestamp_.DeepClone() : null;
+      optionalFieldMask_ = other.optionalFieldMask_ != null ? other.optionalFieldMask_.DeepClone() : null;
+      optionalStruct_ = other.optionalStruct_ != null ? other.optionalStruct_.DeepClone() : null;
+      optionalAny_ = other.optionalAny_ != null ? other.optionalAny_.DeepClone() : null;
+      optionalValue_ = other.optionalValue_ != null ? other.optionalValue_.DeepClone() : null;
       optionalNullValue_ = other.optionalNullValue_;
-      repeatedDuration_ = other.repeatedDuration_.Clone();
-      repeatedTimestamp_ = other.repeatedTimestamp_.Clone();
-      repeatedFieldmask_ = other.repeatedFieldmask_.Clone();
-      repeatedStruct_ = other.repeatedStruct_.Clone();
-      repeatedAny_ = other.repeatedAny_.Clone();
-      repeatedValue_ = other.repeatedValue_.Clone();
-      repeatedListValue_ = other.repeatedListValue_.Clone();
+      repeatedDuration_ = other.repeatedDuration_.DeepClone();
+      repeatedTimestamp_ = other.repeatedTimestamp_.DeepClone();
+      repeatedFieldmask_ = other.repeatedFieldmask_.DeepClone();
+      repeatedStruct_ = other.repeatedStruct_.DeepClone();
+      repeatedAny_ = other.repeatedAny_.DeepClone();
+      repeatedValue_ = other.repeatedValue_.DeepClone();
+      repeatedListValue_ = other.repeatedListValue_.DeepClone();
       fieldname1_ = other.fieldname1_;
       fieldName2_ = other.fieldName2_;
       FieldName3_ = other.FieldName3_;
@@ -445,7 +445,7 @@ namespace ProtobufTestMessages.Proto3 {
           OneofUint32 = other.OneofUint32;
           break;
         case OneofFieldOneofCase.OneofNestedMessage:
-          OneofNestedMessage = other.OneofNestedMessage.Clone();
+          OneofNestedMessage = other.OneofNestedMessage.DeepClone();
           break;
         case OneofFieldOneofCase.OneofString:
           OneofString = other.OneofString;
@@ -473,12 +473,12 @@ namespace ProtobufTestMessages.Proto3 {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestAllTypesProto3 Clone() {
+    public TestAllTypesProto3 DeepClone() {
       return new TestAllTypesProto3(this);
     }
 
@@ -5472,13 +5472,13 @@ namespace ProtobufTestMessages.Proto3 {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public NestedMessage(NestedMessage other) : this() {
           a_ = other.a_;
-          corecursive_ = other.corecursive_ != null ? other.corecursive_.Clone() : null;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+          corecursive_ = other.corecursive_ != null ? other.corecursive_.DeepClone() : null;
+          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedMessage Clone() {
+        public NestedMessage DeepClone() {
           return new NestedMessage(this);
         }
 
@@ -5712,12 +5712,12 @@ namespace ProtobufTestMessages.Proto3 {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ForeignMessage(ForeignMessage other) : this() {
       c_ = other.c_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ForeignMessage Clone() {
+    public ForeignMessage DeepClone() {
       return new ForeignMessage(this);
     }
 
@@ -5900,12 +5900,12 @@ namespace ProtobufTestMessages.Proto3 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NullHypothesisProto3(NullHypothesisProto3 other) : this() {
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NullHypothesisProto3 Clone() {
+    public NullHypothesisProto3 DeepClone() {
       return new NullHypothesisProto3(this);
     }
 
@@ -6052,12 +6052,12 @@ namespace ProtobufTestMessages.Proto3 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public EnumOnlyProto3(EnumOnlyProto3 other) : this() {
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public EnumOnlyProto3 Clone() {
+    public EnumOnlyProto3 DeepClone() {
       return new EnumOnlyProto3(this);
     }
 

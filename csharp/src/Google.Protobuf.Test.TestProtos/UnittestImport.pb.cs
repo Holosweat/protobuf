@@ -96,12 +96,12 @@ namespace Google.Protobuf.TestProtos.Proto2 {
     public ImportMessage(ImportMessage other) : this() {
       _hasBits0 = other._hasBits0;
       d_ = other.d_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ImportMessage Clone() {
+    public ImportMessage DeepClone() {
       return new ImportMessage(this);
     }
 

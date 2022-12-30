@@ -141,13 +141,13 @@ namespace Conformance {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FailureSet(FailureSet other) : this() {
-      failure_ = other.failure_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      failure_ = other.failure_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FailureSet Clone() {
+    public FailureSet DeepClone() {
       return new FailureSet(this);
     }
 
@@ -329,7 +329,7 @@ namespace Conformance {
       requestedOutputFormat_ = other.requestedOutputFormat_;
       messageType_ = other.messageType_;
       testCategory_ = other.testCategory_;
-      jspbEncodingOptions_ = other.jspbEncodingOptions_ != null ? other.jspbEncodingOptions_.Clone() : null;
+      jspbEncodingOptions_ = other.jspbEncodingOptions_ != null ? other.jspbEncodingOptions_.DeepClone() : null;
       printUnknownFields_ = other.printUnknownFields_;
       switch (other.PayloadCase) {
         case PayloadOneofCase.ProtobufPayload:
@@ -346,12 +346,12 @@ namespace Conformance {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ConformanceRequest Clone() {
+    public ConformanceRequest DeepClone() {
       return new ConformanceRequest(this);
     }
 
@@ -912,12 +912,12 @@ namespace Conformance {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ConformanceResponse Clone() {
+    public ConformanceResponse DeepClone() {
       return new ConformanceResponse(this);
     }
 
@@ -1426,12 +1426,12 @@ namespace Conformance {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public JspbEncodingConfig(JspbEncodingConfig other) : this() {
       useJspbArrayAnyFormat_ = other.useJspbArrayAnyFormat_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public JspbEncodingConfig Clone() {
+    public JspbEncodingConfig DeepClone() {
       return new JspbEncodingConfig(this);
     }
 

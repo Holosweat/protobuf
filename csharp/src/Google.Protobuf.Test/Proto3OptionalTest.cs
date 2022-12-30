@@ -87,7 +87,7 @@ namespace Google.Protobuf.Test
         {
             var original = new TestProto3Optional { OptionalInt64 = 0L };
 
-            var clone = original.Clone();
+            var clone = original.DeepClone();
             Assert.False(clone.HasOptionalInt32);
             Assert.AreEqual(0, clone.OptionalInt32);
             Assert.True(clone.HasOptionalInt64);

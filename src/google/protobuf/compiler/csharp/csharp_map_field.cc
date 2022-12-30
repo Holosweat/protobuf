@@ -137,7 +137,7 @@ void MapFieldGenerator::WriteToString(io::Printer* printer) {
 
 void MapFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.Clone();\n");
+    "$name$_ = other.$name$_.DeepClone();\n");
 }
 
 void MapFieldGenerator::GenerateFreezingCode(io::Printer* printer) {

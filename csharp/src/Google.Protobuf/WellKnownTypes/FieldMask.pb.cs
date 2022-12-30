@@ -273,13 +273,13 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FieldMask(FieldMask other) : this() {
-      paths_ = other.paths_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      paths_ = other.paths_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FieldMask Clone() {
+    public FieldMask DeepClone() {
       return new FieldMask(this);
     }
 

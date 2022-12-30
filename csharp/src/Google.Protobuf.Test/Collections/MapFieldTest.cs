@@ -51,7 +51,7 @@ namespace Google.Protobuf.Collections
         {
             var message = new ForeignMessage { C = 20 };
             var map = new MapField<string, ForeignMessage> { { "x", message } };
-            var clone = map.Clone();
+            var clone = map.DeepClone();
             map["x"].C = 30;
             Assert.AreEqual(20, clone["x"].C);
         }

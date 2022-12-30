@@ -213,15 +213,15 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestWellKnownTypes(TestWellKnownTypes other) : this() {
-      anyField_ = other.anyField_ != null ? other.anyField_.Clone() : null;
-      apiField_ = other.apiField_ != null ? other.apiField_.Clone() : null;
-      durationField_ = other.durationField_ != null ? other.durationField_.Clone() : null;
-      emptyField_ = other.emptyField_ != null ? other.emptyField_.Clone() : null;
-      fieldMaskField_ = other.fieldMaskField_ != null ? other.fieldMaskField_.Clone() : null;
-      sourceContextField_ = other.sourceContextField_ != null ? other.sourceContextField_.Clone() : null;
-      structField_ = other.structField_ != null ? other.structField_.Clone() : null;
-      timestampField_ = other.timestampField_ != null ? other.timestampField_.Clone() : null;
-      typeField_ = other.typeField_ != null ? other.typeField_.Clone() : null;
+      anyField_ = other.anyField_ != null ? other.anyField_.DeepClone() : null;
+      apiField_ = other.apiField_ != null ? other.apiField_.DeepClone() : null;
+      durationField_ = other.durationField_ != null ? other.durationField_.DeepClone() : null;
+      emptyField_ = other.emptyField_ != null ? other.emptyField_.DeepClone() : null;
+      fieldMaskField_ = other.fieldMaskField_ != null ? other.fieldMaskField_.DeepClone() : null;
+      sourceContextField_ = other.sourceContextField_ != null ? other.sourceContextField_.DeepClone() : null;
+      structField_ = other.structField_ != null ? other.structField_.DeepClone() : null;
+      timestampField_ = other.timestampField_ != null ? other.timestampField_.DeepClone() : null;
+      typeField_ = other.typeField_ != null ? other.typeField_.DeepClone() : null;
       DoubleField = other.DoubleField;
       FloatField = other.FloatField;
       Int64Field = other.Int64Field;
@@ -231,13 +231,13 @@ namespace Google.Protobuf.TestProtos {
       BoolField = other.BoolField;
       StringField = other.StringField;
       BytesField = other.BytesField;
-      valueField_ = other.valueField_ != null ? other.valueField_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      valueField_ = other.valueField_ != null ? other.valueField_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestWellKnownTypes Clone() {
+    public TestWellKnownTypes DeepClone() {
       return new TestWellKnownTypes(this);
     }
 
@@ -1236,30 +1236,30 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RepeatedWellKnownTypes(RepeatedWellKnownTypes other) : this() {
-      anyField_ = other.anyField_.Clone();
-      apiField_ = other.apiField_.Clone();
-      durationField_ = other.durationField_.Clone();
-      emptyField_ = other.emptyField_.Clone();
-      fieldMaskField_ = other.fieldMaskField_.Clone();
-      sourceContextField_ = other.sourceContextField_.Clone();
-      structField_ = other.structField_.Clone();
-      timestampField_ = other.timestampField_.Clone();
-      typeField_ = other.typeField_.Clone();
-      doubleField_ = other.doubleField_.Clone();
-      floatField_ = other.floatField_.Clone();
-      int64Field_ = other.int64Field_.Clone();
-      uint64Field_ = other.uint64Field_.Clone();
-      int32Field_ = other.int32Field_.Clone();
-      uint32Field_ = other.uint32Field_.Clone();
-      boolField_ = other.boolField_.Clone();
-      stringField_ = other.stringField_.Clone();
-      bytesField_ = other.bytesField_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      anyField_ = other.anyField_.DeepClone();
+      apiField_ = other.apiField_.DeepClone();
+      durationField_ = other.durationField_.DeepClone();
+      emptyField_ = other.emptyField_.DeepClone();
+      fieldMaskField_ = other.fieldMaskField_.DeepClone();
+      sourceContextField_ = other.sourceContextField_.DeepClone();
+      structField_ = other.structField_.DeepClone();
+      timestampField_ = other.timestampField_.DeepClone();
+      typeField_ = other.typeField_.DeepClone();
+      doubleField_ = other.doubleField_.DeepClone();
+      floatField_ = other.floatField_.DeepClone();
+      int64Field_ = other.int64Field_.DeepClone();
+      uint64Field_ = other.uint64Field_.DeepClone();
+      int32Field_ = other.int32Field_.DeepClone();
+      uint32Field_ = other.uint32Field_.DeepClone();
+      boolField_ = other.boolField_.DeepClone();
+      stringField_ = other.stringField_.DeepClone();
+      bytesField_ = other.bytesField_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RepeatedWellKnownTypes Clone() {
+    public RepeatedWellKnownTypes DeepClone() {
       return new RepeatedWellKnownTypes(this);
     }
 
@@ -1861,31 +1861,31 @@ namespace Google.Protobuf.TestProtos {
     public OneofWellKnownTypes(OneofWellKnownTypes other) : this() {
       switch (other.OneofFieldCase) {
         case OneofFieldOneofCase.AnyField:
-          AnyField = other.AnyField.Clone();
+          AnyField = other.AnyField.DeepClone();
           break;
         case OneofFieldOneofCase.ApiField:
-          ApiField = other.ApiField.Clone();
+          ApiField = other.ApiField.DeepClone();
           break;
         case OneofFieldOneofCase.DurationField:
-          DurationField = other.DurationField.Clone();
+          DurationField = other.DurationField.DeepClone();
           break;
         case OneofFieldOneofCase.EmptyField:
-          EmptyField = other.EmptyField.Clone();
+          EmptyField = other.EmptyField.DeepClone();
           break;
         case OneofFieldOneofCase.FieldMaskField:
-          FieldMaskField = other.FieldMaskField.Clone();
+          FieldMaskField = other.FieldMaskField.DeepClone();
           break;
         case OneofFieldOneofCase.SourceContextField:
-          SourceContextField = other.SourceContextField.Clone();
+          SourceContextField = other.SourceContextField.DeepClone();
           break;
         case OneofFieldOneofCase.StructField:
-          StructField = other.StructField.Clone();
+          StructField = other.StructField.DeepClone();
           break;
         case OneofFieldOneofCase.TimestampField:
-          TimestampField = other.TimestampField.Clone();
+          TimestampField = other.TimestampField.DeepClone();
           break;
         case OneofFieldOneofCase.TypeField:
-          TypeField = other.TypeField.Clone();
+          TypeField = other.TypeField.DeepClone();
           break;
         case OneofFieldOneofCase.DoubleField:
           DoubleField = other.DoubleField;
@@ -1916,12 +1916,12 @@ namespace Google.Protobuf.TestProtos {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneofWellKnownTypes Clone() {
+    public OneofWellKnownTypes DeepClone() {
       return new OneofWellKnownTypes(this);
     }
 
@@ -2871,30 +2871,30 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MapWellKnownTypes(MapWellKnownTypes other) : this() {
-      anyField_ = other.anyField_.Clone();
-      apiField_ = other.apiField_.Clone();
-      durationField_ = other.durationField_.Clone();
-      emptyField_ = other.emptyField_.Clone();
-      fieldMaskField_ = other.fieldMaskField_.Clone();
-      sourceContextField_ = other.sourceContextField_.Clone();
-      structField_ = other.structField_.Clone();
-      timestampField_ = other.timestampField_.Clone();
-      typeField_ = other.typeField_.Clone();
-      doubleField_ = other.doubleField_.Clone();
-      floatField_ = other.floatField_.Clone();
-      int64Field_ = other.int64Field_.Clone();
-      uint64Field_ = other.uint64Field_.Clone();
-      int32Field_ = other.int32Field_.Clone();
-      uint32Field_ = other.uint32Field_.Clone();
-      boolField_ = other.boolField_.Clone();
-      stringField_ = other.stringField_.Clone();
-      bytesField_ = other.bytesField_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      anyField_ = other.anyField_.DeepClone();
+      apiField_ = other.apiField_.DeepClone();
+      durationField_ = other.durationField_.DeepClone();
+      emptyField_ = other.emptyField_.DeepClone();
+      fieldMaskField_ = other.fieldMaskField_.DeepClone();
+      sourceContextField_ = other.sourceContextField_.DeepClone();
+      structField_ = other.structField_.DeepClone();
+      timestampField_ = other.timestampField_.DeepClone();
+      typeField_ = other.typeField_.DeepClone();
+      doubleField_ = other.doubleField_.DeepClone();
+      floatField_ = other.floatField_.DeepClone();
+      int64Field_ = other.int64Field_.DeepClone();
+      uint64Field_ = other.uint64Field_.DeepClone();
+      int32Field_ = other.int32Field_.DeepClone();
+      uint32Field_ = other.uint32Field_.DeepClone();
+      boolField_ = other.boolField_.DeepClone();
+      stringField_ = other.stringField_.DeepClone();
+      bytesField_ = other.bytesField_.DeepClone();
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MapWellKnownTypes Clone() {
+    public MapWellKnownTypes DeepClone() {
       return new MapWellKnownTypes(this);
     }
 

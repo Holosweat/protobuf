@@ -73,13 +73,13 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Bar(Bar other) : this() {
-      foo_ = other.foo_ != null ? other.foo_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+      foo_ = other.foo_ != null ? other.foo_.DeepClone() : null;
+      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Bar Clone() {
+    public Bar DeepClone() {
       return new Bar(this);
     }
 
