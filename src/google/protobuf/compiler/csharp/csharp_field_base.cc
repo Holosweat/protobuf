@@ -21,6 +21,7 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/descriptor_utils.h"
 
 // Must be last.
 #include "google/protobuf/port_def.inc"
@@ -85,16 +86,7 @@ void FieldGeneratorBase::SetCommonFieldVariables(
         {"name_def_message", absl::StrCat((*variables)["name"], "_")});
   }
   if (SupportsPresenceApi(descriptor_)) {
-    variables->insert({"has_property_check",
-                       absl::StrCat("Has", (*variables)["property_name"])});
-    variables->insert(
-        {"other_has_property_check",
-         absl::StrCat("other.Has", (*variables)["property_name"])});
-    variables->insert({"has_not_property_check",
-                       absl::StrCat("!", (*variables)["has_property_check"])});
-    variables->insert(
-        {"other_has_not_property_check",
-         absl::StrCat("!", (*variables)["other_has_property_check"])});
+    
     if (presenceIndex_ != -1) {
         const int hasBitsNumber = presenceIndex_ / 32;
         const int hasBitsMask = 1 << (presenceIndex_ % 32);
@@ -105,26 +97,95 @@ void FieldGeneratorBase::SetCommonFieldVariables(
         (*variables)["clear_has_field"] =
             absl::StrCat("_hasBits", hasBitsNumber, " &= ~", hasBitsMask);
     }
+  }
+
+  bool filter = false;//descriptor_->name() == "direction" && descriptor_->containing_type()->name() == "DevicePosition";
+  if (EmbedBarePublicField(*descriptor_) && !descriptor_->real_containing_oneof()) {
+    if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{ "writing_member", (*variables)["property_name"] }} );
+  } else if (descriptor_->real_containing_oneof()) {
+    if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{"writing_member", (*variables)["property_name"] + "_Internal" }});
+  } else if (EmbedReadOnlyRefField(*descriptor_)) {
+    if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{ "writing_member", (*variables)["name"] + '_' }});
   } else {
+        if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{ "writing_member", (*variables)["property_name"] + "_Internal" }}); 
+  }
+  if (filter) {
+    ABSL_LOG(ERROR) << "Field: " << name() << " Presence: " << SupportsPresenceApi(descriptor_)
+                    << " Nullable: " << IsNullable(descriptor_) << " is optional: " << descriptor_->is_optional()
+                    << "descriptor: " << descriptor_->DebugString();
+  }
+
+  if (SupportsPresenceApi(descriptor_) || IsNullable(descriptor_) || descriptor_->real_containing_oneof()) {
+    variables->insert({"type_at_rest",
+                       absl::StrCat((*variables)["type_name"], "?")});
     variables->insert({"has_property_check",
-                       absl::StrCat((*variables)["property_name"],
-                                    " != ", (*variables)["default_value"])});
-    variables->insert({"other_has_property_check",
-                       absl::StrCat("other.", (*variables)["property_name"],
-                                    " != ", (*variables)["default_value"])});
+                       absl::StrCat((*variables)["reading_member"], " is ", type_name(), " ", (*variables)["property_name"], "Value")});
+    variables->insert(
+        {"other_has_property_check",
+         absl::StrCat("other.", (*variables)["reading_member"], " is ", type_name(), " ", (*variables)["property_name"], "OtherValue")});
+    variables->insert({"has_not_property_check",
+                       absl::StrCat("!(", (*variables)["has_property_check"], ")")});
+    variables->insert(
+        {"other_has_not_property_check",
+         absl::StrCat("!", (*variables)["other_has_property_check"])});
+
+    variables->insert({"property_name_existing", absl::StrCat((*variables)["property_name"], "Value")});
+    variables->insert({"other_property_name_existing", absl::StrCat((*variables)["property_name"], "OtherValue")});
+
+    if (IsNullable(descriptor_))
+    {
+        (*variables)["has_property_check_internal"] = absl::StrCat(this->variables_["reading_member"], " != null");
+    }
+    else {
+      if (EmbedReadOnlyRefField(*descriptor_)) {
+        (*variables)["has_property_check_internal"] = absl::StrCat("!", (*variables)["reading_member"], ".Equals(default)");
+      } else {
+        (*variables)["has_property_check_internal"] = (*variables)["has_field_check"];
+      }
+    }
+  }
+  else {
+      variables->insert({"type_at_rest", (*variables)["type_name"]});
+      variables->insert({ "has_property_check",
+                        absl::StrCat("!", (*variables)["reading_member"],
+                                     ".Equals(", (*variables)["default_value"], ")") });
+      variables->insert({ "other_has_property_check",
+                         absl::StrCat("!other.", (*variables)["reading_member"],
+                                      ".Equals(", (*variables)["default_value"], ")") });
+      variables->insert({ "property_name_existing", absl::StrCat((*variables)["reading_member"]) });
+      variables->insert({ "other_property_name_existing", absl::StrCat("other.", (*variables)["reading_member"]) });
+
+
+      variables->insert({ "has_property_check_internal", (*variables)["has_property_check"] });
   }
 }
 
 void FieldGeneratorBase::SetCommonOneofFieldVariables(
     absl::flat_hash_map<absl::string_view, std::string>* variables) {
   (*variables)["oneof_name"] = oneof_name();
-  if (SupportsPresenceApi(descriptor_)) {
-    (*variables)["has_property_check"] = absl::StrCat("Has", property_name());
-  } else {
-    (*variables)["has_property_check"] =
-        absl::StrCat(oneof_name(), "Case_ == ", oneof_property_name(),
-                     "OneofCase.", oneof_case_name());
-  }
+  (*variables)["has_property_check_internal"] =
+  absl::StrCat(oneof_name() + "Case_ == " + oneof_property_name() +
+      "OneofCase." + oneof_case_name());
+
+  variables->insert({ "property_name_existing", absl::StrCat((*variables)["property_name"], "Value") });
+  variables->insert({ "other_property_name_existing", absl::StrCat((*variables)["property_name"], "OtherValue") });
+
   (*variables)["oneof_case_name"] = oneof_case_name();
   (*variables)["oneof_property_name"] = oneof_property_name();
 }
@@ -347,7 +408,7 @@ std::string FieldGeneratorBase::default_value(const FieldDescriptor* descriptor)
         const FieldDescriptor* wrapped_field = descriptor->message_type()->field(0);
         return default_value(wrapped_field);
       } else {
-        return "null";
+        return "default";
       }
     case FieldDescriptor::TYPE_DOUBLE: {
       double value = descriptor->default_value_double();

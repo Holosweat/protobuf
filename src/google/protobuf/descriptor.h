@@ -1038,6 +1038,10 @@ class PROTOBUF_EXPORT FieldDescriptor : private internal::SymbolBase,
   // |*out_location| unchanged iff location information was not available.
   bool GetSourceLocation(SourceLocation* out_location) const;
 
+  // Returns true if this field was syntactically written with "optional" in the
+  // .proto file. Excludes singular proto3 fields that do not have a label.
+  bool has_optional_keyword() const;
+
  private:
   friend class Symbol;
   typedef FieldOptions OptionsType;
@@ -1048,9 +1052,6 @@ class PROTOBUF_EXPORT FieldDescriptor : private internal::SymbolBase,
   friend class Reflection;
   friend class FieldDescriptorLegacy;
 
-  // Returns true if this field was syntactically written with "optional" in the
-  // .proto file. Excludes singular proto3 fields that do not have a label.
-  bool has_optional_keyword() const;
 
   // Get the merged features that apply to this field.  These are specified in
   // the .proto file through the feature options in the message definition.

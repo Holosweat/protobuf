@@ -39,6 +39,7 @@ class MessageFieldGenerator : public FieldGeneratorBase {
   virtual void WriteHash(io::Printer* printer) override;
   virtual void WriteEquals(io::Printer* printer) override;
   virtual void WriteToString(io::Printer* printer) override;
+  virtual void GenerateStructConstructorCode(io::Printer *printer) override;
 };
 
 class MessageOneofFieldGenerator : public MessageFieldGenerator {
@@ -57,6 +58,7 @@ class MessageOneofFieldGenerator : public MessageFieldGenerator {
   virtual void GenerateMergingCode(io::Printer* printer) override;
   virtual void WriteToString(io::Printer* printer) override;
   virtual void GenerateParsingCode(io::Printer* printer) override;
+  virtual void GenerateStructConstructorCode(io::Printer *printer) override;
 };
 
 }  // namespace csharp

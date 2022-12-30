@@ -55,6 +55,14 @@ namespace Google.Protobuf.Collections
         private readonly Dictionary<TKey, LinkedListNode<KeyValuePair<TKey, TValue>>> map = new(KeyEqualityComparer);
         private readonly LinkedList<KeyValuePair<TKey, TValue>> list = new();
 
+        /// Creates empty map field.
+        public MapField() {}
+
+        /// Copies values from other.
+        public MapField(IReadOnlyDictionary<TKey, TValue> other) {
+            MergeFrom(other);
+        }
+
         /// <summary>
         /// Creates a deep clone of this object.
         /// </summary>
@@ -223,7 +231,7 @@ namespace Google.Protobuf.Collections
         /// </summary>
         /// <remarks>This method primarily exists to be called from MergeFrom methods in generated classes for messages.</remarks>
         /// <param name="entries">The entries to add to the map.</param>
-        public void MergeFrom(IDictionary<TKey, TValue> entries)
+        public void MergeFrom(IReadOnlyDictionary<TKey, TValue> entries)
         {
             ProtoPreconditions.CheckNotNull(entries, nameof(entries));
             foreach (var pair in entries)
@@ -331,6 +339,10 @@ namespace Google.Protobuf.Collections
         /// </returns>
         public override int GetHashCode()
         {
+            return GetMapFieldHashCode(list);
+        }
+
+        public static int GetMapFieldHashCode(IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> list) {
             var keyComparer = KeyEqualityComparer;
             var valueComparer = ValueEqualityComparer;
             int hash = 0;
@@ -351,20 +363,24 @@ namespace Google.Protobuf.Collections
         /// <returns><c>true</c> if <paramref name="other"/> refers to an equal map; <c>false</c> otherwise.</returns>
         public bool Equals(MapField<TKey, TValue> other)
         {
+            return MapFieldEquals(this, other);
+        }
+
+        public static bool MapFieldEquals(IReadOnlyDictionary<TKey, TValue> This, IReadOnlyDictionary<TKey, TValue> other) {
+            if (Object.ReferenceEquals(other, This))
+            {
+                return true;
+            }
             if (other == null)
             {
                 return false;
             }
-            if (other == this)
-            {
-                return true;
-            }
-            if (other.Count != this.Count)
+            if (other.Count != This.Count)
             {
                 return false;
             }
             var valueComparer = ValueEqualityComparer;
-            foreach (var pair in this)
+            foreach (var pair in This)
             {
                 if (!other.TryGetValue(pair.Key, out TValue value))
                 {
@@ -500,10 +516,10 @@ namespace Google.Protobuf.Collections
         /// <returns></returns>
         public int CalculateSize(Codec codec)
         {
-            if (Count == 0)
-            {
-                return 0;
-            }
+            return MapFieldCalculateSize(codec, list);
+        }
+
+        public static int MapFieldCalculateSize(Codec codec, IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> list) {
             int size = 0;
             foreach (var entry in list)
             {

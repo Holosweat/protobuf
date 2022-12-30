@@ -33,7 +33,7 @@ EnumFieldGenerator::~EnumFieldGenerator() {
 
 void EnumFieldGenerator::GenerateParsingCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$property_name$ = ($type_name$) input.ReadEnum();\n");
+    "$writing_member$ = ($type_name$) input.ReadEnum();\n");
 }
 
 void EnumFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -48,7 +48,7 @@ void EnumFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
     variables_,
     "if ($has_property_check$) {\n"
-      "  size += $tag_size$ + pb::CodedOutputStream.ComputeEnumSize((int) $property_name$);\n"
+      "  size += $tag_size$ + pb::CodedOutputStream.ComputeEnumSize((int) $property_name_existing$);\n"
     "}\n");
 }
 
@@ -78,7 +78,7 @@ EnumOneofFieldGenerator::~EnumOneofFieldGenerator() {
 }
 
 void EnumOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
-  printer->Print(variables_, "$property_name$ = other.$property_name$;\n");
+  printer->Print(variables_, "$writing_member$ = other.$property_name$;\n");
 }
 
 void EnumOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -94,7 +94,7 @@ void EnumOneofFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
     variables_,
     "if ($has_property_check$) {\n"
     "  output.WriteRawTag($tag_bytes$);\n"
-    "  output.WriteEnum((int) $property_name$);\n"
+    "  output.WriteEnum((int) $property_name_existing$);\n"
     "}\n");
 }
 
@@ -102,7 +102,7 @@ void EnumOneofFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
     variables_,
     "if ($has_property_check$) {\n"
-    "  size += $tag_size$ + pb::CodedOutputStream.ComputeEnumSize((int) $property_name$);\n"
+    "  size += $tag_size$ + pb::CodedOutputStream.ComputeEnumSize((int) $property_name_existing$);\n"
     "}\n");
 }
 

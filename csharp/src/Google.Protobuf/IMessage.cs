@@ -10,6 +10,8 @@
 using System;
 using Google.Protobuf.Reflection;
 
+#nullable enable
+
 namespace Google.Protobuf
 {
     /// <summary>
@@ -23,6 +25,7 @@ namespace Google.Protobuf
         /// </summary>
         /// <remarks>See the user guide for precise merge semantics.</remarks>
         /// <param name="input"></param>
+        [System.Obsolete("Please use MergedFrom")]
         void MergeFrom(CodedInputStream input);
 
         /// <summary>
@@ -59,6 +62,7 @@ namespace Google.Protobuf
         /// </summary>
         /// <remarks>See the user guide for precise merge semantics.</remarks>
         /// <param name="message">The message to merge with this one. Must not be null.</param>
-        void MergeFrom(T message);
+        [System.Obsolete("Please use MergedFrom")]
+        void MergeFrom(T? message);
     }
 }

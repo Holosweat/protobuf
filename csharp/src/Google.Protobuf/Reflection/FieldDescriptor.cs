@@ -475,14 +475,52 @@ namespace Google.Protobuf.Reflection
                 return null;
             }
 
-            var property = ContainingType.ClrType.GetProperty(PropertyName);
+            System.Reflection.MethodInfo method = ContainingType.ClrType.GetMethod("__" + PropertyName);
+            if (method != null)
+            {
+                System.Reflection.MethodInfo hasValueMethod = ContainingType.ClrType.GetMethod("__" + PropertyName + "_has_value");  
+                return new SingleFieldValueAccessor(ContainingType.ClrType, method, hasValueMethod, this);
+            }
+            // When using Value types in CreateDelegateCalls they will fail. https://dotnetfiddle.net/JJjAKI
+            if (ContainingType.ClrType.IsValueType())
+            {
+                throw new Exception(string.Format("Value type doesn't have accessors. Message {0}, PropertyType {1}", this.ContainingType.FullName, this.PropertyName));
+            }
+            System.Reflection.PropertyInfo property = ContainingType.ClrType.GetProperty("__" + PropertyName);
             if (property == null)
             {
-                throw new DescriptorValidationException(this, $"Property {PropertyName} not found in {ContainingType.ClrType}");
+                property = ContainingType.ClrType.GetProperty(PropertyName);
             }
-            return IsMap ? new MapFieldAccessor(property, this)
-                : IsRepeated ? new RepeatedFieldAccessor(property, this)
-                : (IFieldAccessor) new SingleFieldAccessor(ContainingType.ClrType, property, this);
+             if (property == null)
+             {
+
+                //var field = ContainingType.ClrType.GetField(PropertyName);
+
+                //if (field != null)
+                //{
+                //    return new SingleFieldValueAccessor(ContainingType.ClrType, field, this);
+                //}
+
+
+                throw new DescriptorValidationException(
+                    this,
+                    $"Property {PropertyName} not found in {ContainingType.ClrType}"
+                );
+            }
+
+            try
+            {
+                return IsMap
+                    ? new MapFieldAccessor(property, this)
+                    : IsRepeated
+                        ? new RepeatedFieldAccessor(property, this)
+                        : (IFieldAccessor)
+                            new SingleFieldAccessor(ContainingType.ClrType, property, this);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Message {0}, PropertyType {1}, property {2}", this.ContainingType.FullName, this.PropertyName, property), ex);
+            }
         }
     }
 }

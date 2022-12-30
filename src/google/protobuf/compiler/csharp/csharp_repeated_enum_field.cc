@@ -17,6 +17,7 @@
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -26,6 +27,9 @@ namespace csharp {
 RepeatedEnumFieldGenerator::RepeatedEnumFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
+  variables_["setter"] = FieldInsideReferenceContainer(*descriptor_) ? "init" : "set";
+  variables_["repeated_type"] = RepeatedFieldType(*descriptor_);
+  variables_["repeated_type_classname"] = RepeatedFieldTypeClassName(*descriptor_);
 }
 
 RepeatedEnumFieldGenerator::~RepeatedEnumFieldGenerator() {
@@ -37,21 +41,34 @@ void RepeatedEnumFieldGenerator::GenerateMembers(io::Printer* printer) {
     variables_,
     "private static readonly pb::FieldCodec<$type_name$> _repeated_$name$_codec\n"
     "    = pb::FieldCodec.ForEnum($tag$, x => (int) x, x => ($type_name$) x);\n");
-  printer->Print(variables_,
-    "private readonly pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(
+      variables_,
+      "private $repeated_type$<$type_name$> $name$_ = $repeated_type$<$type_name$>.Empty;\n");
+  } else {
+    printer->Print(
+      variables_,
+      "private $repeated_type$<$type_name$>? $name$_;\n");
+    printer->Print(
+        variables_,
+        "public static $repeated_type$<$type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+  }
   WritePropertyDocComment(printer, options(), descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ pbc::RepeatedField<$type_name$> $property_name$ {\n"
+    "$access_level$ $repeated_type$<$type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
-    "}\n");
+    "  $setter$ { $name$_ = value; }\n"
+    "}\n"
+    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return pbc::RepeatedField<$type_name$>.From($name$_); } }\n"
+    );
 }
 
 void RepeatedEnumFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "$name$_.Add(other.$name$_);\n");
+    "if (!other.$property_name$.IsEmpty) { $name$_ = $property_name$.AddRange(other.$property_name$); }\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -60,10 +77,10 @@ void RepeatedEnumFieldGenerator::GenerateParsingCode(io::Printer* printer) {
 
 void RepeatedEnumFieldGenerator::GenerateParsingCode(io::Printer* printer, bool use_parse_context) {
   printer->Print(
-    variables_,
-    use_parse_context
-    ? "$name$_.AddEntriesFrom(ref input, _repeated_$name$_codec);\n"
-    : "$name$_.AddEntriesFrom(input, _repeated_$name$_codec);\n");
+      variables_,
+      use_parse_context
+          ? "var $name$_mutation = new pbc::RepeatedField<$type_name$>(); $name$_mutation.AddEntriesFrom(ref input, _repeated_$name$_codec); $name$_ = $name$_mutation.To$repeated_type_classname$();\n"
+          : "var $name$_mutation = new pbc::RepeatedField<$type_name$>(); $name$_mutation.AddEntriesFrom(input, _repeated_$name$_codec); $name$_ = $name$_mutation.To$repeated_type_classname$();\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -74,26 +91,26 @@ void RepeatedEnumFieldGenerator::GenerateSerializationCode(io::Printer* printer,
   printer->Print(
     variables_,
     use_write_context
-    ? "$name$_.WriteTo(ref output, _repeated_$name$_codec);\n"
-    : "$name$_.WriteTo(output, _repeated_$name$_codec);\n");
+    ? "$name$_ForSerialization.WriteTo(ref output, _repeated_$name$_codec);\n"
+    : "$name$_ForSerialization.WriteTo(output, _repeated_$name$_codec);\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "size += $name$_.CalculateSize(_repeated_$name$_codec);\n");
+    "size += pbc::RepeatedField<$type_name$>.RepeatedFieldCalculateSize(_repeated_$name$_codec, $property_name$);\n");
 }
 
 void RepeatedEnumFieldGenerator::WriteHash(io::Printer* printer) {
   printer->Print(
     variables_,
-    "hash ^= $name$_.GetHashCode();\n");
+    "hash ^= pbc::RepeatedField<$type_name$>.GetRepeatedFieldHashCode($property_name$);\n");
 }
 
 void RepeatedEnumFieldGenerator::WriteEquals(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if(!$name$_.Equals(other.$name$_)) return false;\n");
+    "if(!pbc::RepeatedField<$type_name$>.RepeatedFieldEquals($property_name$, other.$property_name$)) return false;\n");
 }
 
 void RepeatedEnumFieldGenerator::WriteToString(io::Printer* printer) {
@@ -103,7 +120,7 @@ void RepeatedEnumFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedEnumFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.Clone();\n");
+    "if (deep) { $name$_ = other.$name$_ForSerialization.Clone().To$repeated_type_classname$(); } else { $name$_ = other.$name$_; }\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
@@ -117,6 +134,11 @@ void RepeatedEnumFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
 }
 
 void RepeatedEnumFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
+}
+
+void RepeatedEnumFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+  printer->Print(variables_,
+                 "$name$_ = $repeated_type$<T>.Empty;\n");
 }
 
 }  // namespace csharp
