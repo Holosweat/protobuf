@@ -75,7 +75,7 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     ", $tag$);\n"
-    "private readonly pbc::MapField<$key_type_name$, $value_type_name$> $name$_ = new pbc::MapField<$key_type_name$, $value_type_name$>();\n");
+    "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ = new pbc::MapField<$key_type_name$, $value_type_name$>();\n");
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
@@ -137,7 +137,7 @@ void MapFieldGenerator::WriteToString(io::Printer* printer) {
 
 void MapFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.DeepClone();\n");
+    "if (deep) { $name$_ = other.$name$_.DeepClone(); } else { $name$_ = other.$name$_; }\n");
 }
 
 void MapFieldGenerator::GenerateFreezingCode(io::Printer* printer) {

@@ -384,6 +384,14 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
     vars,
     "public $class_name$($class_name$ other) {\n");
   printer->Indent();
+  printer->Print("PerformClone(other, deep: false);\n");
+  printer->Outdent();
+  printer->Print(
+    vars,
+    "}\n"
+    "\n"
+    "private void PerformClone($class_name$ other, bool deep) {\n");
+  printer->Indent();
   for (int i = 0; i < has_bit_field_count_; i++) {
     printer->Print("_hasBits$i$ = other._hasBits$i$;\n", "i", absl::StrCat(i));
   }
@@ -433,7 +441,9 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(
     vars,
     "public $class_name$ DeepClone() {\n"
-    "  return new $class_name$(this);\n"
+    "  var res = new $class_name$();\n"
+    "  res.PerformClone(this, deep: true);\n"
+    "  return res;\n"
     "}\n\n");
 }
 

@@ -339,7 +339,7 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
 }
 
 void PrimitiveOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
-  printer->Print(variables_, "$property_name$ = other.$property_name$;\n");
+  printer->Print(variables_, "$property_name$_Internal = other.$property_name$;\n");
 }
 
 void PrimitiveOneofFieldGenerator::WriteToString(io::Printer* printer) {

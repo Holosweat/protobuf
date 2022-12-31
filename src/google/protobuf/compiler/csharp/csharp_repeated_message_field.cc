@@ -76,7 +76,7 @@ void RepeatedMessageFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(";\n");
   printer->Print(
     variables_,
-    "private readonly pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
+    "private pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
@@ -144,7 +144,7 @@ void RepeatedMessageFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedMessageFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.DeepClone();\n");
+    "$name$_ = deep ? other.$name$_.DeepClone() : other.$name$_;\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
