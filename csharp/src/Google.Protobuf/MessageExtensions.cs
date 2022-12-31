@@ -50,6 +50,7 @@ namespace Google.Protobuf
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
+        [System.Obsolete("Please use Constructor")]
         public static void MergeFrom(this IMessage message, byte[] data) =>
             MergeFrom(message, data, false, null);
 
@@ -60,6 +61,7 @@ namespace Google.Protobuf
         /// <param name="data">The data containing the slice to merge, which must be protobuf-encoded binary data.</param>
         /// <param name="offset">The offset of the slice to merge.</param>
         /// <param name="length">The length of the slice to merge.</param>
+        [System.Obsolete("Please use Constructor")]
         public static void MergeFrom(this IMessage message, byte[] data, int offset, int length) =>
             MergeFrom(message, data, offset, length, false, null);
 
@@ -68,6 +70,7 @@ namespace Google.Protobuf
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
+        [System.Obsolete("Please use Constructor")]
         public static void MergeFrom(this IMessage message, ByteString data) =>
             MergeFrom(message, data, false, null);
 
@@ -76,6 +79,7 @@ namespace Google.Protobuf
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="input">Stream containing the data to merge, which must be protobuf-encoded binary data.</param>
+        [System.Obsolete("Please use Constructor")]
         public static void MergeFrom(this IMessage message, Stream input) =>
             MergeFrom(message, input, false, null);
 
@@ -84,6 +88,7 @@ namespace Google.Protobuf
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="span">Span containing the data to merge, which must be protobuf-encoded binary data.</param>
+        [System.Obsolete("Please use Constructor")]
         [SecuritySafeCritical]
         public static void MergeFrom(this IMessage message, ReadOnlySpan<byte> span) =>
             MergeFrom(message, span, false, null);
@@ -97,6 +102,7 @@ namespace Google.Protobuf
         /// </remarks>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="input">Stream containing the data to merge, which must be protobuf-encoded binary data.</param>
+        [System.Obsolete("Please use Constructor")]
         public static void MergeDelimitedFrom(this IMessage message, Stream input) =>
             MergeDelimitedFrom(message, input, false, null);
 
