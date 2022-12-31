@@ -61,7 +61,7 @@ void RepeatedEnumFieldGenerator::GenerateMembers(io::Printer* printer) {
     "private static readonly pb::FieldCodec<$type_name$> _repeated_$name$_codec\n"
     "    = pb::FieldCodec.ForEnum($tag$, x => (int) x, x => ($type_name$) x);\n");
   printer->Print(variables_,
-    "private readonly pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
+    "private pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
@@ -126,7 +126,7 @@ void RepeatedEnumFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedEnumFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_.DeepClone();\n");
+    "$name$_ = deep ? other.$name$_.DeepClone() : other.$name$_;\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
