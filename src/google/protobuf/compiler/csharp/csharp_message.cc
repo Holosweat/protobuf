@@ -606,6 +606,21 @@ void MessageGenerator::GenerateMergingMethods(io::Printer* printer) {
 
   WriteGeneratedCodeAttributes(printer);
   printer->Print(
+  vars,"public $class_name$ MergedFrom($class_name$? other) {\n");
+  printer->Indent();
+  printer->Print(vars,
+    "$class_name$ res = new $class_name$();\n"
+    "res.MergeFrom(this);\n"
+    "res.MergeFrom(other);\n"
+    "return res;\n");
+  printer->Outdent();
+  printer->Print("}\n");
+  printer->Print("\n");
+
+  WriteGeneratedCodeAttributes(printer);
+  printer->Print(
+    "[System.Obsolete(\"Please use MergedFrom.\")]\n");
+  printer->Print(
     vars,
     "public void MergeFrom($class_name$? other) {\n");
   printer->Indent();

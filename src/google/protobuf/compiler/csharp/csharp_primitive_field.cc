@@ -127,6 +127,12 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
 
   // Specify the "setter", which may need to set a field bit as well as the
   // value.
+  printer->Print("  init {\n");
+  printer->Print(variables_, "    this.$property_name$_Internal = value;\n");
+  printer->Print("  }\n");
+  printer->Print("}\n");
+  printer->Print(variables_, "private $type_name$ $property_name$_Internal {\n");
+
   printer->Print("  set {\n");
   if (presenceIndex_ != -1) {
     printer->Print(
@@ -187,7 +193,7 @@ void PrimitiveFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
     "if ($other_has_property_check$) {\n"
-    "  $property_name$ = other.$property_name$;\n"
+    "  $property_name$_Internal = other.$property_name$;\n"
     "}\n");
 }
 
@@ -196,7 +202,7 @@ void PrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer) {
   // so that we can normalize "null to empty" for strings and bytes.
   printer->Print(
     variables_,
-    "$property_name$ = input.Read$capitalized_type_name$();\n");
+    "$property_name$_Internal = input.Read$capitalized_type_name$();\n");
 }
 
 void PrimitiveFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -293,7 +299,7 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
     variables_,
     "$access_level$ $type_name$ $property_name$ {\n"
     "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : $default_value$; }\n"
-    "  set {\n");
+    "  init {\n");
   if (is_value_type) {
     printer->Print(
       variables_,
@@ -344,12 +350,12 @@ void PrimitiveOneofFieldGenerator::WriteToString(io::Printer* printer) {
 void PrimitiveOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {
     printer->Print(
       variables_,
-      "$property_name$ = input.Read$capitalized_type_name$();\n");
+      "$property_name$_Internal = input.Read$capitalized_type_name$();\n");
 }
 
 void PrimitiveOneofFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$property_name$ = other.$property_name$;\n");
+    "$property_name$_Internal = other.$property_name$;\n");
 }
 
 }  // namespace csharp
