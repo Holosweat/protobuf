@@ -50,9 +50,17 @@ namespace Google.Protobuf
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
-        [System.Obsolete("Please use Constructor")]
+        [System.Obsolete("Please use Deserialize")]
         public static void MergeFrom(this IMessage message, byte[] data) =>
             MergeFrom(message, data, false, null);
+
+        // <summary>Deserializes protobuf.</summary>
+        /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
+        public static T Deserialize<T>(byte[] data) where T: IMessage, new() {
+            T value = new T();
+            value.MergeFrom(data);
+            return value;
+        }
 
         /// <summary>
         /// Merges data from the given byte array slice into an existing message.
@@ -61,37 +69,73 @@ namespace Google.Protobuf
         /// <param name="data">The data containing the slice to merge, which must be protobuf-encoded binary data.</param>
         /// <param name="offset">The offset of the slice to merge.</param>
         /// <param name="length">The length of the slice to merge.</param>
-        [System.Obsolete("Please use Constructor")]
+        [System.Obsolete("Please use Deserialize")]
         public static void MergeFrom(this IMessage message, byte[] data, int offset, int length) =>
             MergeFrom(message, data, offset, length, false, null);
+
+        // <summary>Deserializes protobuf.</summary>
+        /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
+        /// <param name="offset">The offset of the slice to merge.</param>
+        /// <param name="length">The length of the slice to merge.</param>
+        public static T Deserialize<T>(byte[] data, int offset, int length) where T: IMessage, new() {
+            T value = new T();
+            value.MergeFrom(data, offset, length);
+            return value;
+        }
 
         /// <summary>
         /// Merges data from the given byte string into an existing message.
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
-        [System.Obsolete("Please use Constructor")]
+        [System.Obsolete("Please use Deserialize")]
         public static void MergeFrom(this IMessage message, ByteString data) =>
             MergeFrom(message, data, false, null);
+
+        // <summary>Deserializes protobuf.</summary>
+        /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
+        public static T Deserialize<T>(ByteString data) where T: IMessage, new() {
+            T value = new T();
+            value.MergeFrom(data);
+            return value;
+        }
 
         /// <summary>
         /// Merges data from the given stream into an existing message.
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="input">Stream containing the data to merge, which must be protobuf-encoded binary data.</param>
-        [System.Obsolete("Please use Constructor")]
+        [System.Obsolete("Please use Deserialize")]
         public static void MergeFrom(this IMessage message, Stream input) =>
             MergeFrom(message, input, false, null);
+
+
+        /// <summary>Deserializes protobuf.</summary>
+        /// <param name="data">The data to merge, which must be protobuf-encoded binary data.</param>
+        public static T Deserialize<T>(Stream data) where T: IMessage, new() {
+            T value = new T();
+            value.MergeFrom(data);
+            return value;
+        }
 
         /// <summary>
         /// Merges data from the given span into an existing message.
         /// </summary>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="span">Span containing the data to merge, which must be protobuf-encoded binary data.</param>
-        [System.Obsolete("Please use Constructor")]
+        [System.Obsolete("Please use Deserialize")]
         [SecuritySafeCritical]
         public static void MergeFrom(this IMessage message, ReadOnlySpan<byte> span) =>
             MergeFrom(message, span, false, null);
+
+        /// <summary>Deserializes protobuf.</summary>
+        /// <param name="span">Span containing the data to merge, which must be protobuf-encoded binary data.</param>
+        public static T Deserialize<T>(ReadOnlySpan<byte> span) where T: IMessage, new() {
+            T value = new T();
+            value.MergeFrom(span);
+            return value;
+        }
+
 
         /// <summary>
         /// Merges length-delimited data from the given stream into an existing message.
@@ -102,9 +146,23 @@ namespace Google.Protobuf
         /// </remarks>
         /// <param name="message">The message to merge the data into.</param>
         /// <param name="input">Stream containing the data to merge, which must be protobuf-encoded binary data.</param>
-        [System.Obsolete("Please use Constructor")]
+        [System.Obsolete("Please use DeserializeDelimited")]
         public static void MergeDelimitedFrom(this IMessage message, Stream input) =>
             MergeDelimitedFrom(message, input, false, null);
+
+        /// <summary>
+        /// Merges length-delimited data from the given stream into an existing message.
+        /// </summary>
+        /// <remarks>
+        /// The stream is expected to contain a length and then the data. Only the amount of data
+        /// specified by the length will be consumed.
+        /// </remarks>
+        /// <param name="input">Stream containing the data to merge, which must be protobuf-encoded binary data.</param>
+        public static T DeserializeDelimited<T>(Stream input) where T: IMessage, new() {
+            T value = new T();
+            value.MergeDelimitedFrom(input);
+            return value;
+        }
 
         /// <summary>
         /// Converts the given message into a byte array in protobuf encoding.
