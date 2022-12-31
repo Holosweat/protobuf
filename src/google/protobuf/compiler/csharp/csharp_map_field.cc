@@ -48,18 +48,22 @@ MapFieldGenerator::MapFieldGenerator(const FieldDescriptor* descriptor,
                                      int presenceIndex,
                                      const Options* options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
-}
-
-MapFieldGenerator::~MapFieldGenerator() {
-}
-
-void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   const FieldDescriptor* key_descriptor =
       descriptor_->message_type()->map_key();
   const FieldDescriptor* value_descriptor =
       descriptor_->message_type()->map_value();
   variables_["key_type_name"] = type_name(key_descriptor);
   variables_["value_type_name"] = type_name(value_descriptor);
+}
+
+MapFieldGenerator::~MapFieldGenerator() {
+}
+
+void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
+    const FieldDescriptor* key_descriptor =
+      descriptor_->message_type()->map_key();
+  const FieldDescriptor* value_descriptor =
+      descriptor_->message_type()->map_value();
   std::unique_ptr<FieldGeneratorBase> key_generator(
       CreateFieldGenerator(key_descriptor, 1, this->options()));
   std::unique_ptr<FieldGeneratorBase> value_generator(
@@ -80,14 +84,15 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ pbc::MapField<$key_type_name$, $value_type_name$> $property_name$ {\n"
+    "$access_level$ scg::IDictionary<$key_type_name$, $value_type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
+    "  init { $name$_ = new pbc::MapField<$key_type_name$, $value_type_name$>(value); }\n"
     "}\n");
 }
 
 void MapFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
-                 "$name$_.MergeFrom(other.$name$_);\n");
+                 "if (other.$name$_.Count > 0) { $name$_ = new pbc::MapField<$key_type_name$, $value_type_name$>($name$_); $name$_.MergeFrom(other.$name$_); }\n");
 }
 
 void MapFieldGenerator::GenerateParsingCode(io::Printer* printer) {

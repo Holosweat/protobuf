@@ -56,6 +56,15 @@ namespace Google.Protobuf.Collections
         private T[] array = EmptyArray;
         private int count = 0;
 
+        /// Creates with elements of other.
+        public RepeatedField(IEnumerable<T> other) {
+            AddRange(other);
+        }
+
+        /// Creates empty collection.
+        public RepeatedField() {
+        }
+
         /// <summary>
         /// Creates a deep clone of this repeated field.
         /// </summary>

@@ -75,6 +75,14 @@ namespace Google.Protobuf.Collections
         private readonly Dictionary<TKey, LinkedListNode<KeyValuePair<TKey, TValue>>> map = new(KeyEqualityComparer);
         private readonly LinkedList<KeyValuePair<TKey, TValue>> list = new();
 
+        /// Creates empty map field.
+        public MapField() {}
+
+        /// Copies values from other.
+        public MapField(IDictionary<TKey, TValue> other) {
+            MergeFrom(other);
+        }
+
         /// <summary>
         /// Creates a deep clone of this object.
         /// </summary>

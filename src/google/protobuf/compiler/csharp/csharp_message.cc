@@ -619,8 +619,7 @@ void MessageGenerator::GenerateMergingMethods(io::Printer* printer) {
   vars,"public $class_name$ MergedFrom($class_name$? other) {\n");
   printer->Indent();
   printer->Print(vars,
-    "$class_name$ res = new $class_name$();\n"
-    "res.MergeFrom(this);\n"
+    "$class_name$ res = new $class_name$(this);\n"
     "res.MergeFrom(other);\n"
     "return res;\n");
   printer->Outdent();
