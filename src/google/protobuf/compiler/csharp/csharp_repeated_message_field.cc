@@ -83,14 +83,14 @@ void RepeatedMessageFieldGenerator::GenerateMembers(io::Printer* printer) {
     variables_,
     "$access_level$ scg::IList<$type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
-    "  init { $name$_ = new pbc::RepeatedField<$type_name$>(); $name$_.Add(value); }\n"
+    "  init { $name$_ = new pbc::RepeatedField<$type_name$>(value); }\n"
     "}\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "$name$_.Add(other.$name$_);\n");
+    "if (other.$name$_.Count > 0) { $name$_ = new pbc::RepeatedField<$type_name$>($name$_); $name$_.Add(other.$name$_); }\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateParsingCode(io::Printer* printer) {

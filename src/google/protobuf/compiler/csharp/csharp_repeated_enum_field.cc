@@ -66,15 +66,16 @@ void RepeatedEnumFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ pbc::RepeatedField<$type_name$> $property_name$ {\n"
+    "$access_level$ scg::IList<$type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
+    "  init { $name$_ = new pbc::RepeatedField<$type_name$>(value); }\n"
     "}\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "$name$_.Add(other.$name$_);\n");
+    "if (other.$name$_.Count > 0) { $name$_ = new pbc::RepeatedField<$type_name$>($name$_); $name$_.Add(other.$name$_); }\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateParsingCode(io::Printer* printer) {

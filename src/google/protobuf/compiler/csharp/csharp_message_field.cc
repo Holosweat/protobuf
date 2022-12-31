@@ -101,7 +101,7 @@ void MessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
     "if (other.$has_property_check$) {\n"
     "  if ($has_not_property_check$) {\n"
     "    $name$_ = new $type_name$();\n"
-    "  }\n"
+    "  } else { $name$_ = new $type_name$($name$_); }\n"
     "  $name$_?.MergeFrom(other.$name$_);\n"
     "}\n");
 }
@@ -262,7 +262,7 @@ void MessageOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
     "if ($property_name$ == null) {\n"
     "  $property_name$_Internal = new $type_name$();\n"
-    "}\n"
+    "} else { $property_name$_Internal = new $type_name$($property_name$); }\n"
     "$property_name$?.MergeFrom(other.$property_name$);\n");
 }
 
