@@ -56,7 +56,7 @@ EnumFieldGenerator::~EnumFieldGenerator() {
 
 void EnumFieldGenerator::GenerateParsingCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$property_name$ = ($type_name$) input.ReadEnum();\n");
+    "$property_name$_Internal = ($type_name$) input.ReadEnum();\n");
 }
 
 void EnumFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -101,7 +101,7 @@ EnumOneofFieldGenerator::~EnumOneofFieldGenerator() {
 }
 
 void EnumOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
-  printer->Print(variables_, "$property_name$ = other.$property_name$;\n");
+  printer->Print(variables_, "$property_name$_Internal = other.$property_name$;\n");
 }
 
 void EnumOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {

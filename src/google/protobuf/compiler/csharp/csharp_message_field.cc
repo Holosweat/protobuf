@@ -69,7 +69,7 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
     variables_,
     "$access_level$ $type_name$? $property_name$ {\n"
     "  get { return $name$_; }\n"
-    "  set {\n"
+    "  init {\n"
     "    $name$_ = value;\n"
     "  }\n"
     "}\n");
@@ -100,9 +100,9 @@ void MessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
     variables_,
     "if (other.$has_property_check$) {\n"
     "  if ($has_not_property_check$) {\n"
-    "    $property_name$ = new $type_name$();\n"
+    "    $name$_ = new $type_name$();\n"
     "  }\n"
-    "  $property_name$?.MergeFrom(other.$name$_);\n"
+    "  $name$_?.MergeFrom(other.$name$_);\n"
     "}\n");
 }
 
@@ -110,7 +110,7 @@ void MessageFieldGenerator::GenerateParsingCode(io::Printer* printer) {
   printer->Print(
     variables_,
     "if ($has_not_property_check$) {\n"
-    "  $property_name$ = new $type_name$();\n"
+    "  $name$_ = new $type_name$();\n"
     "}\n");
   if (descriptor_->type() == FieldDescriptor::Type::TYPE_MESSAGE) {
     printer->Print(variables_, "input.ReadMessage($property_name$);\n");
@@ -219,6 +219,16 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
     variables_,
     "$access_level$ $type_name$? $property_name$ {\n"
     "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : null; }\n"
+    "  init {\n"
+    "    $oneof_name$_ = value;\n"
+    "    $oneof_name$Case_ = value == null ? $oneof_property_name$OneofCase.None : $oneof_property_name$OneofCase.$oneof_case_name$;\n"
+    "  }\n"
+    "}\n");
+
+  printer->Print(
+    variables_,
+    "private $type_name$? $property_name$_Internal {\n"
+    "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"
     "    $oneof_name$Case_ = value == null ? $oneof_property_name$OneofCase.None : $oneof_property_name$OneofCase.$oneof_case_name$;\n"
@@ -238,20 +248,20 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
       variables_,
       "/// <summary> Clears the value of the oneof if it's currently set to \"$descriptor_name$\" </summary>\n");
     AddPublicMemberAttributes(printer);
-    printer->Print(
-      variables_,
-      "$access_level$ void Clear$property_name$() {\n"
-      "  if ($has_property_check$) {\n"
-      "    Clear$oneof_property_name$();\n"
-      "  }\n"
-      "}\n");
+    // printer->Print(
+    //   variables_,
+    //   "$access_level$ void Clear$property_name$() {\n"
+    //   "  if ($has_property_check$) {\n"
+    //   "    Clear$oneof_property_name$();\n"
+    //   "  }\n"
+    //   "}\n");
   }
 }
 
 void MessageOneofFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
     "if ($property_name$ == null) {\n"
-    "  $property_name$ = new $type_name$();\n"
+    "  $property_name$_Internal = new $type_name$();\n"
     "}\n"
     "$property_name$?.MergeFrom(other.$property_name$);\n");
 }
@@ -269,7 +279,7 @@ void MessageOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {
   } else {
     printer->Print("input.ReadGroup(subBuilder);\n");
   }
-  printer->Print(variables_, "$property_name$ = subBuilder;\n");
+  printer->Print(variables_, "$property_name$_Internal = subBuilder;\n");
 }
 
 void MessageOneofFieldGenerator::WriteToString(io::Printer* printer) {

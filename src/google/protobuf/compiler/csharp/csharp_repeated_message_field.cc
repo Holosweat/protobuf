@@ -81,8 +81,9 @@ void RepeatedMessageFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ pbc::RepeatedField<$type_name$> $property_name$ {\n"
+    "$access_level$ scg::IList<$type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
+    "  init { $name$_ = new pbc::RepeatedField<$type_name$>(); $name$_.Add(value); }\n"
     "}\n");
 }
 
