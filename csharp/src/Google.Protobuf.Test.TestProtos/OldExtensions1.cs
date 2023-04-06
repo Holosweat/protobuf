@@ -65,11 +65,11 @@ namespace Google.Protobuf.TestProtos.OldGenerator {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TestMessage(TestMessage other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public TestMessage DeepClone() {
+    public TestMessage Clone() {
       return new TestMessage(this);
     }
 

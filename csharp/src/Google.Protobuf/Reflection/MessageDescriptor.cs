@@ -153,7 +153,7 @@ namespace Google.Protobuf.Reflection
         /// (and not modifying it) may want to cache the returned value.
         /// </summary>
         /// <returns>A protobuf representation of this message descriptor.</returns>
-        public DescriptorProto ToProto() => Proto.DeepClone();
+        public DescriptorProto ToProto() => Proto.Clone();
 
         internal bool IsExtensionsInitialized(IMessage message)
         {
@@ -302,7 +302,7 @@ namespace Google.Protobuf.Reflection
         /// Custom options can be retrieved as extensions of the returned message.
         /// NOTE: A defensive copy is created each time this property is retrieved.
         /// </summary>
-        public MessageOptions GetOptions() => Proto.Options?.DeepClone();
+        public MessageOptions GetOptions() => Proto.Options?.Clone();
 
         /// <summary>
         /// Gets a single value message option for this descriptor
@@ -311,7 +311,7 @@ namespace Google.Protobuf.Reflection
         public T GetOption<T>(Extension<MessageOptions, T> extension)
         {
             var value = Proto.Options.GetExtension(extension);
-            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).DeepClone() : value;
+            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).Clone() : value;
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace Google.Protobuf.Reflection
         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public Collections.RepeatedField<T> GetOption<T>(RepeatedExtension<MessageOptions, T> extension)
         {
-            return Proto.Options.GetExtension(extension).DeepClone();
+            return Proto.Options.GetExtension(extension).Clone();
         }
 
         /// <summary>

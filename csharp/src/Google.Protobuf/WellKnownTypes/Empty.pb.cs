@@ -82,12 +82,12 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Empty(Empty other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Empty DeepClone() {
+    public Empty Clone() {
       return new Empty(this);
     }
 

@@ -373,7 +373,7 @@ namespace Google.Protobuf
             Assert.AreEqual(2000, destination.Payload.SingleUint32);
 
             // Test merging unset message fields.
-            NestedTestAllTypes clearedSource = source.DeepClone();
+            NestedTestAllTypes clearedSource = source.Clone();
             clearedSource.Payload = null;
             destination = new NestedTestAllTypes();
             Merge(new FieldMaskTree().AddFieldPath("payload"),
@@ -415,17 +415,17 @@ namespace Google.Protobuf
             Assert.IsNull(destination.Payload);
 
             // Test merging unset primitive fields.
-            destination = source.DeepClone();
+            destination = source.Clone();
             destination.Payload.SingleInt32 = 0;
             NestedTestAllTypes sourceWithPayloadInt32Unset = destination;
-            destination = source.DeepClone();
+            destination = source.Clone();
             Merge(new FieldMaskTree().AddFieldPath("payload.single_int32"),
                 sourceWithPayloadInt32Unset, destination, options, useDynamicMessage);
             Assert.AreEqual(0, destination.Payload.SingleInt32);
 
             // Change to clear unset primitive fields.
             options.ReplacePrimitiveFields = true;
-            destination = source.DeepClone();
+            destination = source.Clone();
             Merge(new FieldMaskTree().AddFieldPath("payload.single_int32"),
                 sourceWithPayloadInt32Unset, destination, options, useDynamicMessage);
             Assert.IsNotNull(destination.Payload);

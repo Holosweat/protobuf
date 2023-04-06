@@ -81,7 +81,7 @@ void RepeatedMessageFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ scg::IList<$type_name$> $property_name$ {\n"
+    "$access_level$ scg::IEnumerable<$type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
     "  init { $name$_ = new pbc::RepeatedField<$type_name$>(value); }\n"
     "}\n");
@@ -144,7 +144,7 @@ void RepeatedMessageFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedMessageFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = deep ? other.$name$_.DeepClone() : other.$name$_;\n");
+    "$name$_ = deep ? other.$name$_.Clone() : other.$name$_;\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {

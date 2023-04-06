@@ -162,12 +162,12 @@ namespace Google.Protobuf.WellKnownTypes {
     public Any(Any other) : this() {
       typeUrl_ = other.typeUrl_;
       value_ = other.value_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Any DeepClone() {
+    public Any Clone() {
       return new Any(this);
     }
 

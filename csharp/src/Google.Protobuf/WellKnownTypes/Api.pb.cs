@@ -99,18 +99,18 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Api(Api other) : this() {
       name_ = other.name_;
-      methods_ = other.methods_.DeepClone();
-      options_ = other.options_.DeepClone();
+      methods_ = other.methods_.Clone();
+      options_ = other.options_.Clone();
       version_ = other.version_;
-      sourceContext_ = other.sourceContext_ != null ? other.sourceContext_.DeepClone() : null;
-      mixins_ = other.mixins_.DeepClone();
+      sourceContext_ = other.sourceContext_ != null ? other.sourceContext_.Clone() : null;
+      mixins_ = other.mixins_.Clone();
       syntax_ = other.syntax_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Api DeepClone() {
+    public Api Clone() {
       return new Api(this);
     }
 
@@ -534,14 +534,14 @@ namespace Google.Protobuf.WellKnownTypes {
       requestStreaming_ = other.requestStreaming_;
       responseTypeUrl_ = other.responseTypeUrl_;
       responseStreaming_ = other.responseStreaming_;
-      options_ = other.options_.DeepClone();
+      options_ = other.options_.Clone();
       syntax_ = other.syntax_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Method DeepClone() {
+    public Method Clone() {
       return new Method(this);
     }
 
@@ -1032,12 +1032,12 @@ namespace Google.Protobuf.WellKnownTypes {
     public Mixin(Mixin other) : this() {
       name_ = other.name_;
       root_ = other.root_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Mixin DeepClone() {
+    public Mixin Clone() {
       return new Mixin(this);
     }
 

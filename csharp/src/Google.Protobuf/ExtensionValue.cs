@@ -62,11 +62,11 @@ namespace Google.Protobuf
             return codec.CalculateUnconditionalSizeWithTag(field);
         }
 
-        public IExtensionValue DeepClone()
+        public IExtensionValue Clone()
         {
             return new ExtensionValue<T>(codec)
             {
-                field = field is IDeepCloneable<T> ? (field as IDeepCloneable<T>).DeepClone() : field
+                field = field is IDeepCloneable<T> ? (field as IDeepCloneable<T>).Clone() : field
             };
         }
 
@@ -154,11 +154,11 @@ namespace Google.Protobuf
             return field.CalculateSize(codec);
         }
 
-        public IExtensionValue DeepClone()
+        public IExtensionValue Clone()
         {
             return new RepeatedExtensionValue<T>(codec)
             {
-                field = field.DeepClone()
+                field = field.Clone()
             };
         }
 

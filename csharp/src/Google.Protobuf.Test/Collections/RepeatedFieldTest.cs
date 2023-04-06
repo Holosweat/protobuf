@@ -282,7 +282,7 @@ namespace Google.Protobuf.Collections
         public void Clone_ReturnsMutable()
         {
             var list = new RepeatedField<int> { 0 };
-            var clone = list.DeepClone();
+            var clone = list.Clone();
             clone[0] = 1;
         }
 

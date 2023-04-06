@@ -134,18 +134,18 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Type(Type other) : this() {
       name_ = other.name_;
-      fields_ = other.fields_.DeepClone();
-      oneofs_ = other.oneofs_.DeepClone();
-      options_ = other.options_.DeepClone();
-      sourceContext_ = other.sourceContext_ != null ? other.sourceContext_.DeepClone() : null;
+      fields_ = other.fields_.Clone();
+      oneofs_ = other.oneofs_.Clone();
+      options_ = other.options_.Clone();
+      sourceContext_ = other.sourceContext_ != null ? other.sourceContext_.Clone() : null;
       syntax_ = other.syntax_;
       edition_ = other.edition_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Type DeepClone() {
+    public Type Clone() {
       return new Type(this);
     }
 
@@ -551,15 +551,15 @@ namespace Google.Protobuf.WellKnownTypes {
       typeUrl_ = other.typeUrl_;
       oneofIndex_ = other.oneofIndex_;
       packed_ = other.packed_;
-      options_ = other.options_.DeepClone();
+      options_ = other.options_.Clone();
       jsonName_ = other.jsonName_;
       defaultValue_ = other.defaultValue_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Field DeepClone() {
+    public Field Clone() {
       return new Field(this);
     }
 
@@ -1203,17 +1203,17 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Enum(Enum other) : this() {
       name_ = other.name_;
-      enumvalue_ = other.enumvalue_.DeepClone();
-      options_ = other.options_.DeepClone();
-      sourceContext_ = other.sourceContext_ != null ? other.sourceContext_.DeepClone() : null;
+      enumvalue_ = other.enumvalue_.Clone();
+      options_ = other.options_.Clone();
+      sourceContext_ = other.sourceContext_ != null ? other.sourceContext_.Clone() : null;
       syntax_ = other.syntax_;
       edition_ = other.edition_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Enum DeepClone() {
+    public Enum Clone() {
       return new Enum(this);
     }
 
@@ -1586,13 +1586,13 @@ namespace Google.Protobuf.WellKnownTypes {
     public EnumValue(EnumValue other) : this() {
       name_ = other.name_;
       number_ = other.number_;
-      options_ = other.options_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      options_ = other.options_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public EnumValue DeepClone() {
+    public EnumValue Clone() {
       return new EnumValue(this);
     }
 
@@ -1850,13 +1850,13 @@ namespace Google.Protobuf.WellKnownTypes {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Option(Option other) : this() {
       name_ = other.name_;
-      value_ = other.value_ != null ? other.value_.DeepClone() : null;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      value_ = other.value_ != null ? other.value_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Option DeepClone() {
+    public Option Clone() {
       return new Option(this);
     }
 

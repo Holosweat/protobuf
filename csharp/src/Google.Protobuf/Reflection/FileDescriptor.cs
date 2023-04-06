@@ -246,7 +246,7 @@ namespace Google.Protobuf.Reflection
         /// (and not modifying it) may want to cache the returned value.
         /// </summary>
         /// <returns>A protobuf representation of this file descriptor.</returns>
-        public FileDescriptorProto ToProto() => Proto.DeepClone();
+        public FileDescriptorProto ToProto() => Proto.Clone();
 
         /// <summary>
         /// The syntax of the file
@@ -569,7 +569,7 @@ namespace Google.Protobuf.Reflection
         /// Custom options can be retrieved as extensions of the returned message.
         /// NOTE: A defensive copy is created each time this property is retrieved.
         /// </summary>
-        public FileOptions GetOptions() => Proto.Options?.DeepClone();
+        public FileOptions GetOptions() => Proto.Options?.Clone();
 
         /// <summary>
         /// Gets a single value file option for this descriptor
@@ -578,7 +578,7 @@ namespace Google.Protobuf.Reflection
         public T GetOption<T>(Extension<FileOptions, T> extension)
         {
             var value = Proto.Options.GetExtension(extension);
-            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).DeepClone() : value;
+            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).Clone() : value;
         }
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace Google.Protobuf.Reflection
         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public RepeatedField<T> GetOption<T>(RepeatedExtension<FileOptions, T> extension)
         {
-            return Proto.Options.GetExtension(extension).DeepClone();
+            return Proto.Options.GetExtension(extension).Clone();
         }
 
         /// <summary>
