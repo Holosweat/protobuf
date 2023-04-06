@@ -1,3 +1,13 @@
+# TIPS
+
+Protoc build
+* `cd "C:\p\build\protobuf"`
+* `cmake --build . --config Release`
+
+Proto library
+* `cd csharp/src`
+* `dotnet build -c Release`
+
 Protocol Buffers - Google's data interchange format
 ===================================================
 

@@ -146,12 +146,12 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Issue307(Issue307 other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Issue307 DeepClone() {
+    public Issue307 Clone() {
       return new Issue307(this);
     }
 
@@ -301,12 +301,12 @@ namespace UnitTest.Issues.TestProtos {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public NestedOnce(NestedOnce other) : this() {
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedOnce DeepClone() {
+        public NestedOnce Clone() {
           return new NestedOnce(this);
         }
 
@@ -456,12 +456,12 @@ namespace UnitTest.Issues.TestProtos {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
             public NestedTwice(NestedTwice other) : this() {
-              _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+              _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
             }
 
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public NestedTwice DeepClone() {
+            public NestedTwice Clone() {
               return new NestedTwice(this);
             }
 
@@ -619,14 +619,14 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NegativeEnumMessage(NegativeEnumMessage other) : this() {
       value_ = other.value_;
-      values_ = other.values_.DeepClone();
-      packedValues_ = other.packedValues_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      values_ = other.values_.Clone();
+      packedValues_ = other.packedValues_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NegativeEnumMessage DeepClone() {
+    public NegativeEnumMessage Clone() {
       return new NegativeEnumMessage(this);
     }
 
@@ -864,12 +864,12 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DeprecatedChild(DeprecatedChild other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DeprecatedChild DeepClone() {
+    public DeprecatedChild Clone() {
       return new DeprecatedChild(this);
     }
 
@@ -1017,17 +1017,17 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DeprecatedFieldsMessage(DeprecatedFieldsMessage other) : this() {
       primitiveValue_ = other.primitiveValue_;
-      primitiveArray_ = other.primitiveArray_.DeepClone();
-      messageValue_ = other.messageValue_ != null ? other.messageValue_.DeepClone() : null;
-      messageArray_ = other.messageArray_.DeepClone();
+      primitiveArray_ = other.primitiveArray_.Clone();
+      messageValue_ = other.messageValue_ != null ? other.messageValue_.Clone() : null;
+      messageArray_ = other.messageArray_.Clone();
       enumValue_ = other.enumValue_;
-      enumArray_ = other.enumArray_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      enumArray_ = other.enumArray_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DeprecatedFieldsMessage DeepClone() {
+    public DeprecatedFieldsMessage Clone() {
       return new DeprecatedFieldsMessage(this);
     }
 
@@ -1380,12 +1380,12 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ItemField(ItemField other) : this() {
       item_ = other.item_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ItemField DeepClone() {
+    public ItemField Clone() {
       return new ItemField(this);
     }
 
@@ -1570,12 +1570,12 @@ namespace UnitTest.Issues.TestProtos {
     public ReservedNames(ReservedNames other) : this() {
       types_ = other.types_;
       descriptor_ = other.descriptor_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ReservedNames DeepClone() {
+    public ReservedNames Clone() {
       return new ReservedNames(this);
     }
 
@@ -1800,12 +1800,12 @@ namespace UnitTest.Issues.TestProtos {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public SomeNestedType(SomeNestedType other) : this() {
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SomeNestedType DeepClone() {
+        public SomeNestedType Clone() {
           return new SomeNestedType(this);
         }
 
@@ -1989,12 +1989,12 @@ namespace UnitTest.Issues.TestProtos {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestJsonFieldOrdering DeepClone() {
+    public TestJsonFieldOrdering Clone() {
       return new TestJsonFieldOrdering(this);
     }
 
@@ -2412,12 +2412,12 @@ namespace UnitTest.Issues.TestProtos {
       name_ = other.name_;
       description_ = other.description_;
       guid_ = other.guid_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestJsonName DeepClone() {
+    public TestJsonName Clone() {
       return new TestJsonName(this);
     }
 
@@ -2685,16 +2685,16 @@ namespace UnitTest.Issues.TestProtos {
           Text = other.Text;
           break;
         case ValueOneofCase.Nested:
-          Nested = other.Nested.DeepClone();
+          Nested = other.Nested.Clone();
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneofMerging DeepClone() {
+    public OneofMerging Clone() {
       return new OneofMerging(this);
     }
 
@@ -2957,12 +2957,12 @@ namespace UnitTest.Issues.TestProtos {
         public Nested(Nested other) : this() {
           x_ = other.x_;
           y_ = other.y_;
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public Nested DeepClone() {
+        public Nested Clone() {
           return new Nested(this);
         }
 
@@ -3195,12 +3195,12 @@ namespace UnitTest.Issues.TestProtos {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NullValueOutsideStruct DeepClone() {
+    public NullValueOutsideStruct Clone() {
       return new NullValueOutsideStruct(this);
     }
 
@@ -3448,12 +3448,12 @@ namespace UnitTest.Issues.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NullValueNotInOneof(NullValueNotInOneof other) : this() {
       nullValue_ = other.nullValue_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NullValueNotInOneof DeepClone() {
+    public NullValueNotInOneof Clone() {
       return new NullValueNotInOneof(this);
     }
 
@@ -3638,12 +3638,12 @@ namespace UnitTest.Issues.TestProtos {
     public MixedRegularAndOptional(MixedRegularAndOptional other) : this() {
       regularField_ = other.regularField_;
       optionalField_ = other.optionalField_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MixedRegularAndOptional DeepClone() {
+    public MixedRegularAndOptional Clone() {
       return new MixedRegularAndOptional(this);
     }
 
@@ -3883,12 +3883,12 @@ namespace UnitTest.Issues.TestProtos {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneofWithNoneField DeepClone() {
+    public OneofWithNoneField Clone() {
       return new OneofWithNoneField(this);
     }
 
@@ -4142,12 +4142,12 @@ namespace UnitTest.Issues.TestProtos {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneofWithNoneName DeepClone() {
+    public OneofWithNoneName Clone() {
       return new OneofWithNoneName(this);
     }
 
@@ -4407,12 +4407,12 @@ namespace UnitTest.Issues.TestProtos {
       mergeFrom_ = other.mergeFrom_;
       onConstruction_ = other.onConstruction_;
       parser_ = other.parser_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DisambiguateCommonMembers DeepClone() {
+    public DisambiguateCommonMembers Clone() {
       return new DisambiguateCommonMembers(this);
     }
 

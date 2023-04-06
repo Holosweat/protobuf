@@ -210,29 +210,29 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestMap(TestMap other) : this() {
-      mapInt32Int32_ = other.mapInt32Int32_.DeepClone();
-      mapInt64Int64_ = other.mapInt64Int64_.DeepClone();
-      mapUint32Uint32_ = other.mapUint32Uint32_.DeepClone();
-      mapUint64Uint64_ = other.mapUint64Uint64_.DeepClone();
-      mapSint32Sint32_ = other.mapSint32Sint32_.DeepClone();
-      mapSint64Sint64_ = other.mapSint64Sint64_.DeepClone();
-      mapFixed32Fixed32_ = other.mapFixed32Fixed32_.DeepClone();
-      mapFixed64Fixed64_ = other.mapFixed64Fixed64_.DeepClone();
-      mapSfixed32Sfixed32_ = other.mapSfixed32Sfixed32_.DeepClone();
-      mapSfixed64Sfixed64_ = other.mapSfixed64Sfixed64_.DeepClone();
-      mapInt32Float_ = other.mapInt32Float_.DeepClone();
-      mapInt32Double_ = other.mapInt32Double_.DeepClone();
-      mapBoolBool_ = other.mapBoolBool_.DeepClone();
-      mapStringString_ = other.mapStringString_.DeepClone();
-      mapInt32Bytes_ = other.mapInt32Bytes_.DeepClone();
-      mapInt32Enum_ = other.mapInt32Enum_.DeepClone();
-      mapInt32ForeignMessage_ = other.mapInt32ForeignMessage_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      mapInt32Int32_ = other.mapInt32Int32_.Clone();
+      mapInt64Int64_ = other.mapInt64Int64_.Clone();
+      mapUint32Uint32_ = other.mapUint32Uint32_.Clone();
+      mapUint64Uint64_ = other.mapUint64Uint64_.Clone();
+      mapSint32Sint32_ = other.mapSint32Sint32_.Clone();
+      mapSint64Sint64_ = other.mapSint64Sint64_.Clone();
+      mapFixed32Fixed32_ = other.mapFixed32Fixed32_.Clone();
+      mapFixed64Fixed64_ = other.mapFixed64Fixed64_.Clone();
+      mapSfixed32Sfixed32_ = other.mapSfixed32Sfixed32_.Clone();
+      mapSfixed64Sfixed64_ = other.mapSfixed64Sfixed64_.Clone();
+      mapInt32Float_ = other.mapInt32Float_.Clone();
+      mapInt32Double_ = other.mapInt32Double_.Clone();
+      mapBoolBool_ = other.mapBoolBool_.Clone();
+      mapStringString_ = other.mapStringString_.Clone();
+      mapInt32Bytes_ = other.mapInt32Bytes_.Clone();
+      mapInt32Enum_ = other.mapInt32Enum_.Clone();
+      mapInt32ForeignMessage_ = other.mapInt32ForeignMessage_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestMap DeepClone() {
+    public TestMap Clone() {
       return new TestMap(this);
     }
 
@@ -804,13 +804,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestMapSubmessage(TestMapSubmessage other) : this() {
-      testMap_ = other.testMap_ != null ? other.testMap_.DeepClone() : null;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      testMap_ = other.testMap_ != null ? other.testMap_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestMapSubmessage DeepClone() {
+    public TestMapSubmessage Clone() {
       return new TestMapSubmessage(this);
     }
 
@@ -1002,13 +1002,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestMessageMap(TestMessageMap other) : this() {
-      mapInt32Message_ = other.mapInt32Message_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      mapInt32Message_ = other.mapInt32Message_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestMessageMap DeepClone() {
+    public TestMessageMap Clone() {
       return new TestMessageMap(this);
     }
 
@@ -1183,14 +1183,14 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestSameTypeMap(TestSameTypeMap other) : this() {
-      map1_ = other.map1_.DeepClone();
-      map2_ = other.map2_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      map1_ = other.map1_.Clone();
+      map2_ = other.map2_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestSameTypeMap DeepClone() {
+    public TestSameTypeMap Clone() {
       return new TestSameTypeMap(this);
     }
 
@@ -1387,27 +1387,27 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestArenaMap(TestArenaMap other) : this() {
-      mapInt32Int32_ = other.mapInt32Int32_.DeepClone();
-      mapInt64Int64_ = other.mapInt64Int64_.DeepClone();
-      mapUint32Uint32_ = other.mapUint32Uint32_.DeepClone();
-      mapUint64Uint64_ = other.mapUint64Uint64_.DeepClone();
-      mapSint32Sint32_ = other.mapSint32Sint32_.DeepClone();
-      mapSint64Sint64_ = other.mapSint64Sint64_.DeepClone();
-      mapFixed32Fixed32_ = other.mapFixed32Fixed32_.DeepClone();
-      mapFixed64Fixed64_ = other.mapFixed64Fixed64_.DeepClone();
-      mapSfixed32Sfixed32_ = other.mapSfixed32Sfixed32_.DeepClone();
-      mapSfixed64Sfixed64_ = other.mapSfixed64Sfixed64_.DeepClone();
-      mapInt32Float_ = other.mapInt32Float_.DeepClone();
-      mapInt32Double_ = other.mapInt32Double_.DeepClone();
-      mapBoolBool_ = other.mapBoolBool_.DeepClone();
-      mapInt32Enum_ = other.mapInt32Enum_.DeepClone();
-      mapInt32ForeignMessage_ = other.mapInt32ForeignMessage_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      mapInt32Int32_ = other.mapInt32Int32_.Clone();
+      mapInt64Int64_ = other.mapInt64Int64_.Clone();
+      mapUint32Uint32_ = other.mapUint32Uint32_.Clone();
+      mapUint64Uint64_ = other.mapUint64Uint64_.Clone();
+      mapSint32Sint32_ = other.mapSint32Sint32_.Clone();
+      mapSint64Sint64_ = other.mapSint64Sint64_.Clone();
+      mapFixed32Fixed32_ = other.mapFixed32Fixed32_.Clone();
+      mapFixed64Fixed64_ = other.mapFixed64Fixed64_.Clone();
+      mapSfixed32Sfixed32_ = other.mapSfixed32Sfixed32_.Clone();
+      mapSfixed64Sfixed64_ = other.mapSfixed64Sfixed64_.Clone();
+      mapInt32Float_ = other.mapInt32Float_.Clone();
+      mapInt32Double_ = other.mapInt32Double_.Clone();
+      mapBoolBool_ = other.mapBoolBool_.Clone();
+      mapInt32Enum_ = other.mapInt32Enum_.Clone();
+      mapInt32ForeignMessage_ = other.mapInt32ForeignMessage_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestArenaMap DeepClone() {
+    public TestArenaMap Clone() {
       return new TestArenaMap(this);
     }
 
@@ -1933,13 +1933,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MessageContainingEnumCalledType(MessageContainingEnumCalledType other) : this() {
-      type_ = other.type_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      type_ = other.type_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MessageContainingEnumCalledType DeepClone() {
+    public MessageContainingEnumCalledType Clone() {
       return new MessageContainingEnumCalledType(this);
     }
 
@@ -2126,13 +2126,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MessageContainingMapCalledEntry(MessageContainingMapCalledEntry other) : this() {
-      entry_ = other.entry_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      entry_ = other.entry_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MessageContainingMapCalledEntry DeepClone() {
+    public MessageContainingMapCalledEntry Clone() {
       return new MessageContainingMapCalledEntry(this);
     }
 

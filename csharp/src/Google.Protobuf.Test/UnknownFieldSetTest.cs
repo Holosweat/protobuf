@@ -125,12 +125,12 @@ namespace Google.Protobuf
         public void TestClone(IMessage message)
         {
             var emptyMessage = new TestEmptyMessage();
-            TestEmptyMessage otherEmptyMessage = emptyMessage.DeepClone();
+            TestEmptyMessage otherEmptyMessage = emptyMessage.Clone();
             Assert.AreEqual(emptyMessage.CalculateSize(), otherEmptyMessage.CalculateSize());
             Assert.AreEqual(emptyMessage.ToByteArray(), otherEmptyMessage.ToByteArray());
 
             emptyMessage.MergeFrom(message.ToByteArray());
-            otherEmptyMessage = emptyMessage.DeepClone();
+            otherEmptyMessage = emptyMessage.Clone();
             Assert.AreEqual(message.CalculateSize(), otherEmptyMessage.CalculateSize());
             Assert.AreEqual(message.ToByteArray(), otherEmptyMessage.ToByteArray());
         }
@@ -152,7 +152,7 @@ namespace Google.Protobuf
             destUnknownFieldSet.AddOrReplaceField(999, unknownLengthDelimitedField1);
             destUnknownFieldSet.AddOrReplaceField(999, unknownLengthDelimitedField2);
 
-            var clone = UnknownFieldSet.DeepClone(destUnknownFieldSet);
+            var clone = UnknownFieldSet.Clone(destUnknownFieldSet);
 
             Assert.IsTrue(clone.HasField(997));
             Assert.IsTrue(clone.HasField(999));

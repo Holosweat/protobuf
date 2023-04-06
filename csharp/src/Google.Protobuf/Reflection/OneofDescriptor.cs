@@ -78,7 +78,7 @@ namespace Google.Protobuf.Reflection
         /// (and not modifying it) may want to cache the returned value.
         /// </summary>
         /// <returns>A protobuf representation of this oneof descriptor.</returns>
-        public OneofDescriptorProto ToProto() => Proto.DeepClone();
+        public OneofDescriptorProto ToProto() => Proto.Clone();
 
         /// <summary>
         /// Gets the message type containing this oneof.
@@ -136,7 +136,7 @@ namespace Google.Protobuf.Reflection
         /// Custom options can be retrieved as extensions of the returned message.
         /// NOTE: A defensive copy is created each time this property is retrieved.
         /// </summary>
-        public OneofOptions GetOptions() => Proto.Options?.DeepClone();
+        public OneofOptions GetOptions() => Proto.Options?.Clone();
 
         /// <summary>
         /// Gets a single value oneof option for this descriptor
@@ -145,7 +145,7 @@ namespace Google.Protobuf.Reflection
         public T GetOption<T>(Extension<OneofOptions, T> extension)
         {
             var value = Proto.Options.GetExtension(extension);
-            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).DeepClone() : value;
+            return value is IDeepCloneable<T> ? (value as IDeepCloneable<T>).Clone() : value;
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Google.Protobuf.Reflection
         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public RepeatedField<T> GetOption<T>(RepeatedExtension<OneofOptions, T> extension)
         {
-            return Proto.Options.GetExtension(extension).DeepClone();
+            return Proto.Options.GetExtension(extension).Clone();
         }
 
         internal void CrossLink()

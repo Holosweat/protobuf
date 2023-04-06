@@ -131,17 +131,17 @@ namespace ProtobufUnittest {
       optionalString_ = other.optionalString_;
       optionalBytes_ = other.optionalBytes_;
       optionalCord_ = other.optionalCord_;
-      optionalNestedMessage_ = other.optionalNestedMessage_ != null ? other.optionalNestedMessage_.DeepClone() : null;
-      lazyNestedMessage_ = other.lazyNestedMessage_ != null ? other.lazyNestedMessage_.DeepClone() : null;
+      optionalNestedMessage_ = other.optionalNestedMessage_ != null ? other.optionalNestedMessage_.Clone() : null;
+      lazyNestedMessage_ = other.lazyNestedMessage_ != null ? other.lazyNestedMessage_.Clone() : null;
       optionalNestedEnum_ = other.optionalNestedEnum_;
       singularInt32_ = other.singularInt32_;
       singularInt64_ = other.singularInt64_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestProto3Optional DeepClone() {
+    public TestProto3Optional Clone() {
       return new TestProto3Optional(this);
     }
 
@@ -1303,12 +1303,12 @@ namespace ProtobufUnittest {
         public NestedMessage(NestedMessage other) : this() {
           _hasBits0 = other._hasBits0;
           bb_ = other.bb_;
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedMessage DeepClone() {
+        public NestedMessage Clone() {
           return new NestedMessage(this);
         }
 
@@ -1514,14 +1514,14 @@ namespace ProtobufUnittest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestProto3OptionalMessage(TestProto3OptionalMessage other) : this() {
-      nestedMessage_ = other.nestedMessage_ != null ? other.nestedMessage_.DeepClone() : null;
-      optionalNestedMessage_ = other.optionalNestedMessage_ != null ? other.optionalNestedMessage_.DeepClone() : null;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      nestedMessage_ = other.nestedMessage_ != null ? other.nestedMessage_.Clone() : null;
+      optionalNestedMessage_ = other.optionalNestedMessage_ != null ? other.optionalNestedMessage_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestProto3OptionalMessage DeepClone() {
+    public TestProto3OptionalMessage Clone() {
       return new TestProto3OptionalMessage(this);
     }
 
@@ -1762,12 +1762,12 @@ namespace ProtobufUnittest {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public NestedMessage(NestedMessage other) : this() {
           s_ = other.s_;
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedMessage DeepClone() {
+        public NestedMessage Clone() {
           return new NestedMessage(this);
         }
 
@@ -1955,12 +1955,12 @@ namespace ProtobufUnittest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Proto3OptionalExtensions(Proto3OptionalExtensions other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Proto3OptionalExtensions DeepClone() {
+    public Proto3OptionalExtensions Clone() {
       return new Proto3OptionalExtensions(this);
     }
 

@@ -176,7 +176,7 @@ namespace Google.Protobuf
         /// <summary>
         /// Clones the registry into a new registry
         /// </summary>
-        public ExtensionRegistry DeepClone()
+        public ExtensionRegistry Clone()
         {
             return new ExtensionRegistry(extensions);
         }

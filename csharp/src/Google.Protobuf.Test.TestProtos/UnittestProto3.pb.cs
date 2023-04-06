@@ -303,41 +303,41 @@ namespace Google.Protobuf.TestProtos {
       singleBool_ = other.singleBool_;
       singleString_ = other.singleString_;
       singleBytes_ = other.singleBytes_;
-      singleNestedMessage_ = other.singleNestedMessage_ != null ? other.singleNestedMessage_.DeepClone() : null;
-      singleForeignMessage_ = other.singleForeignMessage_ != null ? other.singleForeignMessage_.DeepClone() : null;
-      singleImportMessage_ = other.singleImportMessage_ != null ? other.singleImportMessage_.DeepClone() : null;
+      singleNestedMessage_ = other.singleNestedMessage_ != null ? other.singleNestedMessage_.Clone() : null;
+      singleForeignMessage_ = other.singleForeignMessage_ != null ? other.singleForeignMessage_.Clone() : null;
+      singleImportMessage_ = other.singleImportMessage_ != null ? other.singleImportMessage_.Clone() : null;
       singleNestedEnum_ = other.singleNestedEnum_;
       singleForeignEnum_ = other.singleForeignEnum_;
       singleImportEnum_ = other.singleImportEnum_;
-      singlePublicImportMessage_ = other.singlePublicImportMessage_ != null ? other.singlePublicImportMessage_.DeepClone() : null;
-      repeatedInt32_ = other.repeatedInt32_.DeepClone();
-      repeatedInt64_ = other.repeatedInt64_.DeepClone();
-      repeatedUint32_ = other.repeatedUint32_.DeepClone();
-      repeatedUint64_ = other.repeatedUint64_.DeepClone();
-      repeatedSint32_ = other.repeatedSint32_.DeepClone();
-      repeatedSint64_ = other.repeatedSint64_.DeepClone();
-      repeatedFixed32_ = other.repeatedFixed32_.DeepClone();
-      repeatedFixed64_ = other.repeatedFixed64_.DeepClone();
-      repeatedSfixed32_ = other.repeatedSfixed32_.DeepClone();
-      repeatedSfixed64_ = other.repeatedSfixed64_.DeepClone();
-      repeatedFloat_ = other.repeatedFloat_.DeepClone();
-      repeatedDouble_ = other.repeatedDouble_.DeepClone();
-      repeatedBool_ = other.repeatedBool_.DeepClone();
-      repeatedString_ = other.repeatedString_.DeepClone();
-      repeatedBytes_ = other.repeatedBytes_.DeepClone();
-      repeatedNestedMessage_ = other.repeatedNestedMessage_.DeepClone();
-      repeatedForeignMessage_ = other.repeatedForeignMessage_.DeepClone();
-      repeatedImportMessage_ = other.repeatedImportMessage_.DeepClone();
-      repeatedNestedEnum_ = other.repeatedNestedEnum_.DeepClone();
-      repeatedForeignEnum_ = other.repeatedForeignEnum_.DeepClone();
-      repeatedImportEnum_ = other.repeatedImportEnum_.DeepClone();
-      repeatedPublicImportMessage_ = other.repeatedPublicImportMessage_.DeepClone();
+      singlePublicImportMessage_ = other.singlePublicImportMessage_ != null ? other.singlePublicImportMessage_.Clone() : null;
+      repeatedInt32_ = other.repeatedInt32_.Clone();
+      repeatedInt64_ = other.repeatedInt64_.Clone();
+      repeatedUint32_ = other.repeatedUint32_.Clone();
+      repeatedUint64_ = other.repeatedUint64_.Clone();
+      repeatedSint32_ = other.repeatedSint32_.Clone();
+      repeatedSint64_ = other.repeatedSint64_.Clone();
+      repeatedFixed32_ = other.repeatedFixed32_.Clone();
+      repeatedFixed64_ = other.repeatedFixed64_.Clone();
+      repeatedSfixed32_ = other.repeatedSfixed32_.Clone();
+      repeatedSfixed64_ = other.repeatedSfixed64_.Clone();
+      repeatedFloat_ = other.repeatedFloat_.Clone();
+      repeatedDouble_ = other.repeatedDouble_.Clone();
+      repeatedBool_ = other.repeatedBool_.Clone();
+      repeatedString_ = other.repeatedString_.Clone();
+      repeatedBytes_ = other.repeatedBytes_.Clone();
+      repeatedNestedMessage_ = other.repeatedNestedMessage_.Clone();
+      repeatedForeignMessage_ = other.repeatedForeignMessage_.Clone();
+      repeatedImportMessage_ = other.repeatedImportMessage_.Clone();
+      repeatedNestedEnum_ = other.repeatedNestedEnum_.Clone();
+      repeatedForeignEnum_ = other.repeatedForeignEnum_.Clone();
+      repeatedImportEnum_ = other.repeatedImportEnum_.Clone();
+      repeatedPublicImportMessage_ = other.repeatedPublicImportMessage_.Clone();
       switch (other.OneofFieldCase) {
         case OneofFieldOneofCase.OneofUint32:
           OneofUint32 = other.OneofUint32;
           break;
         case OneofFieldOneofCase.OneofNestedMessage:
-          OneofNestedMessage = other.OneofNestedMessage.DeepClone();
+          OneofNestedMessage = other.OneofNestedMessage.Clone();
           break;
         case OneofFieldOneofCase.OneofString:
           OneofString = other.OneofString;
@@ -347,12 +347,12 @@ namespace Google.Protobuf.TestProtos {
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestAllTypes DeepClone() {
+    public TestAllTypes Clone() {
       return new TestAllTypes(this);
     }
 
@@ -2121,12 +2121,12 @@ namespace Google.Protobuf.TestProtos {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public NestedMessage(NestedMessage other) : this() {
           bb_ = other.bb_;
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedMessage DeepClone() {
+        public NestedMessage Clone() {
           return new NestedMessage(this);
         }
 
@@ -2322,15 +2322,15 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NestedTestAllTypes(NestedTestAllTypes other) : this() {
-      child_ = other.child_ != null ? other.child_.DeepClone() : null;
-      payload_ = other.payload_ != null ? other.payload_.DeepClone() : null;
-      repeatedChild_ = other.repeatedChild_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      child_ = other.child_ != null ? other.child_.Clone() : null;
+      payload_ = other.payload_ != null ? other.payload_.Clone() : null;
+      repeatedChild_ = other.repeatedChild_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NestedTestAllTypes DeepClone() {
+    public NestedTestAllTypes Clone() {
       return new NestedTestAllTypes(this);
     }
 
@@ -2593,12 +2593,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestDeprecatedFields(TestDeprecatedFields other) : this() {
       deprecatedInt32_ = other.deprecatedInt32_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestDeprecatedFields DeepClone() {
+    public TestDeprecatedFields Clone() {
       return new TestDeprecatedFields(this);
     }
 
@@ -2787,12 +2787,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ForeignMessage(ForeignMessage other) : this() {
       c_ = other.c_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ForeignMessage DeepClone() {
+    public ForeignMessage Clone() {
       return new ForeignMessage(this);
     }
 
@@ -2975,12 +2975,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestReservedFields(TestReservedFields other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestReservedFields DeepClone() {
+    public TestReservedFields Clone() {
       return new TestReservedFields(this);
     }
 
@@ -3130,13 +3130,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestForeignNested(TestForeignNested other) : this() {
-      foreignNested_ = other.foreignNested_ != null ? other.foreignNested_.DeepClone() : null;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      foreignNested_ = other.foreignNested_ != null ? other.foreignNested_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestForeignNested DeepClone() {
+    public TestForeignNested Clone() {
       return new TestForeignNested(this);
     }
 
@@ -3333,12 +3333,12 @@ namespace Google.Protobuf.TestProtos {
     public TestReallyLargeTagNumber(TestReallyLargeTagNumber other) : this() {
       a_ = other.a_;
       bb_ = other.bb_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestReallyLargeTagNumber DeepClone() {
+    public TestReallyLargeTagNumber Clone() {
       return new TestReallyLargeTagNumber(this);
     }
 
@@ -3561,14 +3561,14 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestRecursiveMessage(TestRecursiveMessage other) : this() {
-      a_ = other.a_ != null ? other.a_.DeepClone() : null;
+      a_ = other.a_ != null ? other.a_.Clone() : null;
       i_ = other.i_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestRecursiveMessage DeepClone() {
+    public TestRecursiveMessage Clone() {
       return new TestRecursiveMessage(this);
     }
 
@@ -3799,13 +3799,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestMutualRecursionA(TestMutualRecursionA other) : this() {
-      bb_ = other.bb_ != null ? other.bb_.DeepClone() : null;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      bb_ = other.bb_ != null ? other.bb_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestMutualRecursionA DeepClone() {
+    public TestMutualRecursionA Clone() {
       return new TestMutualRecursionA(this);
     }
 
@@ -3997,14 +3997,14 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestMutualRecursionB(TestMutualRecursionB other) : this() {
-      a_ = other.a_ != null ? other.a_.DeepClone() : null;
+      a_ = other.a_ != null ? other.a_.Clone() : null;
       optionalInt32_ = other.optionalInt32_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestMutualRecursionB DeepClone() {
+    public TestMutualRecursionB Clone() {
       return new TestMutualRecursionB(this);
     }
 
@@ -4233,12 +4233,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestEnumAllowAlias(TestEnumAllowAlias other) : this() {
       value_ = other.value_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestEnumAllowAlias DeepClone() {
+    public TestEnumAllowAlias Clone() {
       return new TestEnumAllowAlias(this);
     }
 
@@ -4428,17 +4428,17 @@ namespace Google.Protobuf.TestProtos {
       primitiveField_ = other.primitiveField_;
       stringField_ = other.stringField_;
       enumField_ = other.enumField_;
-      messageField_ = other.messageField_ != null ? other.messageField_.DeepClone() : null;
-      repeatedPrimitiveField_ = other.repeatedPrimitiveField_.DeepClone();
-      repeatedStringField_ = other.repeatedStringField_.DeepClone();
-      repeatedEnumField_ = other.repeatedEnumField_.DeepClone();
-      repeatedMessageField_ = other.repeatedMessageField_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      messageField_ = other.messageField_ != null ? other.messageField_.Clone() : null;
+      repeatedPrimitiveField_ = other.repeatedPrimitiveField_.Clone();
+      repeatedStringField_ = other.repeatedStringField_.Clone();
+      repeatedEnumField_ = other.repeatedEnumField_.Clone();
+      repeatedMessageField_ = other.repeatedMessageField_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestCamelCaseFieldNames DeepClone() {
+    public TestCamelCaseFieldNames Clone() {
       return new TestCamelCaseFieldNames(this);
     }
 
@@ -4849,13 +4849,13 @@ namespace Google.Protobuf.TestProtos {
       myString_ = other.myString_;
       myInt_ = other.myInt_;
       myFloat_ = other.myFloat_;
-      singleNestedMessage_ = other.singleNestedMessage_ != null ? other.singleNestedMessage_.DeepClone() : null;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      singleNestedMessage_ = other.singleNestedMessage_ != null ? other.singleNestedMessage_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestFieldOrderings DeepClone() {
+    public TestFieldOrderings Clone() {
       return new TestFieldOrderings(this);
     }
 
@@ -5160,12 +5160,12 @@ namespace Google.Protobuf.TestProtos {
         public NestedMessage(NestedMessage other) : this() {
           oo_ = other.oo_;
           bb_ = other.bb_;
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedMessage DeepClone() {
+        public NestedMessage Clone() {
           return new NestedMessage(this);
         }
 
@@ -5395,12 +5395,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SparseEnumMessage(SparseEnumMessage other) : this() {
       sparseEnum_ = other.sparseEnum_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SparseEnumMessage DeepClone() {
+    public SparseEnumMessage Clone() {
       return new SparseEnumMessage(this);
     }
 
@@ -5587,12 +5587,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OneString(OneString other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneString DeepClone() {
+    public OneString Clone() {
       return new OneString(this);
     }
 
@@ -5775,13 +5775,13 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MoreString(MoreString other) : this() {
-      data_ = other.data_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      data_ = other.data_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MoreString DeepClone() {
+    public MoreString Clone() {
       return new MoreString(this);
     }
 
@@ -5954,12 +5954,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OneBytes(OneBytes other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OneBytes DeepClone() {
+    public OneBytes Clone() {
       return new OneBytes(this);
     }
 
@@ -6143,12 +6143,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MoreBytes(MoreBytes other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MoreBytes DeepClone() {
+    public MoreBytes Clone() {
       return new MoreBytes(this);
     }
 
@@ -6335,12 +6335,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Int32Message(Int32Message other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Int32Message DeepClone() {
+    public Int32Message Clone() {
       return new Int32Message(this);
     }
 
@@ -6524,12 +6524,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Uint32Message(Uint32Message other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Uint32Message DeepClone() {
+    public Uint32Message Clone() {
       return new Uint32Message(this);
     }
 
@@ -6713,12 +6713,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Int64Message(Int64Message other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Int64Message DeepClone() {
+    public Int64Message Clone() {
       return new Int64Message(this);
     }
 
@@ -6902,12 +6902,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Uint64Message(Uint64Message other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Uint64Message DeepClone() {
+    public Uint64Message Clone() {
       return new Uint64Message(this);
     }
 
@@ -7091,12 +7091,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public BoolMessage(BoolMessage other) : this() {
       data_ = other.data_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public BoolMessage DeepClone() {
+    public BoolMessage Clone() {
       return new BoolMessage(this);
     }
 
@@ -7290,16 +7290,16 @@ namespace Google.Protobuf.TestProtos {
           FooString = other.FooString;
           break;
         case FooOneofCase.FooMessage:
-          FooMessage = other.FooMessage.DeepClone();
+          FooMessage = other.FooMessage.Clone();
           break;
       }
 
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestOneof DeepClone() {
+    public TestOneof Clone() {
       return new TestOneof(this);
     }
 
@@ -7594,26 +7594,26 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestPackedTypes(TestPackedTypes other) : this() {
-      packedInt32_ = other.packedInt32_.DeepClone();
-      packedInt64_ = other.packedInt64_.DeepClone();
-      packedUint32_ = other.packedUint32_.DeepClone();
-      packedUint64_ = other.packedUint64_.DeepClone();
-      packedSint32_ = other.packedSint32_.DeepClone();
-      packedSint64_ = other.packedSint64_.DeepClone();
-      packedFixed32_ = other.packedFixed32_.DeepClone();
-      packedFixed64_ = other.packedFixed64_.DeepClone();
-      packedSfixed32_ = other.packedSfixed32_.DeepClone();
-      packedSfixed64_ = other.packedSfixed64_.DeepClone();
-      packedFloat_ = other.packedFloat_.DeepClone();
-      packedDouble_ = other.packedDouble_.DeepClone();
-      packedBool_ = other.packedBool_.DeepClone();
-      packedEnum_ = other.packedEnum_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      packedInt32_ = other.packedInt32_.Clone();
+      packedInt64_ = other.packedInt64_.Clone();
+      packedUint32_ = other.packedUint32_.Clone();
+      packedUint64_ = other.packedUint64_.Clone();
+      packedSint32_ = other.packedSint32_.Clone();
+      packedSint64_ = other.packedSint64_.Clone();
+      packedFixed32_ = other.packedFixed32_.Clone();
+      packedFixed64_ = other.packedFixed64_.Clone();
+      packedSfixed32_ = other.packedSfixed32_.Clone();
+      packedSfixed64_ = other.packedSfixed64_.Clone();
+      packedFloat_ = other.packedFloat_.Clone();
+      packedDouble_ = other.packedDouble_.Clone();
+      packedBool_ = other.packedBool_.Clone();
+      packedEnum_ = other.packedEnum_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestPackedTypes DeepClone() {
+    public TestPackedTypes Clone() {
       return new TestPackedTypes(this);
     }
 
@@ -8142,26 +8142,26 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestUnpackedTypes(TestUnpackedTypes other) : this() {
-      unpackedInt32_ = other.unpackedInt32_.DeepClone();
-      unpackedInt64_ = other.unpackedInt64_.DeepClone();
-      unpackedUint32_ = other.unpackedUint32_.DeepClone();
-      unpackedUint64_ = other.unpackedUint64_.DeepClone();
-      unpackedSint32_ = other.unpackedSint32_.DeepClone();
-      unpackedSint64_ = other.unpackedSint64_.DeepClone();
-      unpackedFixed32_ = other.unpackedFixed32_.DeepClone();
-      unpackedFixed64_ = other.unpackedFixed64_.DeepClone();
-      unpackedSfixed32_ = other.unpackedSfixed32_.DeepClone();
-      unpackedSfixed64_ = other.unpackedSfixed64_.DeepClone();
-      unpackedFloat_ = other.unpackedFloat_.DeepClone();
-      unpackedDouble_ = other.unpackedDouble_.DeepClone();
-      unpackedBool_ = other.unpackedBool_.DeepClone();
-      unpackedEnum_ = other.unpackedEnum_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      unpackedInt32_ = other.unpackedInt32_.Clone();
+      unpackedInt64_ = other.unpackedInt64_.Clone();
+      unpackedUint32_ = other.unpackedUint32_.Clone();
+      unpackedUint64_ = other.unpackedUint64_.Clone();
+      unpackedSint32_ = other.unpackedSint32_.Clone();
+      unpackedSint64_ = other.unpackedSint64_.Clone();
+      unpackedFixed32_ = other.unpackedFixed32_.Clone();
+      unpackedFixed64_ = other.unpackedFixed64_.Clone();
+      unpackedSfixed32_ = other.unpackedSfixed32_.Clone();
+      unpackedSfixed64_ = other.unpackedSfixed64_.Clone();
+      unpackedFloat_ = other.unpackedFloat_.Clone();
+      unpackedDouble_ = other.unpackedDouble_.Clone();
+      unpackedBool_ = other.unpackedBool_.Clone();
+      unpackedEnum_ = other.unpackedEnum_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestUnpackedTypes DeepClone() {
+    public TestUnpackedTypes Clone() {
       return new TestUnpackedTypes(this);
     }
 
@@ -8686,18 +8686,18 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestRepeatedScalarDifferentTagSizes(TestRepeatedScalarDifferentTagSizes other) : this() {
-      repeatedFixed32_ = other.repeatedFixed32_.DeepClone();
-      repeatedInt32_ = other.repeatedInt32_.DeepClone();
-      repeatedFixed64_ = other.repeatedFixed64_.DeepClone();
-      repeatedInt64_ = other.repeatedInt64_.DeepClone();
-      repeatedFloat_ = other.repeatedFloat_.DeepClone();
-      repeatedUint64_ = other.repeatedUint64_.DeepClone();
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      repeatedFixed32_ = other.repeatedFixed32_.Clone();
+      repeatedInt32_ = other.repeatedInt32_.Clone();
+      repeatedFixed64_ = other.repeatedFixed64_.Clone();
+      repeatedInt64_ = other.repeatedInt64_.Clone();
+      repeatedFloat_ = other.repeatedFloat_.Clone();
+      repeatedUint64_ = other.repeatedUint64_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestRepeatedScalarDifferentTagSizes DeepClone() {
+    public TestRepeatedScalarDifferentTagSizes Clone() {
       return new TestRepeatedScalarDifferentTagSizes(this);
     }
 
@@ -9021,12 +9021,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestCommentInjectionMessage(TestCommentInjectionMessage other) : this() {
       a_ = other.a_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestCommentInjectionMessage DeepClone() {
+    public TestCommentInjectionMessage Clone() {
       return new TestCommentInjectionMessage(this);
     }
 
@@ -9215,12 +9215,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FooRequest(FooRequest other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FooRequest DeepClone() {
+    public FooRequest Clone() {
       return new FooRequest(this);
     }
 
@@ -9367,12 +9367,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FooResponse(FooResponse other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FooResponse DeepClone() {
+    public FooResponse Clone() {
       return new FooResponse(this);
     }
 
@@ -9519,12 +9519,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FooClientMessage(FooClientMessage other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FooClientMessage DeepClone() {
+    public FooClientMessage Clone() {
       return new FooClientMessage(this);
     }
 
@@ -9671,12 +9671,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FooServerMessage(FooServerMessage other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FooServerMessage DeepClone() {
+    public FooServerMessage Clone() {
       return new FooServerMessage(this);
     }
 
@@ -9823,12 +9823,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public BarRequest(BarRequest other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public BarRequest DeepClone() {
+    public BarRequest Clone() {
       return new BarRequest(this);
     }
 
@@ -9975,12 +9975,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public BarResponse(BarResponse other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public BarResponse DeepClone() {
+    public BarResponse Clone() {
       return new BarResponse(this);
     }
 
@@ -10127,12 +10127,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TestEmptyMessage(TestEmptyMessage other) : this() {
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TestEmptyMessage DeepClone() {
+    public TestEmptyMessage Clone() {
       return new TestEmptyMessage(this);
     }
 
@@ -10283,12 +10283,12 @@ namespace Google.Protobuf.TestProtos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CommentMessage(CommentMessage other) : this() {
       text_ = other.text_;
-      _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CommentMessage DeepClone() {
+    public CommentMessage Clone() {
       return new CommentMessage(this);
     }
 
@@ -10491,12 +10491,12 @@ namespace Google.Protobuf.TestProtos {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public NestedCommentMessage(NestedCommentMessage other) : this() {
           nestedText_ = other.nestedText_;
-          _unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public NestedCommentMessage DeepClone() {
+        public NestedCommentMessage Clone() {
           return new NestedCommentMessage(this);
         }
 

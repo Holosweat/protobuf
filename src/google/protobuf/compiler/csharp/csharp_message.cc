@@ -428,16 +428,22 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
   }
   // Clone unknown fields
   printer->Print(
-      "_unknownFields = pb::UnknownFieldSet.DeepClone(other._unknownFields);\n");
+      "_unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);\n");
   if (has_extension_ranges_) {
     printer->Print(
-        "_extensions = pb::ExtensionSet.DeepClone(other._extensions);\n");
+        "_extensions = pb::ExtensionSet.Clone(other._extensions);\n");
   }
 
   printer->Outdent();
   printer->Print("}\n\n");
 
   WriteGeneratedCodeAttributes(printer);
+  printer->Print(
+    vars,
+    "$class_name$ pb::IDeepCloneable<$class_name$>.Clone() {\n"
+    "  return DeepClone();\n"
+    "}\n\n");
+
   printer->Print(
     vars,
     "public $class_name$ DeepClone() {\n"
@@ -457,7 +463,7 @@ void MessageGenerator::GenerateFrameworkMethods(io::Printer* printer) {
   // Equality
   WriteGeneratedCodeAttributes(printer);
   printer->Print(vars,
-                 "public bool Equals($class_name$ other) {\n"
+                 "public bool Equals($class_name$? other) {\n"
                  "  if (ReferenceEquals(other, null)) {\n"
                  "    return false;\n"
                  "  }\n"

@@ -204,7 +204,7 @@ namespace Google.Protobuf
             var message = new TestAllExtensions();
             message.SetExtension(OptionalBoolExtension, true);
 
-            var other = message.DeepClone();
+            var other = message.Clone();
 
             Assert.AreEqual(message, other);
             Assert.AreEqual(message.CalculateSize(), other.CalculateSize());

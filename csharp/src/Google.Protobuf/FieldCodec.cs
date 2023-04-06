@@ -380,7 +380,7 @@ namespace Google.Protobuf
                     }
                     else if (v == null)
                     {
-                        v = v2.DeepClone();
+                        v = v2.Clone();
                     }
                     else
                     {
@@ -425,7 +425,7 @@ namespace Google.Protobuf
                     }
                     else if (v == null)
                     {
-                        v = v2.DeepClone();
+                        v = v2.Clone();
                     }
                     else
                     {
