@@ -304,7 +304,7 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     "private $type_name$ $property_name$_Internal {\n"
-    "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : $default_value$; }\n"
+    "  get { return $has_property_check$ && $oneof_name$_ is $type_name$ value ? value : $default_value$; }\n"
     "  set {\n");
   if (is_value_type) {
     printer->Print(
