@@ -238,7 +238,7 @@ void PrimitiveFieldGenerator::WriteHash(io::Printer* printer) {
   const char *text = 
       SupportsPresenceApi(descriptor_)
           && IsNullable(descriptor_) ?
-      "if ($has_property_check$) hash ^= $name$_?.GetHashCode() ?? 0;\n" : "if ($has_property_check$) hash ^= $name$_.GetHashCode();\n";
+      "if ($has_property_check$) hash ^= $name$_?.GetHashCode() ?? 0;\n" : "if ($has_property_check$) hash ^= $property_name$.GetHashCode();\n";
   if (descriptor_->type() == FieldDescriptor::TYPE_FLOAT) {
     text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode($property_name$);\n";
   } else if (descriptor_->type() == FieldDescriptor::TYPE_DOUBLE) {
@@ -298,8 +298,14 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     "$access_level$ $type_name$ $property_name$ {\n"
+    "  get { return $property_name$_Internal; }\n"
+    "  init { $property_name$_Internal = value; }\n"
+    "}\n");
+  printer->Print(
+    variables_,
+    "private $type_name$ $property_name$_Internal {\n"
     "  get { return $has_property_check$ ? ($type_name$) $oneof_name$_ : $default_value$; }\n"
-    "  init {\n");
+    "  set {\n");
   if (is_value_type) {
     printer->Print(
       variables_,
