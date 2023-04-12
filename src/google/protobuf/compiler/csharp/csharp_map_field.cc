@@ -84,7 +84,7 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ scg::IDictionary<$key_type_name$, $value_type_name$> $property_name$ {\n"
+    "$access_level$ scg::IReadOnlyDictionary<$key_type_name$, $value_type_name$> $property_name$ {\n"
     "  get { return $name$_; }\n"
     "  init { $name$_ = new pbc::MapField<$key_type_name$, $value_type_name$>(value); }\n"
     "}\n");
