@@ -50,8 +50,6 @@ MessageFieldGenerator::MessageFieldGenerator(const FieldDescriptor* descriptor,
                                              const Options *options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
   if (!SupportsPresenceApi(descriptor_)) {
-    variables_["has_property_check"] = name() + "_ != null";
-    variables_["has_not_property_check"] = name() + "_ == null";
   }
 }
 
@@ -89,7 +87,7 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
     AddPublicMemberAttributes(printer);
     printer->Print(
       variables_,
-      "$access_level$ void Clear$property_name$() {\n"
+      "private void Clear$property_name$() {\n"
       "  $name$_ = null;\n"
       "}\n");
   }
@@ -98,18 +96,18 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
 void MessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if (other.$has_property_check$) {\n"
-    "  if ($has_not_property_check$) {\n"
+    "if ($other_has_property_check$) {\n"
+    "  if (!($has_property_check$)) {\n"
     "    $name$_ = new $type_name$();\n"
-    "  } else { $name$_ = new $type_name$($name$_); }\n"
-    "  $name$_?.MergeFrom(other.$name$_);\n"
+    "  } else { $name$_ = new $type_name$($property_name_existing$); }\n"
+    "  $name$_?.MergeFrom($other_property_name_existing$);\n"
     "}\n");
 }
 
 void MessageFieldGenerator::GenerateParsingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if ($has_not_property_check$) {\n"
+    "if (!($has_property_check$)) {\n"
     "  $name$_ = new $type_name$();\n"
     "}\n");
   if (descriptor_->type() == FieldDescriptor::Type::TYPE_MESSAGE) {
@@ -125,14 +123,14 @@ void MessageFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
       variables_,
       "if ($has_property_check$) {\n"
       "  output.WriteRawTag($tag_bytes$);\n"
-      "  output.WriteMessage($property_name$);\n"
+      "  output.WriteMessage($property_name_existing$);\n"
       "}\n");
   } else {
     printer->Print(
       variables_,
       "if ($has_property_check$) {\n"
       "  output.WriteRawTag($tag_bytes$);\n"
-      "  output.WriteGroup($property_name$);\n"
+      "  output.WriteGroup($property_name_existing$);\n"
       "  output.WriteRawTag($end_tag_bytes$);\n"
       "}\n");
   }
@@ -143,13 +141,13 @@ void MessageFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
     printer->Print(
       variables_,
       "if ($has_property_check$) {\n"
-      "  size += $tag_size$ + pb::CodedOutputStream.ComputeMessageSize($property_name$);\n"
+      "  size += $tag_size$ + pb::CodedOutputStream.ComputeMessageSize($property_name_existing$);\n"
       "}\n");
   } else {
     printer->Print(
       variables_,
       "if ($has_property_check$) {\n"
-      "  size += $tag_size$ + pb::CodedOutputStream.ComputeGroupSize($property_name$);\n"
+      "  size += $tag_size$ + pb::CodedOutputStream.ComputeGroupSize($property_name_existing$);\n"
       "}\n");
   }
 }
@@ -157,7 +155,7 @@ void MessageFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 void MessageFieldGenerator::WriteHash(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if ($has_property_check$) hash ^= $property_name$?.GetHashCode() ?? 0;\n");
+    "if ($has_property_check$) hash ^= $property_name_existing$.GetHashCode();\n");
 }
 void MessageFieldGenerator::WriteEquals(io::Printer* printer) {
   printer->Print(
@@ -182,7 +180,7 @@ void MessageFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
 }
 void MessageFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$has_property_check$ ? (deep ? other.$name$_.DeepClone() : other.$name$_) : null;\n");
+    "$name$_ = other.$has_property_check$ ? (deep ? $property_name_existing$.DeepClone() : $property_name_existing$) : null;\n");
 }
 
 void MessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
@@ -227,7 +225,7 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
     "private $type_name$? $property_name$_Internal {\n"
-    "  get { return $has_property_check$ && $oneof_name$_ != null ? ($type_name$) $oneof_name$_ : null; }\n"
+    "  get { return $has_property_check_internal$ && $oneof_name$_ is $type_name$ value ? value : null; }\n"
     "  set {\n"
     "    $oneof_name$_ = value;\n"
     "    $oneof_name$Case_ = value == null ? $oneof_property_name$OneofCase.None : $oneof_property_name$OneofCase.$oneof_case_name$;\n"
@@ -247,13 +245,13 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
       variables_,
       "/// <summary> Clears the value of the oneof if it's currently set to \"$descriptor_name$\" </summary>\n");
     AddPublicMemberAttributes(printer);
-    // printer->Print(
-    //   variables_,
-    //   "$access_level$ void Clear$property_name$() {\n"
-    //   "  if ($has_property_check$) {\n"
-    //   "    Clear$oneof_property_name$();\n"
-    //   "  }\n"
-    //   "}\n");
+    printer->Print(
+      variables_,
+      "private void Clear$property_name$() {\n"
+      "  if ($has_property_check$) {\n"
+      "    Clear$oneof_property_name$();\n"
+      "  }\n"
+      "}\n");
   }
 }
 

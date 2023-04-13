@@ -108,16 +108,7 @@ void FieldGeneratorBase::SetCommonFieldVariables(
         {"name_def_message", absl::StrCat((*variables)["name"], "_")});
   }
   if (SupportsPresenceApi(descriptor_)) {
-    variables->insert({"has_property_check",
-                       absl::StrCat("Has", (*variables)["property_name"])});
-    variables->insert(
-        {"other_has_property_check",
-         absl::StrCat("other.Has", (*variables)["property_name"])});
-    variables->insert({"has_not_property_check",
-                       absl::StrCat("!", (*variables)["has_property_check"])});
-    variables->insert(
-        {"other_has_not_property_check",
-         absl::StrCat("!", (*variables)["other_has_property_check"])});
+    
     if (presenceIndex_ != -1) {
         const int hasBitsNumber = presenceIndex_ / 32;
         const int hasBitsMask = 1 << (presenceIndex_ % 32);
@@ -129,25 +120,60 @@ void FieldGeneratorBase::SetCommonFieldVariables(
             absl::StrCat("_hasBits", hasBitsNumber, " &= ~", hasBitsMask);
     }
   } else {
-    variables->insert({"has_property_check",
-                       absl::StrCat((*variables)["property_name"],
-                                    " != ", (*variables)["default_value"])});
-    variables->insert({"other_has_property_check",
-                       absl::StrCat("other.", (*variables)["property_name"],
-                                    " != ", (*variables)["default_value"])});
+     
+     
+
+  
+  }
+
+  if (SupportsPresenceApi(descriptor_) || IsNullable(descriptor_) || descriptor_->containing_oneof()) {
+      variables->insert({ "has_property_check",
+                       absl::StrCat((*variables)["property_name"], " is ", type_name(), " ", (*variables)["property_name"], "Value") });
+      variables->insert(
+          { "other_has_property_check",
+           absl::StrCat("other.", (*variables)["property_name"], " is ", type_name(), " ", (*variables)["property_name"], "OtherValue") });
+      variables->insert({ "has_not_property_check",
+                         absl::StrCat("!(", (*variables)["has_property_check"],")") });
+      variables->insert(
+          { "other_has_not_property_check",
+           absl::StrCat("!", (*variables)["other_has_property_check"]) });
+
+      variables->insert({ "property_name_existing", absl::StrCat((*variables)["property_name"], "Value") });
+      variables->insert({ "other_property_name_existing", absl::StrCat((*variables)["property_name"], "OtherValue") });
+   
+
+      if (IsNullable(descriptor_)) {
+          (*variables)["has_property_check_internal"] = absl::StrCat((*variables)["name"], "_ != null");
+      }
+      else {
+          (*variables)["has_property_check_internal"] = absl::StrCat((*variables)["has_field_check"]);
+      }
+  }
+  else {
+      variables->insert({ "has_property_check",
+                        absl::StrCat((*variables)["property_name"],
+                                     " != ", (*variables)["default_value"]) });
+      variables->insert({ "other_has_property_check",
+                         absl::StrCat("other.", (*variables)["property_name"],
+                                      " != ", (*variables)["default_value"]) });
+      variables->insert({ "property_name_existing", absl::StrCat((*variables)["property_name"]) });
+      variables->insert({ "other_property_name_existing", absl::StrCat("other.", (*variables)["property_name"]) });
+
+
+      variables->insert({ "has_property_check_internal", (*variables)["has_property_check"] });
   }
 }
 
 void FieldGeneratorBase::SetCommonOneofFieldVariables(
     absl::flat_hash_map<absl::string_view, std::string>* variables) {
   (*variables)["oneof_name"] = oneof_name();
-  if (SupportsPresenceApi(descriptor_)) {
-    (*variables)["has_property_check"] = "Has" + property_name();
-  } else {
-    (*variables)["has_property_check"] =
-      oneof_name() + "Case_ == " + oneof_property_name() +
-      "OneofCase." + oneof_case_name();
-  }
+  (*variables)["has_property_check_internal"] =
+  absl::StrCat(oneof_name() + "Case_ == " + oneof_property_name() +
+      "OneofCase." + oneof_case_name());
+
+  variables->insert({ "property_name_existing", absl::StrCat((*variables)["property_name"], "Value") });
+  variables->insert({ "other_property_name_existing", absl::StrCat((*variables)["property_name"], "OtherValue") });
+
   (*variables)["oneof_case_name"] = oneof_case_name();
   (*variables)["oneof_property_name"] = oneof_property_name();
 }

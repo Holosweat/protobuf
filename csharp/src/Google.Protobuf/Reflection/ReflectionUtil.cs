@@ -65,7 +65,9 @@ namespace Google.Protobuf.Reflection
             ForceInitialize<double?>();
             ForceInitialize<bool?>();
             ForceInitialize<SampleEnum>();
+            ForceInitialize<SampleEnum?>();
             SampleEnumMethod();
+            SampleEnumMethodOptional();
         }
 
         internal static void ForceInitialize<T>() => new ReflectionHelper<IMessage, T>();
@@ -353,5 +355,6 @@ namespace Google.Protobuf.Reflection
 
         // Public to make the reflection simpler.
         public static SampleEnum SampleEnumMethod() => SampleEnum.X;
+        public static SampleEnum? SampleEnumMethodOptional() => SampleEnum.X;
     }
 }
