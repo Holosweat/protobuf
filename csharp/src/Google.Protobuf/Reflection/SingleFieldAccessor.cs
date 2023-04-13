@@ -97,11 +97,14 @@ namespace Google.Protobuf.Reflection
                 }
                 hasDelegate = ReflectionUtil.CreateFuncIMessageBool(hasMethod);
                 MethodInfo clearMethod = messageType.GetRuntimeMethod("Clear" + property.Name, ReflectionUtil.EmptyTypes);
-                if (clearMethod == null)
+                if (clearMethod != null)
                 {
-                    throw new ArgumentException("Not all required properties/methods are available");
+                    clearDelegate = ReflectionUtil.CreateActionIMessage(clearMethod);
                 }
-                clearDelegate = ReflectionUtil.CreateActionIMessage(clearMethod);
+                else
+                {
+                    clearDelegate = message => SetValue(message, null);
+                }
             }
             // What's left?
             // Primitive proto3 fields without the optional keyword, which aren't in oneofs.

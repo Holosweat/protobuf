@@ -55,11 +55,10 @@ PrimitiveFieldGenerator::PrimitiveFieldGenerator(
   is_value_type = descriptor->type() != FieldDescriptor::TYPE_STRING
       && descriptor->type() != FieldDescriptor::TYPE_BYTES;
   if (!is_value_type && !SupportsPresenceApi(descriptor_)) {
-    std::string property_name = variables_["property_name"];
-    variables_["has_property_check"] =
-        absl::StrCat(property_name, ".Length != 0");
-    variables_["other_has_property_check"] =
-        absl::StrCat("other.", property_name, ".Length != 0");
+    variables_["has_property_check"] = variables_["property_name"] + ".Length != 0";
+    variables_["other_has_property_check"] = "other." + variables_["property_name"] + ".Length != 0";
+    variables_["property_name_existing"] = variables_["property_name"];
+    variables_["other_property_name_existing"] = "other." + variables_["property_name"];
   }
 }
 
@@ -108,21 +107,25 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
 
   // Most of the work is done in the property:
   // Declare the property itself (the same for all options)
-  printer->Print(variables_, "$access_level$ $type_name$ $property_name$ {\n");
+  if (SupportsPresenceApi(descriptor_)) {
+    printer->Print(variables_, "$access_level$ $type_name$? $property_name$ {\n");
+  } else {
+    printer->Print(variables_, "$access_level$ $type_name$ $property_name$ {\n");
+  }
 
   // Specify the "getter", which may need to check for a presence field.
   if (SupportsPresenceApi(descriptor_)) {
     if (IsNullable(descriptor_)) {
       printer->Print(
         variables_,
-        "  get { return $name$_ ?? $default_value_access$; }\n");
+        "  get { return $name$_; }\n");
     } else {
       printer->Print(
         variables_,
         // Note: it's possible that this could be rewritten as a
         // conditional ?: expression, but there's no significant benefit
         // to changing it.
-        "  get { if ($has_field_check$) { return $name$_; } else { return $default_value_access$; } }\n");
+        "  get { if ($has_field_check$) { return $name$_; } else { return null; } }\n");
     }
   } else {
     printer->Print(
@@ -136,22 +139,34 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(variables_, "    this.$property_name$_Internal = value;\n");
   printer->Print("  }\n");
   printer->Print("}\n");
-  printer->Print(variables_, "private $type_name$ $property_name$_Internal {\n");
+
+  if (SupportsPresenceApi(descriptor_)) {
+    printer->Print(variables_, "private $type_name$? $property_name$_Internal {\n");
+  } else {
+    printer->Print(variables_, "private $type_name$ $property_name$_Internal {\n");
+  }
 
   printer->Print("  set {\n");
-  if (presenceIndex_ != -1) {
-    printer->Print(
-      variables_,
-      "    $set_has_field$;\n");
-  }
   if (is_value_type) {
-    printer->Print(
-      variables_,
-      "    $name$_ = value;\n");
+    if (SupportsPresenceApi(descriptor_)) {
+      printer->Print(
+        variables_,
+        "    if (value != null) { $set_has_field$; $name$_ = value.Value; } else {  $clear_has_field$; } \n");
+    } else {
+      printer->Print(
+        variables_,
+        "    $name$_ = value;\n");
+    }
   } else {
-    printer->Print(
-      variables_,
-      "    $name$_ = pb::ProtoPreconditions.CheckNotNull(value, \"value\");\n");
+    if (SupportsPresenceApi(descriptor_)) {
+      printer->Print(
+        variables_,
+        "    $name$_ = value;\n");
+    } else {
+      printer->Print(
+        variables_,
+        "    $name$_ = pb::ProtoPreconditions.CheckNotNull(value, \"value\");\n");
+    }
   }
   printer->Print(
     "  }\n"
@@ -165,16 +180,8 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     printer->Print(
       variables_,
       "$access_level$ bool Has$property_name$ {\n"
-      "  get { return ");
-    if (IsNullable(descriptor_)) {
-      printer->Print(
-        variables_,
-        "$name$_ != null; }\n}\n");
-    } else {
-      printer->Print(
-        variables_,
-        "$has_field_check$; }\n}\n");
-    }
+      "  get { return $has_property_check_internal$; }\n"
+      "}");
   }
 
   // The "ClearFoo" method, where required.
@@ -184,7 +191,7 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     AddPublicMemberAttributes(printer);
     printer->Print(
       variables_,
-      "$access_level$ void Clear$property_name$() {\n");
+      "private void Clear$property_name$() {\n");
     if (IsNullable(descriptor_)) {
       printer->Print(variables_, "  $name$_ = null;\n");
     } else {
@@ -215,9 +222,9 @@ void PrimitiveFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
     variables_,
     "if ($has_property_check$) {\n"
     "  output.WriteRawTag($tag_bytes$);\n"
-    "  output.Write$capitalized_type_name$($property_name$);\n"
+    "  output.Write$capitalized_type_name$($property_name_existing$);\n"
     "}\n");
-}
+} 
 
 void PrimitiveFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
@@ -228,7 +235,7 @@ void PrimitiveFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   if (fixedSize == -1) {
     printer->Print(
       variables_,
-      "size += $tag_size$ + pb::CodedOutputStream.Compute$capitalized_type_name$Size($property_name$);\n");
+      "size += $tag_size$ + pb::CodedOutputStream.Compute$capitalized_type_name$Size($property_name_existing$);\n");
   } else {
     printer->Print(
       "size += $tag_size$ + $fixed_size$;\n",
@@ -241,22 +248,28 @@ void PrimitiveFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
 
 void PrimitiveFieldGenerator::WriteHash(io::Printer* printer) {
   const char *text = 
-      SupportsPresenceApi(descriptor_)
-          && IsNullable(descriptor_) ?
-      "if ($has_property_check$) hash ^= $name$_?.GetHashCode() ?? 0;\n" : "if ($has_property_check$) hash ^= $property_name$.GetHashCode();\n";
+      "if ($has_property_check$) hash ^= $property_name_existing$.GetHashCode();\n";
   if (descriptor_->type() == FieldDescriptor::TYPE_FLOAT) {
-    text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode($property_name$);\n";
+    text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode($property_name_existing$);\n";
   } else if (descriptor_->type() == FieldDescriptor::TYPE_DOUBLE) {
-    text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode($property_name$);\n";
+    text = "if ($has_property_check$) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode($property_name_existing$);\n";
   }
 	printer->Print(variables_, text);
 }
 void PrimitiveFieldGenerator::WriteEquals(io::Printer* printer) {
   const char *text = "if ($property_name$ != other.$property_name$) return false;\n";
   if (descriptor_->type() == FieldDescriptor::TYPE_FLOAT) {
-    text = "if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals($property_name$, other.$property_name$)) return false;\n";
+    if (SupportsPresenceApi(descriptor_)) {
+      text = "if (!pbc::ProtobufEqualityComparers.BitwiseNullableSingleEqualityComparer.Equals($property_name$, other.$property_name$)) return false;\n";
+    } else {
+      text = "if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals($property_name$, other.$property_name$)) return false;\n";
+    }
   } else if (descriptor_->type() == FieldDescriptor::TYPE_DOUBLE) {
-    text = "if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals($property_name$, other.$property_name$)) return false;\n";
+    if (SupportsPresenceApi(descriptor_)) {
+      text = "if (!pbc::ProtobufEqualityComparers.BitwiseNullableDoubleEqualityComparer.Equals($property_name$, other.$property_name$)) return false;\n";
+    } else {
+      text = "if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals($property_name$, other.$property_name$)) return false;\n";
+    }
   }
   printer->Print(variables_, text);
 }
@@ -268,7 +281,7 @@ void PrimitiveFieldGenerator::WriteToString(io::Printer* printer) {
 
 void PrimitiveFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$name$_;\n");
+    "$property_name$_Internal = other.$property_name$;\n");
 }
 
 void PrimitiveFieldGenerator::GenerateCodecCode(io::Printer* printer) {
@@ -292,6 +305,7 @@ PrimitiveOneofFieldGenerator::PrimitiveOneofFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : PrimitiveFieldGenerator(descriptor, presenceIndex, options) {
   SetCommonOneofFieldVariables(&variables_);
+  variables_["capitalized_oneof_name"] = UnderscoresToCamelCase(oneof_name(), true);
 }
 
 PrimitiveOneofFieldGenerator::~PrimitiveOneofFieldGenerator() {
@@ -302,23 +316,24 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ $type_name$ $property_name$ {\n"
+    "$access_level$ $type_name$? $property_name$ {\n"
     "  get { return $property_name$_Internal; }\n"
     "  init { $property_name$_Internal = value; }\n"
     "}\n");
   printer->Print(
     variables_,
-    "private $type_name$ $property_name$_Internal {\n"
-    "  get { return $has_property_check$ && $oneof_name$_ is $type_name$ value ? value : $default_value$; }\n"
+    "private $type_name$? $property_name$_Internal {\n"
+    "  get { return $has_property_check_internal$ && $oneof_name$_ is $type_name$ value ? value : null; }\n"
     "  set {\n");
   if (is_value_type) {
     printer->Print(
       variables_,
-      "    $oneof_name$_ = value;\n");
+      "    if (value == null) { Clear$capitalized_oneof_name$(); return; }\n"
+      "    $oneof_name$_ = value.Value;\n");
   } else {
     printer->Print(
       variables_,
-      "    $oneof_name$_ = pb::ProtoPreconditions.CheckNotNull(value, \"value\");\n");
+      "    $oneof_name$_ = value; if (value == null) { Clear$capitalized_oneof_name$(); return; }\n");
   }
   printer->Print(
     variables_,
@@ -341,7 +356,7 @@ void PrimitiveOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
     AddPublicMemberAttributes(printer);
     printer->Print(
       variables_,
-      "$access_level$ void Clear$property_name$() {\n"
+      "private void Clear$property_name$() {\n"
       "  if ($has_property_check$) {\n"
       "    Clear$oneof_property_name$();\n"
       "  }\n"
