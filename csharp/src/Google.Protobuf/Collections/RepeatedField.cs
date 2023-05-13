@@ -674,5 +674,21 @@ namespace Google.Protobuf.Collections
             }
         }
         #endregion        
+        public RepeatedField<T> CloneWithoutUnknown() {
+            RepeatedField<T> clone = new RepeatedField<T>();
+            if (array != EmptyArray)
+            {
+                clone.array = (T[])array.Clone();
+                if (clone.array is IDeepCloneable<T>[] cloneableArray)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        clone.array[i] = cloneableArray[i].CloneWithoutUnknown();
+                    }
+                }
+            }
+            clone.count = count;
+            return clone;
+        }
     }
 }

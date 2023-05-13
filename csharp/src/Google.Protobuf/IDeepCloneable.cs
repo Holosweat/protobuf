@@ -50,5 +50,11 @@ namespace Google.Protobuf
         /// </summary>
         /// <returns>A deep clone of this object.</returns>
         T Clone();
+
+        /// <summary>
+        /// Creates a deep clone of this object without unknown fields.
+        /// </summary>
+        /// <returns>A deep clone of this object.</returns>
+        T CloneWithoutUnknown();
     }
 }

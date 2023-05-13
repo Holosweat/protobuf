@@ -375,7 +375,11 @@ namespace Google.Protobuf.Reflection {
       }
     }
     #endif
-
+    public FileDescriptorSet CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1047,6 +1051,11 @@ namespace Google.Protobuf.Reflection {
     }
     #endif
 
+      public FileDescriptorProto CloneWithoutUnknown() {
+          var clone = this.Clone();
+          clone._unknownFields = new UnknownFieldSet();
+          return clone;
+      }
   }
 
   /// <summary>
@@ -1823,7 +1832,11 @@ namespace Google.Protobuf.Reflection {
           }
         }
         #endif
-
+    public ExtensionRange CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
       }
 
       /// <summary>
@@ -2092,12 +2105,20 @@ namespace Google.Protobuf.Reflection {
           }
         }
         #endif
-
+    public ReservedRange CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
       }
 
     }
     #endregion
-
+      public DescriptorProto CloneWithoutUnknown() {
+          var clone = this.Clone();
+          clone._unknownFields = new UnknownFieldSet();
+          return clone;
+      }
   }
 
   public sealed partial class ExtensionRangeOptions : pb::IExtendableMessage<ExtensionRangeOptions>
@@ -2323,7 +2344,11 @@ namespace Google.Protobuf.Reflection {
     public void ClearExtension<TValue>(pb::RepeatedExtension<ExtensionRangeOptions, TValue> extension) {
       pb::ExtensionSet.Clear(ref _extensions, extension);
     }
-
+    public ExtensionRangeOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -3163,7 +3188,11 @@ namespace Google.Protobuf.Reflection {
 
     }
     #endregion
-
+    public FieldDescriptorProto CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -3415,7 +3444,11 @@ namespace Google.Protobuf.Reflection {
       }
     }
     #endif
-
+    public OneofDescriptorProto CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -4029,12 +4062,21 @@ namespace Google.Protobuf.Reflection {
           }
         }
         #endif
-
+    public EnumReservedRange CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
       }
 
     }
     #endregion
 
+    public EnumDescriptorProto CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -4340,7 +4382,11 @@ namespace Google.Protobuf.Reflection {
       }
     }
     #endif
-
+    public EnumValueDescriptorProto CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -4618,7 +4664,11 @@ namespace Google.Protobuf.Reflection {
       }
     }
     #endif
-
+    public ServiceDescriptorProto CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -5088,7 +5138,11 @@ namespace Google.Protobuf.Reflection {
       }
     }
     #endif
-
+    public MethodDescriptorProto CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class FileOptions : pb::IExtendableMessage<FileOptions>
@@ -6469,7 +6523,11 @@ namespace Google.Protobuf.Reflection {
 
     }
     #endregion
-
+    public FileOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class MessageOptions : pb::IExtendableMessage<MessageOptions>
@@ -7027,6 +7085,11 @@ namespace Google.Protobuf.Reflection {
       pb::ExtensionSet.Clear(ref _extensions, extension);
     }
 
+    public MessageOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class FieldOptions : pb::IExtendableMessage<FieldOptions>
@@ -7722,7 +7785,11 @@ namespace Google.Protobuf.Reflection {
 
     }
     #endregion
-
+    public FieldOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class OneofOptions : pb::IExtendableMessage<OneofOptions>
@@ -7948,7 +8015,11 @@ namespace Google.Protobuf.Reflection {
     public void ClearExtension<TValue>(pb::RepeatedExtension<OneofOptions, TValue> extension) {
       pb::ExtensionSet.Clear(ref _extensions, extension);
     }
-
+    public OneofOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class EnumOptions : pb::IExtendableMessage<EnumOptions>
@@ -8353,7 +8424,11 @@ namespace Google.Protobuf.Reflection {
     public void ClearExtension<TValue>(pb::RepeatedExtension<EnumOptions, TValue> extension) {
       pb::ExtensionSet.Clear(ref _extensions, extension);
     }
-
+    public EnumOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class EnumValueOptions : pb::IExtendableMessage<EnumValueOptions>
@@ -8639,7 +8714,11 @@ namespace Google.Protobuf.Reflection {
     public void ClearExtension<TValue>(pb::RepeatedExtension<EnumValueOptions, TValue> extension) {
       pb::ExtensionSet.Clear(ref _extensions, extension);
     }
-
+    public EnumValueOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class ServiceOptions : pb::IExtendableMessage<ServiceOptions>
@@ -8925,7 +9004,11 @@ namespace Google.Protobuf.Reflection {
     public void ClearExtension<TValue>(pb::RepeatedExtension<ServiceOptions, TValue> extension) {
       pb::ExtensionSet.Clear(ref _extensions, extension);
     }
-
+    public ServiceOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   public sealed partial class MethodOptions : pb::IExtendableMessage<MethodOptions>
@@ -9288,7 +9371,11 @@ namespace Google.Protobuf.Reflection {
 
     }
     #endregion
-
+    public MethodOptions CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -10056,12 +10143,20 @@ namespace Google.Protobuf.Reflection {
           }
         }
         #endif
-
+    public NamePart CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
       }
 
     }
     #endregion
-
+    public UninterpretedOption CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -10708,12 +10803,20 @@ namespace Google.Protobuf.Reflection {
           }
         }
         #endif
-
+      public Location CloneWithoutUnknown() {
+          var clone = this.Clone();
+          clone._unknownFields = new UnknownFieldSet();
+          return clone;
+      }
       }
 
     }
     #endregion
-
+    public SourceCodeInfo CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -11335,12 +11438,20 @@ namespace Google.Protobuf.Reflection {
 
         }
         #endregion
-
+      public Annotation CloneWithoutUnknown() {
+          var clone = this.Clone();
+          clone._unknownFields = new UnknownFieldSet();
+          return clone;
+      }
       }
 
     }
     #endregion
-
+    public GeneratedCodeInfo CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   #endregion

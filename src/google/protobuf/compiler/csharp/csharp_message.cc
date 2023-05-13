@@ -390,7 +390,7 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
     vars,
     "}\n"
     "\n"
-    "private void PerformClone($class_name$ other, bool deep) {\n");
+    "private void PerformClone($class_name$ other, bool deep, bool unknown = true) {\n");
   printer->Indent();
   for (int i = 0; i < has_bit_field_count_; i++) {
     printer->Print("_hasBits$i$ = other._hasBits$i$;\n", "i", absl::StrCat(i));
@@ -428,10 +428,10 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
   }
   // Clone unknown fields
   printer->Print(
-      "_unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);\n");
+      "_unknownFields = unknown ? pb::UnknownFieldSet.Clone(other._unknownFields) : null;\n");
   if (has_extension_ranges_) {
     printer->Print(
-        "_extensions = pb::ExtensionSet.Clone(other._extensions);\n");
+        "_extensions = unknown ? pb::ExtensionSet.Clone(other._extensions) : pb::ExtensionSet.CloneWithoutUnknown(other._extensions);\n");
   }
 
   printer->Outdent();
@@ -446,9 +446,23 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
 
   printer->Print(
     vars,
+    "$class_name$ pb::IDeepCloneable<$class_name$>.CloneWithoutUnknown() {\n"
+    "  return DeepCloneWithoutUnknown();\n"
+  "}\n\n");
+
+  printer->Print(
+    vars,
     "public $class_name$ DeepClone() {\n"
     "  var res = new $class_name$();\n"
     "  res.PerformClone(this, deep: true);\n"
+    "  return res;\n"
+    "}\n\n");
+
+  printer->Print(
+    vars,
+    "public $class_name$ DeepCloneWithoutUnknown() {\n"
+    "  var res = new $class_name$();\n"
+    "  res.PerformClone(this, deep: true, unknown: false);\n"
     "  return res;\n"
     "}\n\n");
 }

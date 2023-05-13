@@ -419,7 +419,11 @@ namespace Google.Protobuf.Compiler {
       }
     }
     #endif
-
+        public Version CloneWithoutUnknown() {
+            var clone = this.Clone();
+            clone._unknownFields = new UnknownFieldSet();
+            return clone;
+        }
   }
 
   /// <summary>
@@ -750,7 +754,11 @@ namespace Google.Protobuf.Compiler {
       }
     }
     #endif
-
+        public CodeGeneratorRequest CloneWithoutUnknown() {
+            var clone = this.Clone();
+            clone._unknownFields = new UnknownFieldSet();
+            return clone;
+        }
   }
 
   /// <summary>
@@ -1475,12 +1483,20 @@ namespace Google.Protobuf.Compiler {
           }
         }
         #endif
-
+    public File CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
       }
 
     }
     #endregion
-
+        public CodeGeneratorResponse CloneWithoutUnknown() {
+            var clone = this.Clone();
+            clone._unknownFields = new UnknownFieldSet();
+            return clone;
+        }
   }
 
   #endregion

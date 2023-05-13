@@ -459,7 +459,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Type CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1117,7 +1121,11 @@ namespace Google.Protobuf.WellKnownTypes {
 
     }
     #endregion
-
+    public Field CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1459,7 +1467,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Enum CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1723,7 +1735,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public EnumValue CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1974,7 +1990,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Option CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   #endregion

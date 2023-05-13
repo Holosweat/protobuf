@@ -180,5 +180,9 @@ namespace Google.Protobuf
         {
             return new ExtensionRegistry(extensions);
         }
+        public ExtensionRegistry CloneWithoutUnknown() {
+            var clone = this.Clone();
+            return clone;
+        }
     }
 }

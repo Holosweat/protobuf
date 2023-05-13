@@ -489,7 +489,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Api CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -913,7 +917,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Method CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1226,7 +1234,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Mixin CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   #endregion

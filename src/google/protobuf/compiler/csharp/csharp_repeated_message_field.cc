@@ -144,7 +144,7 @@ void RepeatedMessageFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedMessageFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = deep ? other.$name$_.Clone() : other.$name$_;\n");
+    "$name$_ = deep ? (unknown ? other.$name$_.Clone() : other.$name$_.CloneWithoutUnknown()) : other.$name$_;\n");
 }
 
 void RepeatedMessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {

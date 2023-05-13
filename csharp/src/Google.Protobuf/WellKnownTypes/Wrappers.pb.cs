@@ -247,7 +247,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public DoubleValue CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -444,7 +448,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public FloatValue CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -641,7 +649,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Int64Value CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -838,7 +850,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public UInt64Value CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1035,7 +1051,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Int32Value CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1232,7 +1252,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public UInt32Value CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1429,7 +1453,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public BoolValue CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1626,7 +1654,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public StringValue CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -1823,7 +1855,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public BytesValue CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   #endregion

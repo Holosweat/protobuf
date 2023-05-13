@@ -255,7 +255,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+        public Struct CloneWithoutUnknown() {
+            var clone = this.Clone();
+            clone._unknownFields = new UnknownFieldSet();
+            return clone;
+        }
   }
 
   /// <summary>
@@ -728,7 +732,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+    public Value CloneWithoutUnknown() {
+        var clone = this.Clone();
+        clone._unknownFields = new UnknownFieldSet();
+        return clone;
+    }
   }
 
   /// <summary>
@@ -914,7 +922,11 @@ namespace Google.Protobuf.WellKnownTypes {
       }
     }
     #endif
-
+        public ListValue CloneWithoutUnknown() {
+            var clone = this.Clone();
+            clone._unknownFields = new UnknownFieldSet();
+            return clone;
+        }
   }
 
   #endregion

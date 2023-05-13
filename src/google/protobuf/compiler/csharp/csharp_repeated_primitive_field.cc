@@ -125,7 +125,7 @@ void RepeatedPrimitiveFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedPrimitiveFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = deep ? other.$name$_.Clone() : other.$name$_;\n");
+    "$name$_ = deep ? (unknown ? other.$name$_.Clone() : other.$name$_.CloneWithoutUnknown()) : other.$name$_;\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateFreezingCode(io::Printer* printer) {

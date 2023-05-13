@@ -714,5 +714,23 @@ namespace Google.Protobuf.Collections
                 }
             }
         }
+        public MapField<TKey, TValue> CloneWithoutUnknown()
+        {
+            var clone = new MapField<TKey, TValue>();
+            // Keys are never cloneable. Values might be.
+            if (typeof(IDeepCloneable<TValue>).IsAssignableFrom(typeof(TValue)))
+            {
+                foreach (var pair in list)
+                {
+                    clone.Add(pair.Key, ((IDeepCloneable<TValue>)pair.Value).CloneWithoutUnknown());
+                }
+            }
+            else
+            {
+                // Nothing is cloneable, so we don't need to worry.
+                clone.Add(this);
+            }
+            return clone;
+        }
     }
 }

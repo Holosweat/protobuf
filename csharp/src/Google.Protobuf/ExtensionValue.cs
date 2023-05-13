@@ -136,6 +136,9 @@ namespace Google.Protobuf
                 return true;
             }
         }
+        public IExtensionValue CloneWithoutUnknown() {
+            return this.Clone();
+        }
     }
 
     internal sealed class RepeatedExtensionValue<T> : IExtensionValue
@@ -224,6 +227,10 @@ namespace Google.Protobuf
             }
 
             return true;
+        }
+
+        public IExtensionValue CloneWithoutUnknown() {
+            return this.Clone();
         }
     }
 }

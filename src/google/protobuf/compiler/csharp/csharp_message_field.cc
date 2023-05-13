@@ -180,7 +180,7 @@ void MessageFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
 }
 void MessageFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = other.$has_property_check$ ? (deep ? $property_name_existing$.DeepClone() : $property_name_existing$) : null;\n");
+    "$name$_ = other.$has_property_check$ ? (deep ? (unknown ? $property_name_existing$.DeepClone() : $property_name_existing$.DeepCloneWithoutUnknown()) : $property_name_existing$) : null;\n");
 }
 
 void MessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
@@ -287,7 +287,7 @@ void MessageOneofFieldGenerator::WriteToString(io::Printer* printer) {
 
 void MessageOneofFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$property_name$_Internal = deep ? other.$property_name$?.DeepClone() : other.$property_name$;\n");
+    "$property_name$_Internal = deep ? (unknown ? other.$property_name$?.DeepClone() : other.$property_name$?.DeepCloneWithoutUnknown()): other.$property_name$;\n");
 }
 
 }  // namespace csharp

@@ -337,6 +337,11 @@ namespace Google.Protobuf.WellKnownTypes {
     }
     #endif
 
+    public Duration CloneWithoutUnknown() {
+            var clone = this.Clone();
+            clone._unknownFields = new UnknownFieldSet();
+            return clone;
+        }
   }
 
   #endregion

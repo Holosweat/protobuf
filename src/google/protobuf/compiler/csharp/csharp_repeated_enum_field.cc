@@ -127,7 +127,7 @@ void RepeatedEnumFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedEnumFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = deep ? other.$name$_.Clone() : other.$name$_;\n");
+    "$name$_ = deep ? (unknown ? other.$name$_.Clone() : other.$name$_.CloneWithoutUnknown() ): other.$name$_;\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
