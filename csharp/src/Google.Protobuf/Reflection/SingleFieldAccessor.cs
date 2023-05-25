@@ -93,7 +93,7 @@ namespace Google.Protobuf.Reflection
                 MethodInfo hasMethod = messageType.GetRuntimeProperty("Has" + property.Name).GetMethod;
                 if (hasMethod == null)
                 {
-                    throw new ArgumentException("Not all required properties/methods are available");
+                    throw new ArgumentException($"Not all required properties/methods are available {property.Name}");
                 }
                 hasDelegate = ReflectionUtil.CreateFuncIMessageBool(hasMethod);
                 MethodInfo clearMethod = messageType.GetRuntimeMethod("Clear" + property.Name, ReflectionUtil.EmptyTypes);
