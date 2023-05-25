@@ -75,20 +75,20 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
   // are retained via static fields. They don't particularly need to be, but we
   // don't need to change that. Under implicit presence we don't use static
   // fields for default values and just use the literals instead.
-  if (descriptor_->has_presence()) {
-    // Note: "private readonly static" isn't as idiomatic as
-    // "private static readonly", but changing this now would create a lot of
-    // churn in generated code with near-to-zero benefit.
-    printer->Print(
-      variables_,
-      "private readonly static $type_name$ $property_name$DefaultValue = $default_value$;\n\n");
-    std::string property_name = variables_["property_name"];
-    variables_["default_value_access"] =
-        absl::StrCat(property_name, "DefaultValue");
-  } else {
-    std::string default_value = variables_["default_value"];
-    variables_["default_value_access"] = std::move(default_value);
-  }
+  // if (descriptor_->has_presence()) {
+  //   // Note: "private readonly static" isn't as idiomatic as
+  //   // "private static readonly", but changing this now would create a lot of
+  //   // churn in generated code with near-to-zero benefit.
+  //   printer->Print(
+  //     variables_,
+  //     "private readonly static $type_name$ $property_name$DefaultValue = $default_value$;\n\n");
+  //   std::string property_name = variables_["property_name"];
+  //   variables_["default_value_access"] =
+  //       absl::StrCat(property_name, "DefaultValue");
+  // } else {
+  //   std::string default_value = variables_["default_value"];
+  //   variables_["default_value_access"] = std::move(default_value);
+  // }
 
   // Declare the field itself.
   if (IsNullable(descriptor_) && SupportsPresenceApi(descriptor_)) {
