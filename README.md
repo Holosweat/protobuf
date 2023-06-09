@@ -1,8 +1,7 @@
 # TIPS
 
 Protoc build
-* `cd "C:\p\build\protobuf"`
-* `cmake --build . --config Release`
+* `bazelisk build -c opt :protoc`
 
 Proto library
 * `cd csharp/src`
