@@ -35,6 +35,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using System.Linq;
 
 namespace Google.Protobuf.Collections
 {
@@ -179,6 +180,20 @@ namespace Google.Protobuf.Collections
         /// using the same codec.</returns>
         public int CalculateSize(FieldCodec<T> codec)
         {
+            return RepeatedFieldCalculateSize(codec, Count, array);
+        }
+
+        public static int RepeatedFieldCalculateSize(FieldCodec<T> codec, IEnumerable<T> array)
+        {
+            if (array is RepeatedField<T> value)
+            {
+                return value.CalculateSize(codec);
+            }
+            return RepeatedFieldCalculateSize(codec, array.Count(), array);
+        }
+
+        public static int RepeatedFieldCalculateSize(FieldCodec<T> codec, int count, IEnumerable<T> array)
+        {
             if (count == 0)
             {
                 return 0;
@@ -186,7 +201,7 @@ namespace Google.Protobuf.Collections
             uint tag = codec.Tag;
             if (codec.PackedRepeatedField)
             {
-                int dataSize = CalculatePackedDataSize(codec);
+                int dataSize = CalculatePackedDataSize(codec, count, array);
                 return CodedOutputStream.ComputeRawVarint32Size(tag) +
                     CodedOutputStream.ComputeLengthSize(dataSize) +
                     dataSize;
@@ -199,30 +214,50 @@ namespace Google.Protobuf.Collections
                 {
                     size += count * CodedOutputStream.ComputeRawVarint32Size(codec.EndTag);
                 }
-                for (int i = 0; i < count; i++)
+                if (array is T[] simpleArray)
                 {
-                    size += sizeCalculator(array[i]);
+                    for (int i = 0; i < count; ++i)
+                    {
+                        size += sizeCalculator(simpleArray[i]);
+                    }
+                }
+                else
+                {
+                    foreach (T value in array)
+                    {
+                        size += sizeCalculator(value);
+                    }
                 }
                 return size;
             }
         }
 
-        private int CalculatePackedDataSize(FieldCodec<T> codec)
+        private static int CalculatePackedDataSize(FieldCodec<T> codec, int count, IEnumerable<T> array)
         {
             int fixedSize = codec.FixedSize;
             if (fixedSize == 0)
             {
                 var calculator = codec.ValueSizeCalculator;
                 int tmp = 0;
-                for (int i = 0; i < count; i++)
+                if (array is T[] simpleArray)
                 {
-                    tmp += calculator(array[i]);
+                    for (int i = 0; i < count; ++i)
+                    {
+                        tmp += calculator(simpleArray[i]);
+                    }
+                }
+                else
+                {
+                    foreach (var value in array)
+                    {
+                        tmp += calculator(value);
+                    }
                 }
                 return tmp;
             }
             else
             {
-                return fixedSize * Count;
+                return fixedSize * count;
             }
         }
 
@@ -263,7 +298,7 @@ namespace Google.Protobuf.Collections
             if (codec.PackedRepeatedField)
             {
                 // Packed primitive type
-                int size = CalculatePackedDataSize(codec);
+                int size = CalculatePackedDataSize(codec, count, array);
                 ctx.WriteTag(tag);
                 ctx.WriteLength(size);
                 for (int i = 0; i < count; i++)
@@ -508,10 +543,14 @@ namespace Google.Protobuf.Collections
         /// </returns>
         public override int GetHashCode()
         {
+            return GetRepeatedFieldHashCode(array);
+        }
+
+        public static int GetRepeatedFieldHashCode(IEnumerable<T> values) {
             int hash = 0;
-            for (int i = 0; i < count; i++)
+            foreach (T element in values)
             {
-                hash = hash * 31 + array[i].GetHashCode();
+                hash = hash * 31 + element.GetHashCode();
             }
             return hash;
         }
@@ -523,27 +562,19 @@ namespace Google.Protobuf.Collections
         /// <returns><c>true</c> if <paramref name="other"/> refers to an equal repeated field; <c>false</c> otherwise.</returns>
         public bool Equals(RepeatedField<T> other)
         {
+            return RepeatedFieldEquals(this, other);
+        }
+
+        public static bool RepeatedFieldEquals(IEnumerable<T> This, IEnumerable<T> other) {
             if (other is null)
             {
                 return false;
             }
-            if (ReferenceEquals(other, this))
+            if (ReferenceEquals(other, This))
             {
                 return true;
             }
-            if (other.Count != this.Count)
-            {
-                return false;
-            }
-            EqualityComparer<T> comparer = EqualityComparer;
-            for (int i = 0; i < count; i++)
-            {
-                if (!comparer.Equals(array[i], other.array[i]))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return other.SequenceEqual(This, EqualityComparer);
         }
 
         /// <summary>

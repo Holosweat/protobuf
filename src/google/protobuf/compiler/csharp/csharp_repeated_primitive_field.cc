@@ -61,21 +61,24 @@ void RepeatedPrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     "private static readonly pb::FieldCodec<$type_name$> _repeated_$name$_codec\n"
     "    = pb::FieldCodec.For$capitalized_type_name$($tag$);\n");
   printer->Print(variables_,
-    "private pbc::RepeatedField<$type_name$> $name$_ = new pbc::RepeatedField<$type_name$>();\n");
+    "private pbc::RepeatedField<$type_name$> $name$_pb = new pbc::RepeatedField<$type_name$>();\n"
+    "private scg.IEnumerable<$type_name$>? $name$_imm = null;\n");
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-    "$access_level$ scg::IEnumerable<$type_name$> $property_name$ {\n"
-    "  get { return $name$_; }\n"
-    "  init { $name$_ = new pbc::RepeatedField<$type_name$>(value); }\n"
-    "}\n");
+     "$access_level$ scg::IEnumerable<$type_name$> $property_name$ {\n"
+    "  get { return $name$_imm ?? $name$_pb; }\n"
+    "  init { if (value is sci.ImmutableList<$type_name$>) { $name$_imm = value; } else { $name$_imm = null; $name$_pb = new pbc::RepeatedField<$type_name$>(value); } }\n"
+    "}\n"
+    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return $name$_imm != null ? new pbc::RepeatedField<$type_name$>($name$_imm) : $name$_pb; } }\n"
+    "private pbc::RepeatedField<$type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::RepeatedField<$type_name$>($name$_imm); $name$_imm = null; } return $name$_pb; } }\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if (other.$name$_.Count > 0) { $name$_ = new pbc::RepeatedField<$type_name$>($name$_); $name$_.Add(other.$name$_); }\n");
+    "if (other.$property_name$.Any()) { var $name$_new = new pbc::RepeatedField<$type_name$>($property_name$); $name$_new.Add(other.$property_name$); $name$_imm = null; $name$_pb = $name$_new; }\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -86,8 +89,8 @@ void RepeatedPrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer, 
   printer->Print(
     variables_,
     use_parse_context
-    ? "$name$_.AddEntriesFrom(ref input, _repeated_$name$_codec);\n"
-    : "$name$_.AddEntriesFrom(input, _repeated_$name$_codec);\n");
+    ? "$name$_ForMutation.AddEntriesFrom(ref input, _repeated_$name$_codec);\n"
+    : "$name$_ForMutation.AddEntriesFrom(input, _repeated_$name$_codec);\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -98,34 +101,34 @@ void RepeatedPrimitiveFieldGenerator::GenerateSerializationCode(io::Printer* pri
   printer->Print(
     variables_,
     use_write_context
-    ? "$name$_.WriteTo(ref output, _repeated_$name$_codec);\n"
-    : "$name$_.WriteTo(output, _repeated_$name$_codec);\n");
+    ? "$name$_ForSerialization.WriteTo(ref output, _repeated_$name$_codec);\n"
+    : "$name$_ForSerialization.WriteTo(output, _repeated_$name$_codec);\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "size += $name$_.CalculateSize(_repeated_$name$_codec);\n");
+    "size += pbc::RepeatedField<$type_name$>.RepeatedFieldCalculateSize(_repeated_$name$_codec, $property_name$);\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::WriteHash(io::Printer* printer) {
   printer->Print(
     variables_,
-    "hash ^= $name$_.GetHashCode();\n");
+    "hash ^= pbc::RepeatedField<$type_name$>.GetRepeatedFieldHashCode($property_name$);\n");
 }
 void RepeatedPrimitiveFieldGenerator::WriteEquals(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if(!$name$_.Equals(other.$name$_)) return false;\n");
+    "if(!pbc::RepeatedField<$type_name$>.RepeatedFieldEquals($property_name$, other.$property_name$)) return false;\n");
 }
 void RepeatedPrimitiveFieldGenerator::WriteToString(io::Printer* printer) {
   printer->Print(variables_,
-    "PrintField(\"$descriptor_name$\", $name$_, writer);\n");
+    "PrintField(\"$descriptor_name$\", $name$_ForSerialization, writer);\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "$name$_ = deep ? other.$name$_.Clone() : other.$name$_;\n");
+    "if (deep) { $name$_imm = null; $name$_pb = other.$name$_ForSerialization.Clone(); } else { $name$_imm = other.$name$_imm; $name$_pb = other.$name$_pb; }\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
