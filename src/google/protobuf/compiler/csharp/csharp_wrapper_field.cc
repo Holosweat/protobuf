@@ -40,6 +40,7 @@
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -209,6 +210,9 @@ void WrapperFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
   printer->Print(");\n");
 }
 
+void WrapperFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {}
+
+
 WrapperOneofFieldGenerator::WrapperOneofFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : WrapperFieldGenerator(descriptor, presenceIndex, options) {
@@ -300,6 +304,10 @@ void WrapperOneofFieldGenerator::GenerateSerializedSizeCode(io::Printer* printer
     "if ($has_property_check$) {\n"
     "  size += _oneof_$name$_codec.CalculateSizeWithTag($property_name$);\n"
     "}\n");
+}
+
+void WrapperOneofFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+
 }
 
 }  // namespace csharp

@@ -57,6 +57,7 @@
 #include "google/protobuf/compiler/csharp/csharp_wrapper_field.h"
 #include "google/protobuf/compiler/csharp/names.h"
 #include "google/protobuf/descriptor.pb.h"
+#include "google/protobuf/descriptor_utils.h"
 
 // Must be last.
 #include "google/protobuf/port_def.inc"
@@ -459,6 +460,7 @@ bool IsNullable(const FieldDescriptor* descriptor) {
       return false;
 
     case FieldDescriptor::TYPE_MESSAGE:
+      return MessageIsReference(*descriptor->message_type()) || SupportsPresenceApi(descriptor);
     case FieldDescriptor::TYPE_GROUP:
     case FieldDescriptor::TYPE_STRING:
     case FieldDescriptor::TYPE_BYTES:
@@ -469,6 +471,29 @@ bool IsNullable(const FieldDescriptor* descriptor) {
       return true;
   }
 }
+bool EmbedBarePublicField(const FieldDescriptor &field) {
+    // if (!FieldInsideReferenceContainer(field)) {
+    //     ABSL_LOG(ERROR) << "Field inside: " << field.name() << " papi:" << SupportsPresenceApi(field);
+    // }
+    return !FieldInsideReferenceContainer(field) && !SupportsPresenceApi(&field);
+}
+
+bool EmbedReadOnlyRefField(const FieldDescriptor &field) {
+  return field.type() == FieldDescriptor::TYPE_MESSAGE
+    && field.message_type() != nullptr 
+    && !MessageIsReference(*field.message_type())
+    && FieldInsideReferenceContainer(field) 
+    && !IsNullable(&field)
+    && !SupportsPresenceApi(&field);
+}
+
+bool MessageFieldIsValueType(const FieldDescriptor &field) {
+  if (field.type() != FieldDescriptor::TYPE_MESSAGE || field.message_type() == nullptr) {
+      ABSL_LOG(FATAL) << "Not a message field";
+  }
+  return !MessageIsReference(*field.message_type());
+}
+
 
 }  // namespace csharp
 }  // namespace compiler

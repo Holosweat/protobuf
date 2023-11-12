@@ -44,6 +44,7 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/descriptor_utils.h"
 
 // Must be last.
 #include "google/protobuf/port_def.inc"
@@ -119,49 +120,85 @@ void FieldGeneratorBase::SetCommonFieldVariables(
         (*variables)["clear_has_field"] =
             absl::StrCat("_hasBits", hasBitsNumber, " &= ~", hasBitsMask);
     }
+  } 
+
+  if (EmbedBarePublicField(*descriptor_) && !descriptor_->real_containing_oneof()) {
+    this->variables_["reading_member"] = (*variables)["property_name"];
+    this->variables_["writing_member"] = (*variables)["property_name"];
+  } else if (descriptor_->real_containing_oneof()) {
+    this->variables_["reading_member"] = (*variables)["property_name"];
+    this->variables_["writing_member"] = (*variables)["property_name"] + "_Internal";
+  } else if (EmbedReadOnlyRefField(*descriptor_)) {
+    this->variables_["reading_member"] = (*variables)["property_name"];
+    this->variables_["writing_member"] = (*variables)["name"] + '_';
   } else {
-     
-     
-
-  
+    this->variables_["reading_member"] = (*variables)["property_name"];
+    this->variables_["writing_member"] = (*variables)["name"] + "_"; 
   }
+  // if (descriptor_->name() == "pose" || descriptor_->containing_type()->full_name() == "holosweat.WorkoutScene.ActiveWorkout") {
+  //   ABSL_LOG(ERROR) << (descriptor_->containing_type()->full_name() + ":" + "Reading member ") 
+  //     << variables_["reading_member"] << " Writing member: " 
+  //     << this->variables_["writing_member"] << " conf: " 
+  //     << (descriptor_->real_containing_oneof() != nullptr);
+  //   if (descriptor_->real_containing_oneof() != nullptr) {
+  //       ABSL_LOG(ERROR) << "One of: " << descriptor_->real_containing_oneof()->DebugString();
+  //       ABSL_LOG(ERROR) << "One of index: " << descriptor_->real_containing_oneof()->field_count();
+  //   }
+  // }
 
-  if (SupportsPresenceApi(descriptor_) || IsNullable(descriptor_) || descriptor_->containing_oneof()) {
-      variables->insert({ "has_property_check",
-                       absl::StrCat((*variables)["property_name"], " is ", type_name(), " ", (*variables)["property_name"], "Value") });
-      variables->insert(
-          { "other_has_property_check",
-           absl::StrCat("other.", (*variables)["property_name"], " is ", type_name(), " ", (*variables)["property_name"], "OtherValue") });
-      variables->insert({ "has_not_property_check",
-                         absl::StrCat("!(", (*variables)["has_property_check"],")") });
-      variables->insert(
-          { "other_has_not_property_check",
-           absl::StrCat("!", (*variables)["other_has_property_check"]) });
+  if (SupportsPresenceApi(descriptor_) || IsNullable(descriptor_) || descriptor_->real_containing_oneof()) {
+    variables->insert({"type_at_rest",
+                       absl::StrCat((*variables)["type_name"], "?")});
+    variables->insert({"has_property_check",
+                       absl::StrCat((*variables)["reading_member"], " is ", type_name(), " ", (*variables)["property_name"], "Value")});
+    variables->insert(
+        {"other_has_property_check",
+         absl::StrCat("other.", (*variables)["reading_member"], " is ", type_name(), " ", (*variables)["property_name"], "OtherValue")});
+    variables->insert({"has_not_property_check",
+                       absl::StrCat("!(", (*variables)["has_property_check"], ")")});
+    variables->insert(
+        {"other_has_not_property_check",
+         absl::StrCat("!", (*variables)["other_has_property_check"])});
 
-      variables->insert({ "property_name_existing", absl::StrCat((*variables)["property_name"], "Value") });
-      variables->insert({ "other_property_name_existing", absl::StrCat((*variables)["property_name"], "OtherValue") });
-   
+    variables->insert({"property_name_existing", absl::StrCat((*variables)["property_name"], "Value")});
+    variables->insert({"other_property_name_existing", absl::StrCat((*variables)["property_name"], "OtherValue")});
 
-      if (IsNullable(descriptor_)) {
-          (*variables)["has_property_check_internal"] = absl::StrCat((*variables)["name"], "_ != null");
+    if (IsNullable(descriptor_))
+    {
+        (*variables)["has_property_check_internal"] = absl::StrCat(this->variables_["reading_member"], " != null");
+    }
+    else {
+      if (EmbedReadOnlyRefField(*descriptor_)) {
+        (*variables)["has_property_check_internal"] = absl::StrCat("!", (*variables)["reading_member"], ".Equals(default)");
+      } else {
+        (*variables)["has_property_check_internal"] = (*variables)["has_field_check"];
       }
-      else {
-          (*variables)["has_property_check_internal"] = absl::StrCat((*variables)["has_field_check"]);
-      }
+    }
   }
   else {
+      variables->insert({"type_at_rest", (*variables)["type_name"]});
       variables->insert({ "has_property_check",
-                        absl::StrCat((*variables)["property_name"],
-                                     " != ", (*variables)["default_value"]) });
+                        absl::StrCat("!", (*variables)["reading_member"],
+                                     "Equals(", (*variables)["default_value"], ")") });
       variables->insert({ "other_has_property_check",
-                         absl::StrCat("other.", (*variables)["property_name"],
-                                      " != ", (*variables)["default_value"]) });
-      variables->insert({ "property_name_existing", absl::StrCat((*variables)["property_name"]) });
-      variables->insert({ "other_property_name_existing", absl::StrCat("other.", (*variables)["property_name"]) });
+                         absl::StrCat("!other.", (*variables)["reading_member"],
+                                      ".Equals(", (*variables)["default_value"], ")") });
+      variables->insert({ "property_name_existing", absl::StrCat((*variables)["reading_member"]) });
+      variables->insert({ "other_property_name_existing", absl::StrCat("other.", (*variables)["reading_member"]) });
 
 
       variables->insert({ "has_property_check_internal", (*variables)["has_property_check"] });
   }
+
+  // variables_["storage_name"] = [&]()
+  // {
+  //   if (EmbedBarePublicField(*descriptor_))
+  //   {
+  //     return this->variables_["property_name"];
+  //   } else {
+  //     return this->variables_["name"] + "_";
+  //   }
+  // }();
 }
 
 void FieldGeneratorBase::SetCommonOneofFieldVariables(
@@ -396,7 +433,7 @@ std::string FieldGeneratorBase::default_value(const FieldDescriptor* descriptor)
         const FieldDescriptor* wrapped_field = descriptor->message_type()->field(0);
         return default_value(wrapped_field);
       } else {
-        return "null";
+        return "default";
       }
     case FieldDescriptor::TYPE_DOUBLE: {
       double value = descriptor->default_value_double();

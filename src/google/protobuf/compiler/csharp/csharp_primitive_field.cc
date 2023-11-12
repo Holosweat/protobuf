@@ -42,6 +42,7 @@
 #include "google/protobuf/descriptor.h"
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -89,6 +90,14 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
   //   std::string default_value = variables_["default_value"];
   //   variables_["default_value_access"] = std::move(default_value);
   // }
+
+  if (EmbedBarePublicField(*descriptor_)) {
+    WritePropertyDocComment(printer, descriptor_);
+    printer->Print(
+          variables_,
+          "public $type_name$  $property_name$;\n");
+    return;
+  }
 
   // Declare the field itself.
   if (IsNullable(descriptor_) && SupportsPresenceApi(descriptor_)) {
@@ -202,6 +211,14 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
 }
 
 void PrimitiveFieldGenerator::GenerateMergingCode(io::Printer* printer) {
+  if (EmbedBarePublicField(*descriptor_)) {
+      printer->Print(
+    variables_,
+    "if ($other_has_property_check$) {\n"
+    "  $property_name$ = other.$property_name$;\n"
+    "}\n");
+    return;
+  }
   printer->Print(
     variables_,
     "if ($other_has_property_check$) {\n"
@@ -210,6 +227,13 @@ void PrimitiveFieldGenerator::GenerateMergingCode(io::Printer* printer) {
 }
 
 void PrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer) {
+  if (EmbedBarePublicField(*descriptor_)) {
+     printer->Print(
+    variables_,
+    "$property_name$ = input.Read$capitalized_type_name$();\n"); 
+    return;
+  }
+
   // Note: invoke the property setter rather than writing straight to the field,
   // so that we can normalize "null to empty" for strings and bytes.
   printer->Print(
@@ -280,6 +304,12 @@ void PrimitiveFieldGenerator::WriteToString(io::Printer* printer) {
 }
 
 void PrimitiveFieldGenerator::GenerateCloningCode(io::Printer* printer) {
+  if (EmbedBarePublicField(*descriptor_)) {
+    printer->Print(
+        variables_,
+        "$property_name$ = other.$property_name$;\n");
+      return;
+  }
   printer->Print(variables_,
     "$property_name$_Internal = other.$property_name$;\n");
 }
@@ -299,6 +329,19 @@ void PrimitiveFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
     "  new pb::Extension<$extended_type$, $type_name$>($number$, ");
   GenerateCodecCode(printer);
   printer->Print(");\n");
+}
+
+void PrimitiveFieldGenerator:: GenerateStructConstructorCode(io::Printer *printer) {
+  if (EmbedBarePublicField(*descriptor_)) {
+      printer->Print(
+    variables_,
+    "  $property_name$ = default;\n");
+    return;
+  }
+  
+  printer->Print(
+    variables_,
+    "  $name$_ = default;\n");
 }
 
 PrimitiveOneofFieldGenerator::PrimitiveOneofFieldGenerator(
@@ -382,6 +425,9 @@ void PrimitiveOneofFieldGenerator::GenerateParsingCode(io::Printer* printer) {
 void PrimitiveOneofFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
     "$property_name$_Internal = other.$property_name$;\n");
+}
+
+void PrimitiveOneofFieldGenerator:: GenerateStructConstructorCode(io::Printer *printer) {
 }
 
 }  // namespace csharp

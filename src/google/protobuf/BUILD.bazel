@@ -451,10 +451,12 @@ cc_library(
         "text_format.cc",
         "unknown_field_set.cc",
         "wire_format.cc",
+        "descriptor_utils.cc",
     ],
     hdrs = [
         "descriptor.h",
         "descriptor.pb.h",
+        "descriptor_utils.h",
         "descriptor_database.h",
         "descriptor_legacy.h",
         "dynamic_message.h",

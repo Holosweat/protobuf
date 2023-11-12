@@ -141,13 +141,13 @@ inline bool IsWrapperType(const FieldDescriptor* descriptor) {
 }
 
 inline bool SupportsPresenceApi(const FieldDescriptor* descriptor) {
-  // Unlike most languages, we don't generate Has/Clear members for message
-  // types, because they can always be set to null in C#. They're not really
-  // needed for oneof fields in proto2 either, as everything can be done via
-  // oneof case, but we follow the convention from other languages.
-  if (descriptor->type() == FieldDescriptor::TYPE_MESSAGE) {
-    return false;
-  }
+  // // Unlike most languages, we don't generate Has/Clear members for message
+  // // types, because they can always be set to null in C#. They're not really
+  // // needed for oneof fields in proto2 either, as everything can be done via
+  // // oneof case, but we follow the convention from other languages.
+  // if (descriptor->type() == FieldDescriptor::TYPE_MESSAGE) {
+  //   return false;
+  // }
 
   return descriptor->has_presence();
 }
@@ -158,6 +158,19 @@ inline bool RequiresPresenceBit(const FieldDescriptor* descriptor) {
     !descriptor->is_extension() &&
     !descriptor->real_containing_oneof();
 }
+
+// This is performance optimization [1] and to allow easy chaining of mutations in nested hierarchies [2]
+// [1] Value semantics mean that value is copied for every access, that could mean a lot of useless copying
+// for large value types and nested hierarchies. Having bare member access helps the compiler to optimize thes
+// accesses. The difference with value types is that any mutation is local, therefore there aren't any negative
+// side effects since this is a pure data class.
+// [2] For mutations to currently work in C# in deeply nested hierarchies x.y.z = 1, all of the values
+// on the path need to be fields, otherwise it can become cumbersome to change some deeply nested value.
+// If this is undesired, use the default record messages. 
+bool EmbedBarePublicField(const FieldDescriptor &field);
+// This guards against copying potentially large structs unnecessarily. 
+bool EmbedReadOnlyRefField(const FieldDescriptor &field);
+bool MessageFieldIsValueType(const FieldDescriptor &field);
 
 }  // namespace csharp
 }  // namespace compiler

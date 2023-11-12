@@ -59,6 +59,7 @@ class PrimitiveFieldGenerator : public FieldGeneratorBase {
   virtual void GenerateSerializationCode(io::Printer* printer) override;
   virtual void GenerateSerializedSizeCode(io::Printer* printer) override;
   virtual void GenerateExtensionCode(io::Printer* printer) override;
+  virtual void GenerateStructConstructorCode(io::Printer *printer) override;
 
   virtual void WriteHash(io::Printer* printer) override;
   virtual void WriteEquals(io::Printer* printer) override;
@@ -84,6 +85,7 @@ class PrimitiveOneofFieldGenerator : public PrimitiveFieldGenerator {
   virtual void GenerateMergingCode(io::Printer* printer) override;
   virtual void WriteToString(io::Printer* printer) override;
   virtual void GenerateParsingCode(io::Printer* printer) override;
+  virtual void GenerateStructConstructorCode(io::Printer *printer) override;
 };
 
 }  // namespace csharp

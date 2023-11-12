@@ -58,6 +58,7 @@ class RepeatedPrimitiveFieldGenerator : public FieldGeneratorBase {
   virtual void GenerateSerializationCode(io::Printer* printer, bool use_write_context) override;
   virtual void GenerateSerializedSizeCode(io::Printer* printer) override;
   virtual void GenerateExtensionCode(io::Printer* printer) override;
+  virtual void GenerateStructConstructorCode(io::Printer *printer) override;
 
   virtual void WriteHash(io::Printer* printer) override;
   virtual void WriteEquals(io::Printer* printer) override;

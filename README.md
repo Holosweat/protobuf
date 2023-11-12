@@ -5,7 +5,7 @@ Protoc build
 
 Proto library
 * `cd csharp/src`
-* `dotnet build -c Release`
+* `dotnet build -c Release` or `pushd csharp/src; dotnet pack -c Release;  popd;`
 
 Protocol Buffers - Google's data interchange format
 ===================================================

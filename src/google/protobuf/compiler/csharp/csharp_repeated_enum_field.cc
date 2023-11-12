@@ -40,6 +40,7 @@
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -49,6 +50,7 @@ namespace csharp {
 RepeatedEnumFieldGenerator::RepeatedEnumFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
+  variables_["setter"] = FieldInsideReferenceContainer(*descriptor_) ? "init" : "set";
 }
 
 RepeatedEnumFieldGenerator::~RepeatedEnumFieldGenerator() {
@@ -61,18 +63,18 @@ void RepeatedEnumFieldGenerator::GenerateMembers(io::Printer* printer) {
     "private static readonly pb::FieldCodec<$type_name$> _repeated_$name$_codec\n"
     "    = pb::FieldCodec.ForEnum($tag$, x => (int) x, x => ($type_name$) x);\n");
   printer->Print(variables_,
-    "private pbc::RepeatedField<$type_name$> $name$_pb = new pbc::RepeatedField<$type_name$>();\n"
-    "private scg.IEnumerable<$type_name$>? $name$_imm = null;\n");
+    "private pbc::RepeatedField<$type_name$>? $name$_pb = null;\n"
+    "private scg.IEnumerable<$type_name$>? $name$_imm = System.Array.Empty<$type_name$>();\n");
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
     "$access_level$ scg::IEnumerable<$type_name$> $property_name$ {\n"
-    "  get { return $name$_imm ?? $name$_pb; }\n"
-    "  init { if (value is sci.ImmutableList<$type_name$>) { $name$_imm = value; } else { $name$_imm = null; $name$_pb = new pbc::RepeatedField<$type_name$>(value); } }\n"
+    "  get { return ($name$_imm ?? $name$_pb) ?? System.Array.Empty<$type_name$>(); }\n"
+    "  $setter$ { if (value is sci.ImmutableList<$type_name$> || value is sci.ImmutableArray<$type_name$>) { $name$_imm = value; } else { $name$_imm = sci.ImmutableArray.ToImmutableArray(value); $name$_pb = null; } }\n"
     "}\n"
-    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return $name$_imm != null ? new pbc::RepeatedField<$type_name$>($name$_imm) : $name$_pb; } }\n"
-    "private pbc::RepeatedField<$type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::RepeatedField<$type_name$>($name$_imm); $name$_imm = null; } return $name$_pb; } }\n");
+    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return $name$_imm != null || $name$_pb == null ? new pbc::RepeatedField<$type_name$>($name$_imm ?? System.Array.Empty<$type_name$>()) : $name$_pb; } }\n"
+    "private pbc::RepeatedField<$type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::RepeatedField<$type_name$>($name$_imm); $name$_imm = null; } if ($name$_pb == null) { $name$_pb = new pbc::RepeatedField<$type_name$>(); } return $name$_pb; } }\n");
 }
 
 void RepeatedEnumFieldGenerator::GenerateMergingCode(io::Printer* printer) {
@@ -144,6 +146,12 @@ void RepeatedEnumFieldGenerator::GenerateExtensionCode(io::Printer* printer) {
 }
 
 void RepeatedEnumFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
+}
+
+void RepeatedEnumFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+  printer->Print(variables_,
+                 "$name$_pb = default;\n"
+                 "$name$_imm = default;");
 }
 
 }  // namespace csharp

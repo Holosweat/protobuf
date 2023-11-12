@@ -38,6 +38,7 @@
 #include "google/protobuf/compiler/csharp/csharp_helpers.h"
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
+#include "google/protobuf/descriptor_utils.h"
 
 namespace google {
 namespace protobuf {
@@ -54,6 +55,7 @@ MapFieldGenerator::MapFieldGenerator(const FieldDescriptor* descriptor,
       descriptor_->message_type()->map_value();
   variables_["key_type_name"] = type_name(key_descriptor);
   variables_["value_type_name"] = type_name(value_descriptor);
+  variables_["setter"] = FieldInsideReferenceContainer(*descriptor_) ? "init" : "set";
 }
 
 MapFieldGenerator::~MapFieldGenerator() {
@@ -76,22 +78,29 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
   key_generator->GenerateCodecCode(printer);
   printer->Print(", ");
   value_generator->GenerateCodecCode(printer);
-  printer->Print(
-    variables_,
-    ", $tag$);\n"
-    "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>();\n"
-    "private scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$>? $name$_imm = null;\n");
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(
+      variables_,
+      ", $tag$);\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$>? $name$_pb = null;\n"
+      "private scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$>? $name$_imm = null;\n");
+  } else {
+    printer->Print(
+      variables_,
+      ", $tag$);\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$>? $name$_pb;\n"
+      "private scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$>? $name$_imm;\n");
+  }
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
-    variables_,
-    "$access_level$ scg::IReadOnlyDictionary<$key_type_name$, $value_type_name$> $property_name$ {\n"
-    "  get { return $name$_imm ?? $name$_pb; }\n"
-    "  init { if (value is sci.ImmutableDictionary<$key_type_name$, $value_type_name$>) { $name$_imm = value; } else { $name$_imm = null; $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>(value); } }\n"
-    "}\n"
-    "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ForSerialization { get { return $name$_imm != null ? new pbc::MapField<$key_type_name$, $value_type_name$>($name$_imm) : $name$_pb; } }\n"
-    "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>($name$_imm); $name$_imm = null; } return $name$_pb; } }\n"
-  );
+      variables_,
+      "$access_level$ scg::IReadOnlyDictionary<$key_type_name$, $value_type_name$> $property_name$ {\n"
+      "  get { return ($name$_imm ?? $name$_pb) ?? sci.ImmutableDictionary<$key_type_name$, $value_type_name$>.Empty; }\n"
+      "  $setter$ { if (value is sci.ImmutableDictionary<$key_type_name$, $value_type_name$>) { $name$_imm = value; } else { $name$_imm = sci.ImmutableDictionary.CreateRange(value); } $name$_pb = null; }\n"
+      "}\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ForSerialization { get { return $name$_imm != null || $name$_pb == null ? new pbc::MapField<$key_type_name$, $value_type_name$>($name$_imm ?? sci.ImmutableDictionary<$key_type_name$, $value_type_name$>.Empty) : $name$_pb; } }\n"
+      "private pbc::MapField<$key_type_name$, $value_type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>($name$_imm); $name$_imm = null; } if ($name$_pb == null) { $name$_pb = new pbc::MapField<$key_type_name$, $value_type_name$>(); } return $name$_pb; } }\n");
 }
 
 void MapFieldGenerator::GenerateMergingCode(io::Printer* printer) {
@@ -150,6 +159,10 @@ void MapFieldGenerator::GenerateCloningCode(io::Printer* printer) {
 }
 
 void MapFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
+}
+
+void MapFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
+  printer->Print(variables_, "$name$_pb = default; $name$_imm = default;\n");
 }
 
 }  // namespace csharp
