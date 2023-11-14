@@ -120,31 +120,39 @@ void FieldGeneratorBase::SetCommonFieldVariables(
         (*variables)["clear_has_field"] =
             absl::StrCat("_hasBits", hasBitsNumber, " &= ~", hasBitsMask);
     }
-  } 
-
-  if (EmbedBarePublicField(*descriptor_) && !descriptor_->real_containing_oneof()) {
-    this->variables_["reading_member"] = (*variables)["property_name"];
-    this->variables_["writing_member"] = (*variables)["property_name"];
-  } else if (descriptor_->real_containing_oneof()) {
-    this->variables_["reading_member"] = (*variables)["property_name"];
-    this->variables_["writing_member"] = (*variables)["property_name"] + "_Internal";
-  } else if (EmbedReadOnlyRefField(*descriptor_)) {
-    this->variables_["reading_member"] = (*variables)["property_name"];
-    this->variables_["writing_member"] = (*variables)["name"] + '_';
-  } else {
-    this->variables_["reading_member"] = (*variables)["property_name"];
-    this->variables_["writing_member"] = (*variables)["name"] + "_"; 
   }
-  // if (descriptor_->name() == "pose" || descriptor_->containing_type()->full_name() == "holosweat.WorkoutScene.ActiveWorkout") {
-  //   ABSL_LOG(ERROR) << (descriptor_->containing_type()->full_name() + ":" + "Reading member ") 
-  //     << variables_["reading_member"] << " Writing member: " 
-  //     << this->variables_["writing_member"] << " conf: " 
-  //     << (descriptor_->real_containing_oneof() != nullptr);
-  //   if (descriptor_->real_containing_oneof() != nullptr) {
-  //       ABSL_LOG(ERROR) << "One of: " << descriptor_->real_containing_oneof()->DebugString();
-  //       ABSL_LOG(ERROR) << "One of index: " << descriptor_->real_containing_oneof()->field_count();
-  //   }
-  // }
+
+  bool filter = false;//descriptor_->name() == "direction" && descriptor_->containing_type()->name() == "DevicePosition";
+  if (EmbedBarePublicField(*descriptor_) && !descriptor_->real_containing_oneof()) {
+    if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{ "writing_member", (*variables)["property_name"] }} );
+  } else if (descriptor_->real_containing_oneof()) {
+    if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{"writing_member", (*variables)["property_name"] + "_Internal" }});
+  } else if (EmbedReadOnlyRefField(*descriptor_)) {
+    if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{ "writing_member", (*variables)["name"] + '_' }});
+  } else {
+        if (filter) {
+        ABSL_LOG(ERROR) << "x";
+    }
+    variables->insert({{ "reading_member", (*variables)["property_name"] }});
+    variables->insert({{ "writing_member", (*variables)["property_name"] + "_Internal" }}); 
+  }
+  if (filter) {
+    ABSL_LOG(ERROR) << "Field: " << name() << " Presence: " << SupportsPresenceApi(descriptor_)
+                    << " Nullable: " << IsNullable(descriptor_) << " is optional: " << descriptor_->is_optional()
+                    << "descriptor: " << descriptor_->DebugString();
+  }
 
   if (SupportsPresenceApi(descriptor_) || IsNullable(descriptor_) || descriptor_->real_containing_oneof()) {
     variables->insert({"type_at_rest",
@@ -179,7 +187,7 @@ void FieldGeneratorBase::SetCommonFieldVariables(
       variables->insert({"type_at_rest", (*variables)["type_name"]});
       variables->insert({ "has_property_check",
                         absl::StrCat("!", (*variables)["reading_member"],
-                                     "Equals(", (*variables)["default_value"], ")") });
+                                     ".Equals(", (*variables)["default_value"], ")") });
       variables->insert({ "other_has_property_check",
                          absl::StrCat("!other.", (*variables)["reading_member"],
                                       ".Equals(", (*variables)["default_value"], ")") });
@@ -189,16 +197,6 @@ void FieldGeneratorBase::SetCommonFieldVariables(
 
       variables->insert({ "has_property_check_internal", (*variables)["has_property_check"] });
   }
-
-  // variables_["storage_name"] = [&]()
-  // {
-  //   if (EmbedBarePublicField(*descriptor_))
-  //   {
-  //     return this->variables_["property_name"];
-  //   } else {
-  //     return this->variables_["name"] + "_";
-  //   }
-  // }();
 }
 
 void FieldGeneratorBase::SetCommonOneofFieldVariables(

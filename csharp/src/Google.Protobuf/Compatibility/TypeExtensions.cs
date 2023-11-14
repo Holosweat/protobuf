@@ -79,6 +79,41 @@ namespace Google.Protobuf.Compatibility
             return null;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2072",
+            Justification = "The BaseType of the target will have all properties because of the annotation.")]
+        internal static bool IsValueType(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
+            this Type target)
+        {
+            var typeInfo = target.GetTypeInfo();
+            return typeInfo.IsValueType;
+        }
+
+        /// <summary>
+        /// Returns a representation of the public property associated with the given name in the given type,
+        /// including inherited properties or null if there is no such public property.
+        /// Here, "public property" means a property where either the getter, or the setter, or both, is public.
+        /// </summary>
+        [UnconditionalSuppressMessage("Trimming", "IL2072",
+            Justification = "The BaseType of the target will have all properties because of the annotation.")]
+        internal static FieldInfo GetField(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
+            this Type target, string name)
+        {
+            // GetDeclaredProperty only returns properties declared in the given type, so we need to recurse.
+            while (target != null)
+            {
+                var typeInfo = target.GetTypeInfo();
+                var ret = typeInfo.GetDeclaredField(name);
+                if (ret != null)
+                {
+                    return ret;
+                }
+                target = typeInfo.BaseType;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Returns a representation of the public method associated with the given name in the given type,
         /// including inherited methods.

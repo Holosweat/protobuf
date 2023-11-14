@@ -479,12 +479,25 @@ bool EmbedBarePublicField(const FieldDescriptor &field) {
 }
 
 bool EmbedReadOnlyRefField(const FieldDescriptor &field) {
-  return field.type() == FieldDescriptor::TYPE_MESSAGE
-    && field.message_type() != nullptr 
-    && !MessageIsReference(*field.message_type())
-    && FieldInsideReferenceContainer(field) 
-    && !IsNullable(&field)
-    && !SupportsPresenceApi(&field);
+  if (!FieldRequestedRefStructOptimization(field)) {
+      return false;
+  }
+  if (!(field.type() == FieldDescriptor::TYPE_MESSAGE)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field is not a message";
+  }
+  if (!(field.message_type() != nullptr && !MessageIsReference(*field.message_type()))) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field value is not a message";
+  }
+  if (!FieldInsideReferenceContainer(field)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field value is not inside a reference message container";
+  }
+  if (SupportsPresenceApi(&field)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field supports presence API.";
+  }
+  if (IsNullable(&field)) {
+      ABSL_LOG(FATAL) << "Requested ref_field = true, but field value is nullable.";
+  }
+  return true;
 }
 
 bool MessageFieldIsValueType(const FieldDescriptor &field) {

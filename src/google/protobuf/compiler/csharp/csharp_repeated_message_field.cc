@@ -87,6 +87,9 @@ void RepeatedMessageFieldGenerator::GenerateMembers(io::Printer* printer) {
       variables_,
       "private pbc::RepeatedField<$type_name$>? $name$_pb;\n"
       "private scg.IEnumerable<$type_name$>? $name$_imm;\n");
+    printer->Print(
+        variables_,
+        "public static scg.IEnumerable<$type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
   }
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);

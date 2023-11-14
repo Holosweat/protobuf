@@ -566,13 +566,13 @@ namespace Google.Protobuf.Collections
         }
 
         public static bool RepeatedFieldEquals(IEnumerable<T> This, IEnumerable<T> other) {
-            if (other is null)
-            {
-                return false;
-            }
             if (ReferenceEquals(other, This))
             {
                 return true;
+            }
+            if (other is null)
+            {
+                return false;
             }
             return other.SequenceEqual(This, EqualityComparer);
         }
