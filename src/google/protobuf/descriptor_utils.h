@@ -8,6 +8,7 @@ namespace protobuf {
     bool MessageIncludesUndefinedFields(const Descriptor &message);
     bool MessageIsReference(const Descriptor &message);
     bool FieldInsideReferenceContainer(const FieldDescriptor &field);
+    bool FieldRequestedRefStructOptimization(const FieldDescriptor &field);
 } 
 }
 #endif

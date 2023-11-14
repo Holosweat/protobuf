@@ -138,7 +138,11 @@ void MessageGenerator::Generate(io::Printer* printer) {
     printer->Print(vars, "pb::IExtendableMessage<$class_name$>\n");
   }
   else {
-    printer->Print(vars, "pb::IMessage<$class_name$>\n");
+    printer->Print(vars, "pb::IMessage<$class_name$>");
+    if (!MessageIsReference(*descriptor_)) {
+      printer->Print(vars, ", global::System.IEquatable<$class_name$>");
+    }
+    printer->Print(vars, "\n");
   }
   printer->Print("#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE\n");
   printer->Print("    , pb::IBufferMessage\n");
@@ -398,6 +402,11 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
     "public $class_name$($class_name$ other) {\n");
     if (!MessageIsReference(*descriptor_)) {
       printer->Indent();
+      for (int i = 0; i < has_bit_field_count_; i++) {
+        // don't use arrays since all arrays are heap allocated, saving allocations
+        // use ints instead of bytes since bytes lack bitwise operators, saving casts
+        printer->Print("_hasBits$i$ = default;\n", "i", absl::StrCat(i));
+      }
       // For structs all fields need to be assigned before other code from constructor is called.
       for (int i = 0; i < descriptor_->field_count(); i++) {
         const FieldDescriptor* field = descriptor_->field(i);
@@ -406,6 +415,16 @@ void MessageGenerator::GenerateCloningCode(io::Printer* printer) {
         }
         std::unique_ptr<FieldGeneratorBase> generator(CreateFieldGeneratorInternal(field));
         generator->GenerateStructConstructorCode(printer);
+      }
+      for (int i = 0; i < descriptor_->real_oneof_decl_count(); i++) {
+        const OneofDescriptor* oneof = descriptor_->oneof_decl(i);
+        vars["name"] = UnderscoresToCamelCase(oneof->name(), false);
+        vars["property_name"] = UnderscoresToCamelCase(oneof->name(), true);
+        vars["original_name"] = oneof->name();
+        printer->Print(
+          vars,
+          "$name$_ = default;\n"
+          "$name$Case_ = default;\n");
       }
       printer->Outdent();
     }
@@ -491,14 +510,25 @@ void MessageGenerator::GenerateFrameworkMethods(io::Printer* printer) {
 
   // Equality
   WriteGeneratedCodeAttributes(printer);
+  if (!MessageIsReference(*descriptor_)) {
+    printer->Print(vars,
+                  "#pragma warning disable CS0809\n"
+                  "[System.Obsolete(\"Probably accidental boxing detected, please use Equals($class_name$).\")]\n"
+                  "public override bool Equals(object? other) {\n"
+                  "  if (other is $class_name$ value) { return this.Equals(value); } else { return false; }\n"
+                  "}\n"
+                  "#pragma warning restore CS0809\n"
+                  );
+  }
   if (MessageIsReference(*descriptor_)) {
+    printer->Print(vars, "// This is already implemente by the compiler for the record type-> `override bool Equals(object other)`\n");
     printer->Print(vars,
                   "public bool Equals($class_name$? other) {\n"
-                  "  if (ReferenceEquals(other, null)) {\n"
-                  "    return false;\n"
-                  "  }\n"
                   "  if (ReferenceEquals(other, this)) {\n"
                   "    return true;\n"
+                  "  }\n"
+                  "  if (ReferenceEquals(other, null)) {\n"
+                  "    return false;\n"
                   "  }\n");
   } else {
     printer->Print(vars,

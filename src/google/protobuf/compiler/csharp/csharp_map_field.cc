@@ -90,6 +90,9 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
       ", $tag$);\n"
       "private pbc::MapField<$key_type_name$, $value_type_name$>? $name$_pb;\n"
       "private scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$>? $name$_imm;\n");
+    printer->Print(
+      variables_,
+      "public static scg.IReadOnlyDictionary<$key_type_name$, $value_type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
   }
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);

@@ -32,6 +32,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Google.Protobuf.Compatibility;
@@ -161,7 +162,7 @@ namespace Google.Protobuf.Reflection
                 return new AotReflectionHelper();
             }
 #endif
-
+     
             return (IReflectionHelper) Activator.CreateInstance(typeof(ReflectionHelper<,>).MakeGenericType(t1, t2));
         }
 
@@ -218,8 +219,17 @@ namespace Google.Protobuf.Reflection
 
             public Func<IMessage, object> CreateFuncIMessageObject(MethodInfo method)
             {
-                var del = (Func<T1, T2>) method.CreateDelegate(typeof(Func<T1, T2>));
-                return message => del((T1) message);
+                try
+                {
+                    var del = (Func<T1, T2>) method.CreateDelegate(typeof(Func<T1, T2>));
+                    return message => del((T1) message);
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(string.Format("T1: {0}, T2: {1}, method parameters: [{2}], return Value: {3}",
+                        typeof(T1), typeof(T2),
+                        String.Join(",", method.GetParameters().Select(i => i.ParameterType.GetType().FullName + " " + i.Name).ToArray()), method.ReturnType.FullName), ex);
+                }
             }
 
             public Action<IMessage, object> CreateActionIMessageObject(MethodInfo method)

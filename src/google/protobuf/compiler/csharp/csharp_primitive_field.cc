@@ -96,6 +96,14 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     printer->Print(
           variables_,
           "public $type_name$  $property_name$;\n");
+    printer->Print(
+        variables_,
+        "public static $type_at_rest$ __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+    if (IsNullable(descriptor_) && SupportsPresenceApi(descriptor_)) {
+            printer->Print(
+        variables_,
+        "public static bool __$property_name$_has_value($extended_type$ message) { return message.$property_name$ != null; }\n");
+    }
     return;
   }
 
@@ -104,11 +112,20 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
       printer->Print(
           variables_,
           "private $type_name$? $name_def_message$;\n");
+      printer->Print(
+        variables_,
+        "public static bool __$property_name$_has_value($extended_type$ message) { return message.$property_name$ != null; }\n");
   }
   else {
       printer->Print(
           variables_,
           "private $type_name$ $name_def_message$;\n");
+  }
+
+  if (!FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(
+      variables_,
+      "public static $type_at_rest$ __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
   }
 
   WritePropertyDocComment(printer, descriptor_);
@@ -144,7 +161,11 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
 
   // Specify the "setter", which may need to set a field bit as well as the
   // value.
-  printer->Print("  init {\n");
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print("  init {\n");
+  } else {
+    printer->Print("  set {\n");
+  }
   printer->Print(variables_, "    this.$property_name$_Internal = value;\n");
   printer->Print("  }\n");
   printer->Print("}\n");

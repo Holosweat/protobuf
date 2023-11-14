@@ -22,6 +22,23 @@ namespace protobuf {
 
             return false; // Default value if the field is not found
       }
+      bool BoolOptionsFieldValue(const FieldDescriptor &field, int field_number) {
+            // Access the message options
+            const FieldOptions &options = field.options();
+            const google::protobuf::UnknownFieldSet& unknownFields = options.unknown_fields();
+
+            for (int i = 0; i < unknownFields.field_count(); ++i) {
+                const google::protobuf::UnknownField& field = unknownFields.field(i);
+
+                if (field.number() == field_number) {
+                    if (field.type() == google::protobuf::UnknownField::TYPE_VARINT) {
+                        return field.varint() != 0;
+                    }
+                }
+            }
+
+            return false; // Default value if the field is not found
+      }
     }
 
     bool MessageIncludesUndefinedFields(const Descriptor &message) {
@@ -35,6 +52,9 @@ namespace protobuf {
                 ABSL_LOG(FATAL) << "Field isn't in container";
         }
         return MessageIsReference(*field.containing_type());
+    }
+    bool FieldRequestedRefStructOptimization(const FieldDescriptor &field) {
+        return BoolOptionsFieldValue(field, /*field_number=*/50003); // 50003 is use_ref
     }
 }
 }

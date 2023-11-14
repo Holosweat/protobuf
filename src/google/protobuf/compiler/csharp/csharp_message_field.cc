@@ -50,7 +50,10 @@ MessageFieldGenerator::MessageFieldGenerator(const FieldDescriptor* descriptor,
                                              int presenceIndex,
                                              const Options *options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
-  
+  std::string overwritten_member = variables_["name"] + "_";
+  if (!EmbedBarePublicField(*descriptor) && !EmbedReadOnlyRefField(*descriptor_)) {
+    variables_["writing_member"] = overwritten_member;
+  }
 }
 
 MessageFieldGenerator::~MessageFieldGenerator() {
@@ -64,6 +67,15 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
     printer->Print(
       variables_,
       "public $type_at_rest$ $property_name$;\n");
+
+    printer->Print(
+        variables_,
+        "public static $type_at_rest$ __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+    if (IsNullable(descriptor_) && SupportsPresenceApi(descriptor_)) {
+            printer->Print(
+        variables_,
+        "public static bool __$property_name$_has_value($extended_type$ message) { return message.$property_name$ != null; }\n");
+    }
   } else if (EmbedReadOnlyRefField(*descriptor_)) {
     printer->Print(
       variables_,
@@ -77,9 +89,13 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
       "}\n");
     printer->Print(
       variables_,
-      "$access_level$ $type_at_rest$ $property_name$ {\n"
+      "$access_level$ $type_at_rest$ $property_name$Setter {\n"
       "  init { $name$_ = value; }\n"
       "}\n");
+
+    printer->Print(
+        variables_,
+        "public static $type_at_rest$ __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
   } else {
     printer->Print(
       variables_,
@@ -87,10 +103,20 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
     WritePropertyDocComment(printer, descriptor_);
     AddPublicMemberAttributes(printer);
     printer->Print(
-      variables_,
-      "$access_level$ $type_at_rest$ $property_name$ {\n"
-      "  get { return $name$_; }\n"
-      "  init {\n"
+        variables_,
+        "$access_level$ $type_at_rest$ $property_name$ {\n"
+        "  get { return $name$_; }\n");
+      if (FieldInsideReferenceContainer(*descriptor_)) {
+        printer->Print(
+            variables_,
+            "  init {\n");
+      } else {
+        printer->Print(
+            variables_,
+            "  set {\n");
+      }
+      printer->Print(
+        variables_,
       "    $name$_ = value;\n"
       "  }\n"
       "}\n");
@@ -114,6 +140,11 @@ void MessageFieldGenerator::GenerateMembers(io::Printer* printer) {
         "  $name$_ = default;\n"
         "}\n");
     }
+    if (!FieldInsideReferenceContainer(*descriptor_)) {
+      printer->Print(
+        variables_,
+        "public static $type_at_rest$ __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+    }
   }
 }
 
@@ -121,16 +152,16 @@ void MessageFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   if (!IsNullable(descriptor_)) {
     printer->Print(
         variables_,
-        "$storage_name$.MergeFrom(other.$storage_name$);\n");
+        "$writing_member$.MergeFrom(other.$writing_member$);\n");
   } else {
     printer->Print(
       variables_,
       "if ($other_has_property_check$) {\n"
       "  if (!($has_property_check$)) {\n"
-      "    $property_name_existing$_ = new $type_name$();\n"
+      "    $property_name_existing$ = new $type_name$();\n"
       "  } else { $property_name_existing$ = new $type_name$($property_name_existing$); }\n"
       "  $property_name_existing$.MergeFrom($other_property_name_existing$);\n"
-      "  $writing_member$ = $other_property_name_existing$;\n"
+      "  $writing_member$ = $property_name_existing$;\n"
       "}\n");
   }
 }
@@ -203,7 +234,7 @@ void MessageFieldGenerator::WriteHash(io::Printer* printer) {
   } else {
     printer->Print(
       variables_,
-      "hash ^= $reading_member$_.GetHashCode();\n");
+      "hash ^= $reading_member$.GetHashCode();\n");
   }
 }
 void MessageFieldGenerator::WriteEquals(io::Printer* printer) {
@@ -253,9 +284,15 @@ void MessageFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
 
 void MessageFieldGenerator::GenerateCodecCode(io::Printer* printer) {
   if (descriptor_->type() == FieldDescriptor::Type::TYPE_MESSAGE) {
-    printer->Print(
-      variables_,
-      "pb::FieldCodec.ForMessage($tag$, $type_name$.Parser)");
+    if (MessageFieldIsValueType(*descriptor_)) {
+      printer->Print(
+        variables_,
+        "pb::FieldCodec.ForStructMessage($tag$, $type_name$.Parser)");
+    } else {
+      printer->Print(
+        variables_,
+        "pb::FieldCodec.ForMessage($tag$, $type_name$.Parser)");
+    }
   } else {
     printer->Print(
       variables_,
@@ -283,10 +320,20 @@ void MessageOneofFieldGenerator::GenerateMembers(io::Printer* printer) {
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
+      variables_,
+      "$access_level$ $type_name$? $property_name$ {\n"
+      "  get { return $property_name$_Internal; }\n");
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(
+        variables_,
+        "  init {\n");
+  } else {
+    printer->Print(
+        variables_,
+        "  set {\n");
+  }
+  printer->Print(
     variables_,
-    "$access_level$ $type_name$? $property_name$ {\n"
-    "  get { return $property_name$_Internal; }\n"
-    "  init {\n"
     "    $property_name$_Internal = value;\n"
     "  }\n"
     "}\n");

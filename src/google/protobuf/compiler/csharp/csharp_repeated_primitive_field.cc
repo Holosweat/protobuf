@@ -62,9 +62,18 @@ void RepeatedPrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     variables_,
     "private static readonly pb::FieldCodec<$type_name$> _repeated_$name$_codec\n"
     "    = pb::FieldCodec.For$capitalized_type_name$($tag$);\n");
-  printer->Print(variables_,
-    "private pbc::RepeatedField<$type_name$>? $name$_pb = null;\n"
-    "private scg.IEnumerable<$type_name$>? $name$_imm = System.Array.Empty<$type_name$>();\n");
+  if (FieldInsideReferenceContainer(*descriptor_)) {
+    printer->Print(variables_,
+      "private pbc::RepeatedField<$type_name$>? $name$_pb = null;\n"
+      "private scg.IEnumerable<$type_name$>? $name$_imm = System.Array.Empty<$type_name$>();\n");
+  } else {
+    printer->Print(variables_,
+      "private pbc::RepeatedField<$type_name$>? $name$_pb;\n"
+      "private scg.IEnumerable<$type_name$>? $name$_imm;\n");
+    printer->Print(
+        variables_,
+        "public static scg.IEnumerable<$type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+  }
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(

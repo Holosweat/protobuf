@@ -387,13 +387,13 @@ namespace Google.Protobuf.Collections
         }
 
         public static bool MapFieldEquals(IReadOnlyDictionary<TKey, TValue> This, IReadOnlyDictionary<TKey, TValue> other) {
+            if (Object.ReferenceEquals(other, This))
+            {
+                return true;
+            }
             if (other == null)
             {
                 return false;
-            }
-            if (other == This)
-            {
-                return true;
             }
             if (other.Count != This.Count)
             {

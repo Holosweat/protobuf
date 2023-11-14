@@ -140,24 +140,6 @@ inline bool IsWrapperType(const FieldDescriptor* descriptor) {
       descriptor->message_type()->file()->name() == "google/protobuf/wrappers.proto";
 }
 
-inline bool SupportsPresenceApi(const FieldDescriptor* descriptor) {
-  // // Unlike most languages, we don't generate Has/Clear members for message
-  // // types, because they can always be set to null in C#. They're not really
-  // // needed for oneof fields in proto2 either, as everything can be done via
-  // // oneof case, but we follow the convention from other languages.
-  // if (descriptor->type() == FieldDescriptor::TYPE_MESSAGE) {
-  //   return false;
-  // }
-
-  return descriptor->has_presence();
-}
-
-inline bool RequiresPresenceBit(const FieldDescriptor* descriptor) {
-  return SupportsPresenceApi(descriptor) &&
-    !IsNullable(descriptor) &&
-    !descriptor->is_extension() &&
-    !descriptor->real_containing_oneof();
-}
 
 // This is performance optimization [1] and to allow easy chaining of mutations in nested hierarchies [2]
 // [1] Value semantics mean that value is copied for every access, that could mean a lot of useless copying
@@ -171,6 +153,25 @@ bool EmbedBarePublicField(const FieldDescriptor &field);
 // This guards against copying potentially large structs unnecessarily. 
 bool EmbedReadOnlyRefField(const FieldDescriptor &field);
 bool MessageFieldIsValueType(const FieldDescriptor &field);
+
+inline bool SupportsPresenceApi(const FieldDescriptor* descriptor) {
+  // // Unlike most languages, we don't generate Has/Clear members for message
+  // // types, because they can always be set to null in C#. They're not really
+  // // needed for oneof fields in proto2 either, as everything can be done via
+  // // oneof case, but we follow the convention from other languages.
+  if (descriptor->type() == FieldDescriptor::TYPE_MESSAGE) {
+    return !MessageFieldIsValueType(*descriptor) || descriptor->has_optional_keyword();
+  }
+
+  return descriptor->has_presence();
+}
+
+inline bool RequiresPresenceBit(const FieldDescriptor* descriptor) {
+  return SupportsPresenceApi(descriptor) &&
+    !IsNullable(descriptor) &&
+    !descriptor->is_extension() &&
+    !descriptor->real_containing_oneof();
+}
 
 }  // namespace csharp
 }  // namespace compiler

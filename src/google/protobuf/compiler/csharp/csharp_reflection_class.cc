@@ -133,6 +133,7 @@ void ReflectionClassGenerator::WriteIntroduction(io::Printer* printer) {
     "#nullable enable\n"
     "#pragma warning disable 0618\n"
     "#pragma warning disable CS8981\n"
+    "#pragma warning disable CS8618\n"
     "\n"
     "using pb = global::Google.Protobuf;\n"
     "using pbc = global::Google.Protobuf.Collections;\n"

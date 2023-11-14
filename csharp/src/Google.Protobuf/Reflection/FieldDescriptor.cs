@@ -61,7 +61,8 @@ namespace Google.Protobuf.Reflection
         /// Returns the oneof containing this field if it's a "real" oneof, or <c>null</c> if either this
         /// field is not part of a oneof, or the oneof is synthetic.
         /// </summary>
-        public OneofDescriptor RealContainingOneof => ContainingOneof?.IsSynthetic == false ? ContainingOneof : null;
+        public OneofDescriptor RealContainingOneof =>
+            ContainingOneof?.IsSynthetic == false ? ContainingOneof : null;
 
         /// <summary>
         /// The effective JSON name for this field. This is usually the lower-camel-cased form of the field name,
@@ -81,13 +82,18 @@ namespace Google.Protobuf.Reflection
         /// on this field's accessor with a suitable message.
         /// </summary>
         public bool HasPresence =>
-            Extension != null ? !Extension.IsRepeated
-            : IsRepeated ? false
-            : IsMap ? false
-            : FieldType == FieldType.Message ? true
-            // This covers "real oneof members" and "proto3 optional fields"
-            : ContainingOneof != null ? true
-            : File.Syntax == Syntax.Proto2;
+            Extension != null
+                ? !Extension.IsRepeated
+                : IsRepeated
+                    ? false
+                    : IsMap
+                        ? false
+                        : FieldType == FieldType.Message
+                            ? true
+                            // This covers "real oneof members" and "proto3 optional fields"
+                            : ContainingOneof != null
+                                ? true
+                                : File.Syntax == Syntax.Proto2;
 
         internal FieldDescriptorProto Proto { get; }
 
@@ -104,8 +110,14 @@ namespace Google.Protobuf.Reflection
         /// </summary>
         public Extension Extension { get; }
 
-        internal FieldDescriptor(FieldDescriptorProto proto, FileDescriptor file,
-                                 MessageDescriptor parent, int index, string propertyName, Extension extension)
+        internal FieldDescriptor(
+            FieldDescriptorProto proto,
+            FileDescriptor file,
+            MessageDescriptor parent,
+            int index,
+            string propertyName,
+            Extension extension
+        )
             : base(file, file.ComputeFullName(parent, proto.Name), index)
         {
             Proto = proto;
@@ -116,15 +128,20 @@ namespace Google.Protobuf.Reflection
 
             if (FieldNumber <= 0)
             {
-                throw new DescriptorValidationException(this, "Field numbers must be positive integers.");
+                throw new DescriptorValidationException(
+                    this,
+                    "Field numbers must be positive integers."
+                );
             }
             ContainingType = parent;
             if (proto.HasOneofIndex)
             {
                 if (proto.OneofIndex < 0 || proto.OneofIndex >= parent.Proto.OneofDecl.Count)
                 {
-                    throw new DescriptorValidationException(this,
-                        $"FieldDescriptorProto.oneof_index is out of range for type {parent.Name}");
+                    throw new DescriptorValidationException(
+                        this,
+                        $"FieldDescriptorProto.oneof_index is out of range for type {parent.Name}"
+                    );
                 }
                 ContainingOneof = parent.Oneofs[proto.OneofIndex];
             }
@@ -137,9 +154,8 @@ namespace Google.Protobuf.Reflection
             // a MapField, but that feels a tad nasty.
             PropertyName = propertyName;
             Extension = extension;
-            JsonName =  Proto.JsonName == "" ? JsonFormatter.ToJsonName(Proto.Name) : Proto.JsonName;
+            JsonName = Proto.JsonName == "" ? JsonFormatter.ToJsonName(Proto.Name) : Proto.JsonName;
         }
-
 
         /// <summary>
         /// The brief name of the descriptor's target.
@@ -213,7 +229,10 @@ namespace Google.Protobuf.Reflection
         /// <summary>
         /// Returns <c>true</c> if this field is a map field; <c>false</c> otherwise.
         /// </summary>
-        public bool IsMap => fieldType == FieldType.Message && messageType.Proto.Options != null && messageType.Proto.Options.MapEntry;
+        public bool IsMap =>
+            fieldType == FieldType.Message
+            && messageType.Proto.Options != null
+            && messageType.Proto.Options.MapEntry;
 
         /// <summary>
         /// Returns <c>true</c> if this field is a packed, repeated field; <c>false</c> otherwise.
@@ -229,7 +248,9 @@ namespace Google.Protobuf.Reflection
                 else
                 {
                     // Packed by default with proto3
-                    return Proto.Options == null || !Proto.Options.HasPacked || Proto.Options.Packed;
+                    return Proto.Options == null
+                        || !Proto.Options.HasPacked
+                        || Proto.Options.Packed;
                 }
             }
         }
@@ -259,8 +280,10 @@ namespace Google.Protobuf.Reflection
         {
             if (other.ContainingType != ContainingType)
             {
-                throw new ArgumentException("FieldDescriptors can only be compared to other FieldDescriptors " +
-                                            "for fields of the same message type.");
+                throw new ArgumentException(
+                    "FieldDescriptors can only be compared to other FieldDescriptors "
+                        + "for fields of the same message type."
+                );
             }
             return FieldNumber - other.FieldNumber;
         }
@@ -289,7 +312,9 @@ namespace Google.Protobuf.Reflection
             {
                 if (fieldType != FieldType.Message && fieldType != FieldType.Group)
                 {
-                    throw new InvalidOperationException("MessageType is only valid for message or group fields.");
+                    throw new InvalidOperationException(
+                        "MessageType is only valid for message or group fields."
+                    );
                 }
                 return messageType;
             }
@@ -304,7 +329,9 @@ namespace Google.Protobuf.Reflection
             {
                 if (!Proto.HasExtendee)
                 {
-                    throw new InvalidOperationException("ExtendeeType is only valid for extension fields.");
+                    throw new InvalidOperationException(
+                        "ExtendeeType is only valid for extension fields."
+                    );
                 }
                 return extendeeType;
             }
@@ -314,7 +341,8 @@ namespace Google.Protobuf.Reflection
         /// The (possibly empty) set of custom options for this field.
         /// </summary>
         [Obsolete("CustomOptions are obsolete. Use the GetOptions() method.")]
-        public CustomOptions CustomOptions => new CustomOptions(Proto.Options?._extensions?.ValuesByNumber);
+        public CustomOptions CustomOptions =>
+            new CustomOptions(Proto.Options?._extensions?.ValuesByNumber);
 
         /// <summary>
         /// The <c>FieldOptions</c>, defined in <c>descriptor.proto</c>.
@@ -327,7 +355,7 @@ namespace Google.Protobuf.Reflection
         /// <summary>
         /// Gets a single value field option for this descriptor
         /// </summary>
-         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
+        [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public T GetOption<T>(Extension<FieldOptions, T> extension)
         {
             var value = Proto.Options.GetExtension(extension);
@@ -337,7 +365,7 @@ namespace Google.Protobuf.Reflection
         /// <summary>
         /// Gets a repeated value field option for this descriptor
         /// </summary>
-         [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
+        [Obsolete("GetOption is obsolete. Use the GetOptions() method.")]
         public RepeatedField<T> GetOption<T>(RepeatedExtension<FieldOptions, T> extension)
         {
             return Proto.Options.GetExtension(extension).Clone();
@@ -350,8 +378,7 @@ namespace Google.Protobuf.Reflection
         {
             if (Proto.HasTypeName)
             {
-                IDescriptor typeDescriptor =
-                    File.DescriptorPool.LookupSymbol(Proto.TypeName, this);
+                IDescriptor typeDescriptor = File.DescriptorPool.LookupSymbol(Proto.TypeName, this);
 
                 if (Proto.HasType)
                 {
@@ -366,7 +393,10 @@ namespace Google.Protobuf.Reflection
                     }
                     else
                     {
-                        throw new DescriptorValidationException(this, $"\"{Proto.TypeName}\" is not a type.");
+                        throw new DescriptorValidationException(
+                            this,
+                            $"\"{Proto.TypeName}\" is not a type."
+                        );
                     }
                 }
 
@@ -374,48 +404,71 @@ namespace Google.Protobuf.Reflection
                 {
                     if (typeDescriptor is not MessageDescriptor m)
                     {
-                        throw new DescriptorValidationException(this, $"\"{Proto.TypeName}\" is not a message type.");
+                        throw new DescriptorValidationException(
+                            this,
+                            $"\"{Proto.TypeName}\" is not a message type."
+                        );
                     }
                     messageType = m;
 
                     if (Proto.HasDefaultValue)
                     {
-                        throw new DescriptorValidationException(this, "Messages can't have default values.");
+                        throw new DescriptorValidationException(
+                            this,
+                            "Messages can't have default values."
+                        );
                     }
                 }
                 else if (fieldType == FieldType.Enum)
                 {
                     if (typeDescriptor is not EnumDescriptor e)
                     {
-                        throw new DescriptorValidationException(this, $"\"{Proto.TypeName}\" is not an enum type.");
+                        throw new DescriptorValidationException(
+                            this,
+                            $"\"{Proto.TypeName}\" is not an enum type."
+                        );
                     }
                     enumType = e;
                 }
                 else
                 {
-                    throw new DescriptorValidationException(this, "Field with primitive type has type_name.");
+                    throw new DescriptorValidationException(
+                        this,
+                        "Field with primitive type has type_name."
+                    );
                 }
             }
             else
             {
                 if (fieldType == FieldType.Message || fieldType == FieldType.Enum)
                 {
-                    throw new DescriptorValidationException(this, "Field with message or enum type missing type_name.");
+                    throw new DescriptorValidationException(
+                        this,
+                        "Field with message or enum type missing type_name."
+                    );
                 }
             }
 
             if (Proto.HasExtendee)
             {
-                extendeeType = File.DescriptorPool.LookupSymbol(Proto.Extendee, this) as MessageDescriptor;
+                extendeeType =
+                    File.DescriptorPool.LookupSymbol(Proto.Extendee, this) as MessageDescriptor;
             }
 
             // Note: no attempt to perform any default value parsing
 
             File.DescriptorPool.AddFieldByNumber(this);
 
-            if (ContainingType != null && ContainingType.Proto.Options != null && ContainingType.Proto.Options.MessageSetWireFormat)
+            if (
+                ContainingType != null
+                && ContainingType.Proto.Options != null
+                && ContainingType.Proto.Options.MessageSetWireFormat
+            )
             {
-                throw new DescriptorValidationException(this, "MessageSet format is not supported.");
+                throw new DescriptorValidationException(
+                    this,
+                    "MessageSet format is not supported."
+                );
             }
             accessor = CreateAccessor();
         }
@@ -435,15 +488,51 @@ namespace Google.Protobuf.Reflection
                 return null;
             }
 
-            var property = ContainingType.ClrType.GetProperty(PropertyName);
+            
+            System.Reflection.MethodInfo method = ContainingType.ClrType.GetMethod("__" + PropertyName);
+            if (method != null)
+            {
+                System.Reflection.MethodInfo hasValueMethod = ContainingType.ClrType.GetMethod("__" + PropertyName + "_has_value");
+                return new SingleFieldValueAccessor(ContainingType.ClrType, method, hasValueMethod, this);
+            }
+            // When using Value types in CreateDelegateCalls they will fail. https://dotnetfiddle.net/JJjAKI
+            if (ContainingType.ClrType.IsValueType())
+            {
+                throw new Exception(string.Format("Value type doesn't have accessors. Message {0}, PropertyType {1}", this.ContainingType.FullName, this.PropertyName));
+            }
+            System.Reflection.PropertyInfo property = ContainingType.ClrType.GetProperty("__" + PropertyName);
             if (property == null)
             {
-                throw new DescriptorValidationException(this, $"Property {PropertyName} not found in {ContainingType.ClrType}");
+                property = ContainingType.ClrType.GetProperty(PropertyName);
             }
-            return IsMap ? new MapFieldAccessor(property, this)
-                : IsRepeated ? new RepeatedFieldAccessor(property, this)
-                : (IFieldAccessor) new SingleFieldAccessor(ContainingType.ClrType, property, this);
+            if (property == null)
+            {
+                //var field = ContainingType.ClrType.GetField(PropertyName);
+
+                //if (field != null)
+                //{
+                //    return new SingleFieldValueAccessor(ContainingType.ClrType, field, this);
+                //}
+
+                throw new DescriptorValidationException(
+                    this,
+                    $"Property {PropertyName} not found in {ContainingType.ClrType}"
+                );
+            }
+
+            try
+            {
+                return IsMap
+                    ? new MapFieldAccessor(property, this)
+                    : IsRepeated
+                        ? new RepeatedFieldAccessor(property, this)
+                        : (IFieldAccessor)
+                            new SingleFieldAccessor(ContainingType.ClrType, property, this);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Message {0}, PropertyType {1}, property {2}", this.ContainingType.FullName, this.PropertyName, property), ex);
+            }
         }
     }
 }
- 
