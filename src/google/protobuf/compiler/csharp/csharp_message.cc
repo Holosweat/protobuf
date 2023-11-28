@@ -561,6 +561,20 @@ void MessageGenerator::GenerateFrameworkMethods(io::Printer* printer) {
           "}\n\n");
     }
 
+    if (!MessageIsReference(*descriptor_)) {
+      printer->Print(vars, "\n");
+      printer->Print(vars,
+                     "public static bool operator == ($class_name$ lhs, $class_name$ rhs) {\n"
+                     "  return lhs.Equals(rhs);\n"
+                     "}\n");
+
+      printer->Print(vars, "\n");
+      printer->Print(vars,
+                     "public static bool operator != ($class_name$ lhs, $class_name$ rhs) {\n"
+                     "  return !lhs.Equals(rhs);\n"
+                     "}\n");
+    }
+
     // GetHashCode
     // Start with a non-zero value to easily distinguish between null and "empty" messages.
     WriteGeneratedCodeAttributes(printer);

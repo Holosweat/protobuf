@@ -65,7 +65,7 @@ void RepeatedPrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
   if (FieldInsideReferenceContainer(*descriptor_)) {
     printer->Print(variables_,
       "private pbc::RepeatedField<$type_name$>? $name$_pb = null;\n"
-      "private scg.IEnumerable<$type_name$>? $name$_imm = System.Array.Empty<$type_name$>();\n");
+      "private scg.IEnumerable<$type_name$>? $name$_imm = sci.ImmutableArray<$type_name$>.Empty;\n");
   } else {
     printer->Print(variables_,
       "private pbc::RepeatedField<$type_name$>? $name$_pb;\n"
@@ -79,7 +79,7 @@ void RepeatedPrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
   printer->Print(
     variables_,
      "$access_level$ scg::IEnumerable<$type_name$> $property_name$ {\n"
-    "  get { return ($name$_imm ?? $name$_pb) ?? System.Array.Empty<$type_name$>(); }\n"
+    "  get { return ($name$_imm ?? $name$_pb) ?? sci.ImmutableArray<$type_name$>.Empty; }\n"
     "  $setter$ { if (value is sci.ImmutableList<$type_name$> || value is sci.ImmutableArray<$type_name$>) { $name$_imm = value; } else { $name$_imm = sci.ImmutableArray.ToImmutableArray(value); $name$_pb = null; } }\n"
 
     "}\n"
