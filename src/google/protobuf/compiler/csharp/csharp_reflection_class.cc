@@ -140,7 +140,7 @@ void ReflectionClassGenerator::WriteIntroduction(io::Printer* printer) {
     "using pbr = global::Google.Protobuf.Reflection;\n"
     "using scg = global::System.Collections.Generic;\n"
     "using sci = global::System.Collections.Immutable;\n"
-    "using System.Linq;\n",
+    "using System.Collections.Immutable;\n",
     "file_name", file_->name());
 
   if (!namespace_.empty()) {

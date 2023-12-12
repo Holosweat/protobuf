@@ -62,6 +62,13 @@ namespace Google.Protobuf.Collections
             AddRange(other);
         }
 
+        public static RepeatedField<T> From<TCollection>(TCollection other) where TCollection: IReadOnlyList<T>
+        {
+            RepeatedField<T> field = new RepeatedField<T>();
+            field.AddRangeList(other);
+            return field;
+        }
+
         /// Creates empty collection.
         public RepeatedField() {
         }
@@ -183,7 +190,7 @@ namespace Google.Protobuf.Collections
             return RepeatedFieldCalculateSize(codec, Count, array);
         }
 
-        public static int RepeatedFieldCalculateSize(FieldCodec<T> codec, IEnumerable<T> array)
+        public static int RepeatedFieldCalculateSize<TCollection>(FieldCodec<T> codec, TCollection array) where TCollection: IReadOnlyList<T>
         {
             if (array is RepeatedField<T> value)
             {
@@ -192,7 +199,7 @@ namespace Google.Protobuf.Collections
             return RepeatedFieldCalculateSize(codec, array.Count(), array);
         }
 
-        public static int RepeatedFieldCalculateSize(FieldCodec<T> codec, int count, IEnumerable<T> array)
+        public static int RepeatedFieldCalculateSize<TCollection>(FieldCodec<T> codec, int count, TCollection array) where TCollection: IReadOnlyList<T> 
         {
             if (count == 0)
             {
@@ -214,45 +221,29 @@ namespace Google.Protobuf.Collections
                 {
                     size += count * CodedOutputStream.ComputeRawVarint32Size(codec.EndTag);
                 }
-                if (array is T[] simpleArray)
+                
+                for (int i = 0; i < count; ++i)
                 {
-                    for (int i = 0; i < count; ++i)
-                    {
-                        size += sizeCalculator(simpleArray[i]);
-                    }
+                    size += sizeCalculator(array[i]);
                 }
-                else
-                {
-                    foreach (T value in array)
-                    {
-                        size += sizeCalculator(value);
-                    }
-                }
+                
                 return size;
             }
         }
 
-        private static int CalculatePackedDataSize(FieldCodec<T> codec, int count, IEnumerable<T> array)
+        private static int CalculatePackedDataSize<TReadOnlyList>(FieldCodec<T> codec, int count, TReadOnlyList array) where TReadOnlyList: IReadOnlyList<T>
         {
             int fixedSize = codec.FixedSize;
             if (fixedSize == 0)
             {
                 var calculator = codec.ValueSizeCalculator;
                 int tmp = 0;
-                if (array is T[] simpleArray)
+                
+                for (int i = 0; i < count; ++i)
                 {
-                    for (int i = 0; i < count; ++i)
-                    {
-                        tmp += calculator(simpleArray[i]);
-                    }
+                    tmp += calculator(array[i]);
                 }
-                else
-                {
-                    foreach (var value in array)
-                    {
-                        tmp += calculator(value);
-                    }
-                }
+                
                 return tmp;
             }
             else
@@ -435,11 +426,43 @@ namespace Google.Protobuf.Collections
         /// </summary>
         public bool IsReadOnly => false;
 
-        /// <summary>
-        /// Adds all of the specified values into this collection.
-        /// </summary>
-        /// <param name="values">The values to add to this collection.</param>
-        public void AddRange(IEnumerable<T> values)
+        private void AddRangeList<TCollection>(TCollection collection) where TCollection : IReadOnlyList<T>
+        {
+
+                var extraCount = collection.Count;
+                // For reference types and nullable value types, we need to check that there are no nulls
+                // present. (This isn't a thread-safe approach, but we don't advertise this is thread-safe.)
+                // We expect the JITter to optimize this test to true/false, so it's effectively conditional
+                // specialization.
+                
+                EnsureSize(count + extraCount);
+            if (default(T) == null)
+            {
+                for (int i = 0; i < collection.Count; ++i)
+                {
+                    if (collection[i] == null)
+                    {
+                        throw new ArgumentException("Sequence contained null element", nameof(collection));
+                    }
+                    array[i] = collection[i];
+                }
+            } else
+            {
+                for (int i = 0; i < collection.Count; i++)
+                {
+                    array[i] = collection[i];
+                }
+            }
+            
+                count += extraCount;
+                return;
+        }
+
+            /// <summary>
+            /// Adds all of the specified values into this collection.
+            /// </summary>
+            /// <param name="values">The values to add to this collection.</param>
+            public void AddRange(IEnumerable<T> values)
         {
             ProtoPreconditions.CheckNotNull(values, nameof(values));
 
@@ -464,15 +487,27 @@ namespace Google.Protobuf.Collections
                 // specialization.
                 if (default(T) == null)
                 {
-                    // TODO: Measure whether iterating once to check and then letting the collection copy
-                    // itself is faster or slower than iterating and adding as we go. For large
-                    // collections this will not be great in terms of cache usage... but the optimized
-                    // copy may be significantly faster than doing it one at a time.
-                    foreach (var item in collection)
+                    if (collection is IReadOnlyList<T> list)
                     {
-                        if (item == null)
+                        // TODO: Measure whether iterating once to check and then letting the collection copy
+                        // itself is faster or slower than iterating and adding as we go. For large
+                        // collections this will not be great in terms of cache usage... but the optimized
+                        // copy may be significantly faster than doing it one at a time.
+                        for (int i = 0; i < list.Count; ++i)
                         {
-                            throw new ArgumentException("Sequence contained null element", nameof(values));
+                            if (list[i] == null)
+                            {
+                                throw new ArgumentException("Sequence contained null element", nameof(values));
+                            }
+                        }
+                    } else
+                    {
+                        foreach (var item in collection)
+                        {
+                            if (item == null)
+                            {
+                                throw new ArgumentException("Sequence contained null element", nameof(values));
+                            }
                         }
                     }
                 }
@@ -546,11 +581,11 @@ namespace Google.Protobuf.Collections
             return GetRepeatedFieldHashCode(array);
         }
 
-        public static int GetRepeatedFieldHashCode(IEnumerable<T> values) {
+        public static int GetRepeatedFieldHashCode<TCollection>(TCollection values) where TCollection: IReadOnlyList<T> {
             int hash = 0;
-            foreach (T element in values)
+            for (int i = 0; i < values.Count; ++i)
             {
-                hash = hash * 31 + element.GetHashCode();
+                hash = hash * 31 + values[i].GetHashCode();
             }
             return hash;
         }
@@ -565,16 +600,13 @@ namespace Google.Protobuf.Collections
             return RepeatedFieldEquals(this, other);
         }
 
-        public static bool RepeatedFieldEquals(IEnumerable<T> This, IEnumerable<T> other) {
-            if (ReferenceEquals(other, This))
+        public static bool RepeatedFieldEquals<TCollection>(TCollection This, TCollection other) where TCollection: IReadOnlyList<T> {
+            if (This.Count != other.Count) return false;
+            for (int i = 0; i < This.Count; ++i)
             {
-                return true;
+              if (!EqualityComparer.Equals(This[i], other[i])) {  return false; }
             }
-            if (other is null)
-            {
-                return false;
-            }
-            return other.SequenceEqual(This, EqualityComparer);
+            return true;
         }
 
         /// <summary>

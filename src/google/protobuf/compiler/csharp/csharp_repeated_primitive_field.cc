@@ -51,6 +51,8 @@ RepeatedPrimitiveFieldGenerator::RepeatedPrimitiveFieldGenerator(
     const FieldDescriptor* descriptor, int presenceIndex, const Options *options)
     : FieldGeneratorBase(descriptor, presenceIndex, options) {
   variables_["setter"] = FieldInsideReferenceContainer(*descriptor_) ? "init" : "set";
+  variables_["repeated_type"] = RepeatedFieldType(*descriptor_);
+  variables_["repeated_type_classname"] = RepeatedFieldTypeClassName(*descriptor_);
 }
 
 RepeatedPrimitiveFieldGenerator::~RepeatedPrimitiveFieldGenerator() {
@@ -63,34 +65,33 @@ void RepeatedPrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     "private static readonly pb::FieldCodec<$type_name$> _repeated_$name$_codec\n"
     "    = pb::FieldCodec.For$capitalized_type_name$($tag$);\n");
   if (FieldInsideReferenceContainer(*descriptor_)) {
-    printer->Print(variables_,
-      "private pbc::RepeatedField<$type_name$>? $name$_pb = null;\n"
-      "private scg.IEnumerable<$type_name$>? $name$_imm = sci.ImmutableArray<$type_name$>.Empty;\n");
+    printer->Print(
+      variables_,
+      "private $repeated_type$<$type_name$> $name$_ = $repeated_type$<$type_name$>.Empty;\n");
   } else {
-    printer->Print(variables_,
-      "private pbc::RepeatedField<$type_name$>? $name$_pb;\n"
-      "private scg.IEnumerable<$type_name$>? $name$_imm;\n");
+    printer->Print(
+      variables_,
+      "private $repeated_type$<$type_name$>? $name$_;\n");
     printer->Print(
         variables_,
-        "public static scg.IEnumerable<$type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
+        "public static $repeated_type$<$type_name$> __$property_name$($extended_type$ message) { return message.$property_name$; }\n");
   }
   WritePropertyDocComment(printer, descriptor_);
   AddPublicMemberAttributes(printer);
   printer->Print(
     variables_,
-     "$access_level$ scg::IEnumerable<$type_name$> $property_name$ {\n"
-    "  get { return ($name$_imm ?? $name$_pb) ?? sci.ImmutableArray<$type_name$>.Empty; }\n"
-    "  $setter$ { if (value is sci.ImmutableList<$type_name$> || value is sci.ImmutableArray<$type_name$>) { $name$_imm = value; } else { $name$_imm = sci.ImmutableArray.ToImmutableArray(value); $name$_pb = null; } }\n"
-
+    "$access_level$ $repeated_type$<$type_name$> $property_name$ {\n"
+    "  get { return $name$_; }\n"
+    "  $setter$ { $name$_ = value; }\n"
     "}\n"
-    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return $name$_imm != null || $name$_pb == null ? new pbc::RepeatedField<$type_name$>($name$_imm ?? System.Array.Empty<$type_name$>()) : $name$_pb; } }\n"
-    "private pbc::RepeatedField<$type_name$> $name$_ForMutation { get {  if ($name$_imm != null) { $name$_pb = new pbc::RepeatedField<$type_name$>($name$_imm); $name$_imm = null; } if ($name$_pb == null) { $name$_pb = new pbc::RepeatedField<$type_name$>(); } return $name$_pb; } }\n");
+    "private pbc::RepeatedField<$type_name$> $name$_ForSerialization { get { return pbc::RepeatedField<$type_name$>.From($name$_); } }\n"
+    );
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(
     variables_,
-    "if (other.$property_name$.Any()) { var $name$_new = new pbc::RepeatedField<$type_name$>($property_name$); $name$_new.Add(other.$property_name$); $name$_imm = null; $name$_pb = $name$_new; }\n");
+    "if (!other.$property_name$.IsEmpty) { $name$_ = $property_name$.AddRange(other.$property_name$); }\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer) {
@@ -98,11 +99,11 @@ void RepeatedPrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer) 
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateParsingCode(io::Printer* printer, bool use_parse_context) {
-  printer->Print(
-    variables_,
-    use_parse_context
-    ? "$name$_ForMutation.AddEntriesFrom(ref input, _repeated_$name$_codec);\n"
-    : "$name$_ForMutation.AddEntriesFrom(input, _repeated_$name$_codec);\n");
+   printer->Print(
+      variables_,
+      use_parse_context
+          ? "var $name$_mutation = new pbc::RepeatedField<$type_name$>(); $name$_mutation.AddEntriesFrom(ref input, _repeated_$name$_codec); $name$_ = $name$_mutation.To$repeated_type_classname$();\n"
+          : "var $name$_mutation = new pbc::RepeatedField<$type_name$>(); $name$_mutation.AddEntriesFrom(input, _repeated_$name$_codec); $name$_ = $name$_mutation.To$repeated_type_classname$();\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateSerializationCode(io::Printer* printer) {
@@ -140,7 +141,7 @@ void RepeatedPrimitiveFieldGenerator::WriteToString(io::Printer* printer) {
 
 void RepeatedPrimitiveFieldGenerator::GenerateCloningCode(io::Printer* printer) {
   printer->Print(variables_,
-    "if (deep) { $name$_imm = null; $name$_pb = other.$name$_ForSerialization.Clone(); } else { $name$_imm = other.$name$_imm; $name$_pb = other.$name$_pb; }\n");
+    "if (deep) { $name$_ = other.$name$_ForSerialization.Clone().To$repeated_type_classname$(); } else { $name$_ = other.$name$_; }\n");
 }
 
 void RepeatedPrimitiveFieldGenerator::GenerateFreezingCode(io::Printer* printer) {
@@ -157,8 +158,7 @@ void RepeatedPrimitiveFieldGenerator::GenerateExtensionCode(io::Printer* printer
 
 void RepeatedPrimitiveFieldGenerator::GenerateStructConstructorCode(io::Printer *printer) {
   printer->Print(variables_,
-    "$name$_pb = default;\n"
-    "$name$_imm = default;\n");
+                 "$name$_ = $repeated_type$<T>.Empty;\n");
 }
 
 }  // namespace csharp

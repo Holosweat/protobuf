@@ -108,7 +108,7 @@ void MapFieldGenerator::GenerateMembers(io::Printer* printer) {
 
 void MapFieldGenerator::GenerateMergingCode(io::Printer* printer) {
   printer->Print(variables_,
-                 "if (other.$property_name$.Any()) { var $name$_new = new pbc::MapField<$key_type_name$, $value_type_name$>($property_name$); $name$_new.MergeFrom(other.$property_name$); $name$_imm = null; $name$_pb = $name$_new; }\n");
+                 "if (other.$property_name$.Count > 0) { var $name$_new = new pbc::MapField<$key_type_name$, $value_type_name$>($property_name$); $name$_new.MergeFrom(other.$property_name$); $name$_imm = null; $name$_pb = $name$_new; }\n");
 }
 
 void MapFieldGenerator::GenerateParsingCode(io::Printer* printer) {
