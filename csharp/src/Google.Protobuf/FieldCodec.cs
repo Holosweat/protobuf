@@ -833,8 +833,11 @@ namespace Google.Protobuf
             ProtobufEqualityComparers.GetEqualityComparer<T>();
         private static readonly T DefaultDefault;
 
-        // Only non-nullable value types support packing. This is the simplest way of detecting that.
-        private static readonly bool TypeSupportsPacking = default(T) != null;
+        // Only non-nullable value types support packing, but not struct messages.
+        // For value types, default(T) != null, but IMessage structs must not use packed encoding
+        // since WriteMessage already writes a length prefix per element.
+        public static readonly bool TypeSupportsPacking =
+            default(T) != null && !typeof(IMessage).IsAssignableFrom(typeof(T));
 
         /// <summary>
         /// Merges an input stream into a value
